@@ -411,13 +411,28 @@ function showSubjectDetail(subject) {
                 const isCompleted = state.completedBlocks[block.id];
                 const div = document.createElement('div');
                 div.className = `subject-block-item ${isCompleted ? 'completed' : ''}`;
+
+                // Build task list HTML
+                const tasksHtml = block.tasks.map((task, i) => {
+                    const taskId = `${block.id}-t${i}`;
+                    const isChecked = state.completedTasks[taskId];
+                    return `
+                        <div class="detail-task ${isChecked ? 'checked' : ''}">
+                            <span class="detail-task-check">${isChecked ? '✓' : '○'}</span>
+                            <span class="detail-task-text">${task}</span>
+                        </div>
+                    `;
+                }).join('');
+
                 div.innerHTML = `
-                    <div class="subject-block-info">
+                    <div class="subject-block-header">
                         <div class="subject-block-day">${day.name}</div>
                         <div class="subject-block-time">${block.time} (${block.duration}h)</div>
-                        <div class="subject-block-tasks">${block.tasks.length} tâches</div>
                     </div>
-                    <div class="subject-block-status">${isCompleted ? '✅' : '⬜'}</div>
+                    <div class="subject-block-tasks-list">
+                        ${tasksHtml}
+                    </div>
+                    <div class="subject-block-status">${isCompleted ? '✅ Terminé' : ''}</div>
                 `;
                 blocksContainer.appendChild(div);
             }

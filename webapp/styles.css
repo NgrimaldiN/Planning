@@ -1042,10 +1042,18 @@ body {
     flex: 1;
 }
 
+.subject-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
 .subject-block-day {
     font-size: 0.75rem;
     color: var(--muted-foreground);
-    margin-bottom: 4px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
@@ -1056,14 +1064,46 @@ body {
     font-weight: 500;
 }
 
-.subject-block-tasks {
-    font-size: 0.8125rem;
+.subject-block-tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail-task {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.detail-task-check {
     color: var(--muted-foreground);
-    margin-top: 6px;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+}
+
+.detail-task.checked .detail-task-check {
+    color: hsl(142, 71%, 45%);
+}
+
+.detail-task.checked .detail-task-text {
+    color: var(--muted-foreground);
+    text-decoration: line-through;
+}
+
+.detail-task-text {
+    flex: 1;
 }
 
 .subject-block-status {
-    font-size: 1.25rem;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 0.875rem;
+    color: hsl(142, 71%, 45%);
+    font-weight: 500;
 }
 
 /* === Milestones === */
