@@ -379,6 +379,57 @@ function renderStats() {
         document.getElementById(`bar-${subject}`).style.width = `${percent}%`;
         document.getElementById(`hours-${subject}`).textContent = `${data.done}/${data.total}h`;
     });
+
+    // Add click handlers to stat cards
+    document.querySelectorAll('.stat-card[data-subject]').forEach(card => {
+        card.onclick = () => showSubjectDetail(card.dataset.subject);
+    });
+}
+
+function showSubjectDetail(subject) {
+    const subjectInfo = PLANNING_DATA.subjects[subject];
+    const detailPanel = document.getElementById('subject-detail');
+    const statsGrid = document.getElementById('stats-grid');
+    const milestones = document.querySelector('.milestones');
+
+    // Hide stats grid and milestones, show detail panel
+    statsGrid.classList.add('hidden');
+    milestones.classList.add('hidden');
+    detailPanel.classList.remove('hidden');
+
+    // Update header
+    document.getElementById('detail-icon').textContent = subjectInfo.emoji;
+    document.getElementById('detail-title').textContent = subjectInfo.name;
+
+    // Get all blocks for this subject
+    const blocksContainer = document.getElementById('subject-blocks');
+    blocksContainer.innerHTML = '';
+
+    PLANNING_DATA.days.forEach(day => {
+        day.blocks.forEach(block => {
+            if (block.subject === subject) {
+                const isCompleted = state.completedBlocks[block.id];
+                const div = document.createElement('div');
+                div.className = `subject-block-item ${isCompleted ? 'completed' : ''}`;
+                div.innerHTML = `
+                    <div class="subject-block-info">
+                        <div class="subject-block-day">${day.name}</div>
+                        <div class="subject-block-time">${block.time} (${block.duration}h)</div>
+                        <div class="subject-block-tasks">${block.tasks.length} tâches</div>
+                    </div>
+                    <div class="subject-block-status">${isCompleted ? '✅' : '⬜'}</div>
+                `;
+                blocksContainer.appendChild(div);
+            }
+        });
+    });
+
+    // Back button handler
+    document.getElementById('back-to-stats').onclick = () => {
+        detailPanel.classList.add('hidden');
+        statsGrid.classList.remove('hidden');
+        milestones.classList.remove('hidden');
+    };
 }
 
 // === Milestones ===

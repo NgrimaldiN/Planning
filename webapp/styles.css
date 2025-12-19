@@ -898,6 +898,11 @@ body {
     margin-bottom: 24px;
 }
 
+.stats-grid.hidden,
+.milestones.hidden {
+    display: none;
+}
+
 .stat-card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -906,6 +911,13 @@ body {
     display: flex;
     gap: 16px;
     align-items: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.stat-card:hover {
+    border-color: var(--muted-foreground);
+    transform: translateY(-2px);
 }
 
 .stat-icon {
@@ -960,6 +972,98 @@ body {
     font-size: 0.8125rem;
     color: var(--muted-foreground);
     font-variant-numeric: tabular-nums;
+}
+
+/* === Subject Detail View === */
+.subject-detail {
+    animation: fadeIn 0.2s ease;
+}
+
+.subject-detail.hidden {
+    display: none;
+}
+
+.back-btn {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--card-foreground);
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-bottom: 20px;
+}
+
+.back-btn:hover {
+    background: var(--secondary);
+    border-color: var(--muted-foreground);
+}
+
+.subject-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.detail-icon {
+    font-size: 2rem;
+}
+
+.subject-detail-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.subject-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.subject-block-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.subject-block-item.completed {
+    opacity: 0.5;
+}
+
+.subject-block-info {
+    flex: 1;
+}
+
+.subject-block-day {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.subject-block-time {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.subject-block-tasks {
+    font-size: 0.8125rem;
+    color: var(--muted-foreground);
+    margin-top: 6px;
+}
+
+.subject-block-status {
+    font-size: 1.25rem;
 }
 
 /* === Milestones === */

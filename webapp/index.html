@@ -101,8 +101,21 @@
 
             <!-- Stats View -->
             <section id="stats-view" class="view">
-                <div class="stats-grid">
-                    <div class="stat-card stats-blue">
+                <!-- Subject Detail Panel (hidden by default) -->
+                <div id="subject-detail" class="subject-detail hidden">
+                    <button id="back-to-stats" class="back-btn">← Retour</button>
+                    <div class="subject-detail-header">
+                        <span id="detail-icon" class="detail-icon"></span>
+                        <h2 id="detail-title"></h2>
+                    </div>
+                    <div id="subject-blocks" class="subject-blocks">
+                        <!-- Blocks will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div id="stats-grid" class="stats-grid">
+                    <div class="stat-card stats-blue" data-subject="econ">
                         <div class="stat-icon">🔵</div>
                         <div class="stat-info">
                             <h3>Économétrie</h3>
@@ -112,7 +125,7 @@
                             <span id="hours-econ">0/30h</span>
                         </div>
                     </div>
-                    <div class="stat-card stats-purple">
+                    <div class="stat-card stats-purple" data-subject="proc">
                         <div class="stat-icon">🟣</div>
                         <div class="stat-info">
                             <h3>Processus Stochastiques</h3>
@@ -122,7 +135,7 @@
                             <span id="hours-proc">0/28h</span>
                         </div>
                     </div>
-                    <div class="stat-card stats-green">
+                    <div class="stat-card stats-green" data-subject="macro">
                         <div class="stat-icon">🟢</div>
                         <div class="stat-info">
                             <h3>Macroéconomie</h3>
@@ -132,7 +145,7 @@
                             <span id="hours-macro">0/24h</span>
                         </div>
                     </div>
-                    <div class="stat-card stats-yellow">
+                    <div class="stat-card stats-yellow" data-subject="micro">
                         <div class="stat-icon">🟡</div>
                         <div class="stat-info">
                             <h3>Microéconomie</h3>
@@ -142,7 +155,7 @@
                             <span id="hours-micro">0/22h</span>
                         </div>
                     </div>
-                    <div class="stat-card stats-red">
+                    <div class="stat-card stats-red" data-subject="stats">
                         <div class="stat-icon">🔴</div>
                         <div class="stat-info">
                             <h3>Statistiques</h3>
