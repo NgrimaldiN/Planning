@@ -34,7 +34,7 @@ class SupabaseClient {
         }
     }
 
-    async saveProgress(userId = 'default', completedTasks, completedBlocks, completedMilestones) {
+    async saveProgress(userId = 'default', data) {
         try {
             // First try to update existing record
             const updateResponse = await fetch(
@@ -43,9 +43,12 @@ class SupabaseClient {
                     method: 'PATCH',
                     headers: this.headers,
                     body: JSON.stringify({
-                        completed_tasks: completedTasks,
-                        completed_blocks: completedBlocks,
-                        completed_milestones: completedMilestones
+                        completed_tasks: data.completedTasks,
+                        completed_blocks: data.completedBlocks,
+                        completed_milestones: data.completedMilestones,
+                        catchup_blocks: data.catchupBlocks,
+                        deleted_blocks: data.deletedBlocks,
+                        scheduled_catchups: data.scheduledCatchups
                     })
                 }
             );
@@ -61,9 +64,12 @@ class SupabaseClient {
                         headers: this.headers,
                         body: JSON.stringify({
                             user_id: userId,
-                            completed_tasks: completedTasks,
-                            completed_blocks: completedBlocks,
-                            completed_milestones: completedMilestones
+                            completed_tasks: data.completedTasks,
+                            completed_blocks: data.completedBlocks,
+                            completed_milestones: data.completedMilestones,
+                            catchup_blocks: data.catchupBlocks,
+                            deleted_blocks: data.deletedBlocks,
+                            scheduled_catchups: data.scheduledCatchups
                         })
                     }
                 );
@@ -88,11 +94,17 @@ async function loadFromSupabase() {
         state.completedTasks = progress.completed_tasks || {};
         state.completedBlocks = progress.completed_blocks || {};
         state.completedMilestones = progress.completed_milestones || {};
+        state.catchupBlocks = progress.catchup_blocks || [];
+        state.deletedBlocks = progress.deleted_blocks || [];
+        state.scheduledCatchups = progress.scheduled_catchups || {};
 
         // Also save to localStorage as backup
         localStorage.setItem('completedTasks', JSON.stringify(state.completedTasks));
         localStorage.setItem('completedBlocks', JSON.stringify(state.completedBlocks));
         localStorage.setItem('completedMilestones', JSON.stringify(state.completedMilestones));
+        localStorage.setItem('catchupBlocks', JSON.stringify(state.catchupBlocks));
+        localStorage.setItem('deletedBlocks', JSON.stringify(state.deletedBlocks));
+        localStorage.setItem('scheduledCatchups', JSON.stringify(state.scheduledCatchups));
 
         // Re-render UI
         renderCurrentDay();
@@ -108,12 +120,14 @@ async function loadFromSupabase() {
 }
 
 async function saveToSupabase() {
-    await supabase.saveProgress(
-        'default',
-        state.completedTasks,
-        state.completedBlocks,
-        state.completedMilestones
-    );
+    await supabase.saveProgress('default', {
+        completedTasks: state.completedTasks,
+        completedBlocks: state.completedBlocks,
+        completedMilestones: state.completedMilestones,
+        catchupBlocks: state.catchupBlocks,
+        deletedBlocks: state.deletedBlocks,
+        scheduledCatchups: state.scheduledCatchups
+    });
     console.log('💾 Saved to Supabase');
 }
 
