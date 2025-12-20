@@ -4,6 +4,9 @@ const state = {
     completedTasks: JSON.parse(localStorage.getItem('completedTasks') || '{}'),
     completedBlocks: JSON.parse(localStorage.getItem('completedBlocks') || '{}'),
     completedMilestones: JSON.parse(localStorage.getItem('completedMilestones') || '{}'),
+    catchupBlocks: JSON.parse(localStorage.getItem('catchupBlocks') || '[]'), // Blocks marked for catchup
+    deletedBlocks: JSON.parse(localStorage.getItem('deletedBlocks') || '[]'), // Blocks deleted
+    scheduledCatchups: JSON.parse(localStorage.getItem('scheduledCatchups') || '{}'), // day -> [blockIds]
     timerRunning: false,
     timerSeconds: 25 * 60,
     timerInterval: null,
@@ -108,23 +111,82 @@ function renderCurrentDay() {
     const container = document.getElementById('blocks-container');
     container.innerHTML = '';
 
+    // Render regular blocks (skip deleted ones)
     day.blocks.forEach(block => {
-        const blockEl = createBlockElement(block);
-        container.appendChild(blockEl);
+        if (!state.deletedBlocks.includes(block.id)) {
+            const blockEl = createBlockElement(block);
+            container.appendChild(blockEl);
+        }
     });
+
+    // Render scheduled catchup blocks for this day
+    const scheduledCatchups = getCatchupBlocksForDay(state.currentDayIndex);
+    scheduledCatchups.forEach(blockId => {
+        const block = findBlockById(blockId);
+        if (block && !state.deletedBlocks.includes(block.id)) {
+            const blockEl = createBlockElement(block, true);
+            blockEl.classList.add('catchup-block');
+            container.appendChild(blockEl);
+        }
+    });
+
+    // Render catchup zone if there are blocks to catch up
+    const availableCatchups = getAvailableCatchupBlocks();
+    if (availableCatchups.length > 0 || scheduledCatchups.length > 0) {
+        const catchupZone = document.createElement('div');
+        catchupZone.className = 'catchup-zone';
+        catchupZone.innerHTML = `
+            <div class="catchup-zone-header">
+                <span>📅 Zone de rattrapage (21h30 - 23h00)</span>
+                ${availableCatchups.length > 0 ? `<span class="catchup-count">${availableCatchups.length} bloc(s) en attente</span>` : ''}
+            </div>
+            ${availableCatchups.length > 0 ? `
+            <button class="add-catchup-btn" id="add-catchup-btn">+ Ajouter un bloc à rattraper</button>
+            <div class="catchup-selector hidden" id="catchup-selector">
+                ${availableCatchups.map(block => {
+            const subject = PLANNING_DATA.subjects[block.subject];
+            return `<button class="catchup-option" data-block-id="${block.id}">
+                        ${subject.emoji} ${subject.name} - ${block.time}
+                    </button>`;
+        }).join('')}
+            </div>
+            ` : ''}
+        `;
+        container.appendChild(catchupZone);
+
+        // Event listeners for catchup zone
+        const addBtn = catchupZone.querySelector('#add-catchup-btn');
+        if (addBtn) {
+            addBtn.addEventListener('click', () => {
+                catchupZone.querySelector('#catchup-selector').classList.toggle('hidden');
+            });
+        }
+
+        catchupZone.querySelectorAll('.catchup-option').forEach(btn => {
+            btn.addEventListener('click', () => {
+                scheduleCatchupBlock(state.currentDayIndex, btn.dataset.blockId);
+            });
+        });
+    }
 
     // Update nav buttons
     document.getElementById('prev-day').disabled = state.currentDayIndex === 0;
     document.getElementById('next-day').disabled = state.currentDayIndex === PLANNING_DATA.days.length - 1;
 }
 
-function createBlockElement(block) {
+function createBlockElement(block, isCatchup = false) {
     const div = document.createElement('div');
     div.className = `block-card ${block.subject}`;
+    div.dataset.blockId = block.id;
 
     const isBlockCompleted = state.completedBlocks[block.id];
+    const isInCatchup = state.catchupBlocks.includes(block.id);
+
     if (isBlockCompleted) {
         div.classList.add('completed');
+    }
+    if (isInCatchup && !isCatchup) {
+        div.classList.add('in-catchup');
     }
 
     const subject = PLANNING_DATA.subjects[block.subject];
@@ -132,8 +194,20 @@ function createBlockElement(block) {
     div.innerHTML = `
         <div class="block-header">
             <span class="block-time">${block.time} (${block.duration}h)</span>
-            <span class="block-subject ${block.subject}">${subject.emoji} ${subject.name}</span>
+            <div class="block-header-right">
+                <span class="block-subject ${block.subject}">${subject.emoji} ${subject.name}</span>
+                ${!isBlockCompleted && !isCatchup ? `
+                <div class="block-menu">
+                    <button class="block-menu-btn" data-block-id="${block.id}">⋮</button>
+                    <div class="block-menu-dropdown hidden">
+                        <button class="menu-item catchup-item" data-block-id="${block.id}">📅 Reporter</button>
+                        <button class="menu-item delete-item" data-block-id="${block.id}">🗑️ Supprimer</button>
+                    </div>
+                </div>
+                ` : ''}
+            </div>
         </div>
+        ${isInCatchup && !isCatchup ? '<div class="catchup-badge">📅 En rattrapage</div>' : ''}
         <ul class="block-tasks">
             ${block.tasks.map((task, i) => {
         const taskId = `${block.id}-t${i}`;
@@ -159,6 +233,28 @@ function createBlockElement(block) {
     });
 
     div.querySelector('.complete-block-btn').addEventListener('click', handleBlockComplete);
+
+    // Menu toggle
+    const menuBtn = div.querySelector('.block-menu-btn');
+    if (menuBtn) {
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = div.querySelector('.block-menu-dropdown');
+            dropdown.classList.toggle('hidden');
+        });
+
+        // Catchup action
+        div.querySelector('.catchup-item')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            markForCatchup(block.id);
+        });
+
+        // Delete action
+        div.querySelector('.delete-item')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteBlock(block.id);
+        });
+    }
 
     return div;
 }
@@ -233,6 +329,67 @@ function findBlockById(blockId) {
     return null;
 }
 
+// === Catchup Functions ===
+function markForCatchup(blockId) {
+    if (!state.catchupBlocks.includes(blockId)) {
+        state.catchupBlocks.push(blockId);
+        localStorage.setItem('catchupBlocks', JSON.stringify(state.catchupBlocks));
+
+        if (window.supabaseSync && window.supabaseSync.isConfigured()) {
+            window.supabaseSync.save();
+        }
+
+        renderCurrentDay();
+    }
+}
+
+function deleteBlock(blockId) {
+    if (!state.deletedBlocks.includes(blockId)) {
+        state.deletedBlocks.push(blockId);
+        localStorage.setItem('deletedBlocks', JSON.stringify(state.deletedBlocks));
+
+        // Also remove from catchup if it was there
+        state.catchupBlocks = state.catchupBlocks.filter(id => id !== blockId);
+        localStorage.setItem('catchupBlocks', JSON.stringify(state.catchupBlocks));
+
+        if (window.supabaseSync && window.supabaseSync.isConfigured()) {
+            window.supabaseSync.save();
+        }
+
+        renderCurrentDay();
+        updateGlobalProgress();
+    }
+}
+
+function scheduleCatchupBlock(dayIndex, blockId) {
+    const dayKey = `day-${dayIndex}`;
+    if (!state.scheduledCatchups[dayKey]) {
+        state.scheduledCatchups[dayKey] = [];
+    }
+    if (!state.scheduledCatchups[dayKey].includes(blockId)) {
+        state.scheduledCatchups[dayKey].push(blockId);
+        localStorage.setItem('scheduledCatchups', JSON.stringify(state.scheduledCatchups));
+
+        // Remove from general catchup list
+        state.catchupBlocks = state.catchupBlocks.filter(id => id !== blockId);
+        localStorage.setItem('catchupBlocks', JSON.stringify(state.catchupBlocks));
+
+        if (window.supabaseSync && window.supabaseSync.isConfigured()) {
+            window.supabaseSync.save();
+        }
+
+        renderCurrentDay();
+    }
+}
+
+function getCatchupBlocksForDay(dayIndex) {
+    const dayKey = `day-${dayIndex}`;
+    return state.scheduledCatchups[dayKey] || [];
+}
+
+function getAvailableCatchupBlocks() {
+    return state.catchupBlocks.map(id => findBlockById(id)).filter(b => b);
+}
 
 function startTimer() {
     if (state.timerRunning) return;
