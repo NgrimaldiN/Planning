@@ -220,10 +220,9 @@ function createBlockElement(block, isCatchup = false) {
                 `;
     }).join('')}
         </ul>
-        <button class="complete-block-btn ${areAllTasksCompleted(block) ? 'ready' : ''}" 
-                data-block-id="${block.id}" 
-                ${isBlockCompleted ? 'disabled' : ''}>
-            ${isBlockCompleted ? '✓ Bloc terminé' : 'Marquer le bloc comme terminé'}
+        <button class="complete-block-btn ${isBlockCompleted ? 'completed' : ''} ${areAllTasksCompleted(block) ? 'ready' : ''}" 
+                data-block-id="${block.id}">
+            ${isBlockCompleted ? '✓ Bloc terminé (cliquer pour modifier)' : 'Marquer le bloc comme terminé'}
         </button>
     `;
 
@@ -300,13 +299,16 @@ function handleTaskToggle(e) {
 
 function handleBlockComplete(e) {
     const blockId = e.target.dataset.blockId;
-    state.completedBlocks[blockId] = true;
+    const isCurrentlyCompleted = state.completedBlocks[blockId];
+
+    // Toggle block completion
+    state.completedBlocks[blockId] = !isCurrentlyCompleted;
     localStorage.setItem('completedBlocks', JSON.stringify(state.completedBlocks));
 
-    // Mark all tasks as completed
+    // Mark/unmark all tasks accordingly
     const block = findBlockById(blockId);
     block.tasks.forEach((_, i) => {
-        state.completedTasks[`${blockId}-t${i}`] = true;
+        state.completedTasks[`${blockId}-t${i}`] = !isCurrentlyCompleted;
     });
     localStorage.setItem('completedTasks', JSON.stringify(state.completedTasks));
 
@@ -315,6 +317,7 @@ function handleBlockComplete(e) {
         window.supabaseSync.save();
     }
 
+    // Full re-render to update menu visibility
     renderCurrentDay();
     updateGlobalProgress();
     renderStats();
