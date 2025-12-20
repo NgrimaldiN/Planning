@@ -19,11 +19,11 @@ const state = {
 
 // Exam dates for each subject (use string format to avoid mutation issues)
 const EXAM_DATES = {
-    econ: '2025-01-13',   // 13 janvier
-    macro: '2025-01-13',  // 13 janvier
-    micro: '2025-01-14',  // 14 janvier
-    proc: '2025-01-15',   // 15 janvier
-    stats: '2025-01-15'   // 15 janvier
+    econ: '2026-01-13',   // 13 janvier 2026
+    macro: '2026-01-13',  // 13 janvier 2026
+    micro: '2026-01-14',  // 14 janvier 2026
+    proc: '2026-01-15',   // 15 janvier 2026
+    stats: '2026-01-15'   // 15 janvier 2026
 };
 
 // === Initialization ===
