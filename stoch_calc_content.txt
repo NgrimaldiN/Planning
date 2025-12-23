@@ -1,0 +1,4311 @@
+--- Extracting from poly_processus (1).pdf (87 pages) ---
+
+[Page 1]
+Introduction aux processus stochastiques
+Notes de cours
+Nicolas Chopin
+
+[Page 2]
+
+
+[Page 3]
+Table des matières
+1 Introduction 7
+1.1 Processus stochastiques : définition . . . . . . . . . . . . . . . . . . . . . . 7
+1.2 Rappels sur l’espérance conditionnelle . . . . . . . . . . . . . . . . . . . . 9
+2 Chaînes de Markov 13
+2.1 Construction et définitions . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+2.2 Propriétés élémentaires . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+2.3 Propriété de Markov forte . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+2.4 Classes d’états . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+2.5 Opérateur potentiel et nature des classes d’états . . . . . . . . . . . . . . . 22
+2.6 Théorèmes ergodiques . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+2.7 Périodicité, convergence des lois marginales . . . . . . . . . . . . . . . . . 34
+2.8 Réversibilité, algorithme de Metropolis-Hastings . . . . . . . . . . . . . . . 37
+2.9 Un autre algorithme à base de chaîne de Markov : le Gibbs sampler . . . . 39
+2.10 Extension à un espace d’états continu . . . . . . . . . . . . . . . . . . . . 42
+2.11 Chaînes de Markov cachées . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+3 Martingales 49
+3.1 Définitions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+3.2 Temps d’arrêt . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54
+3.3 Théorème d’arrêt : le cas borné . . . . . . . . . . . . . . . . . . . . . . . . 57
+3.4 Décomposition de Doob . . . . . . . . . . . . . . . . . . . . . . . . . . . . 59
+3.5 Inégalités maximales . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 61
+3.6 Convergence dans L2 (et plus généralementLp, p >1) . . . . . . . . . . . 65
+3.7 Interlude : urnes de Polya . . . . . . . . . . . . . . . . . . . . . . . . . . . 67
+3.8 Convergence : résultats plus généraux . . . . . . . . . . . . . . . . . . . . 69
+3.9 Deuxième interlude : processus de branchement (Galton-Watson) . . . . . 72
+3.10 Martingales régulières et théorème d’arrêt . . . . . . . . . . . . . . . . . . 74
+4 Processus en temps continu 77
+4.1 Processus ponctuels, processus de Poisson . . . . . . . . . . . . . . . . . . 77
+4.1.1 Préliminaires : loi de Poisson . . . . . . . . . . . . . . . . . . . . . 77
+4.1.2 Les processus de Poisson comme processus ponctuels . . . . . . . . 78
+4.1.3 Cas E = R+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 80
+4.1.4 Généralisation aux processus Markovien en temps discret . . . . . 82
+4.2 Mouvement brownien . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 83
+4.2.1 Processus gaussiens . . . . . . . . . . . . . . . . . . . . . . . . . . . 83
+3
+
+[Page 4]
+Table des matières
+4.2.2 Mouvement brownien . . . . . . . . . . . . . . . . . . . . . . . . . 84
+4.2.3 Processus markovien en temps continu . . . . . . . . . . . . . . . . 85
+4
+
+[Page 5]
+Table des matières
+La première version de ces notes du cours d’introduction aux processus (deuxième
+année de l’ENSAE) est due à Pierre Alquier, qui a enseigné cette matière avant moi. Un
+grand merci à lui, ainsi qu’à ses prédécesseurs (Eric Gautier notamment). Depuis cette
+première version, le poly a été beaucoup remanié; n’hésitez pas à me signaler toute erreur
+ou faute de frappe qui m’aurait échappé.
+Quelques références pour aller plus loin : Le livre de Brémaud (1999) a un point de vue
+très mathématique. A l’inverse, le livre de Lawler (2006) offre un panorama assez complet
+tout en gardant un niveau de formalisme assez faible : c’est idéal pour se forger une
+intuition sur le sujet. Enfin, le livre de Baldi et al. (2002) est une compilation d’exercices
+assez utile pour réviser (même si ils sont en général assez difficiles). Il contient également
+de brefs rappels de cours assez utiles (et sur lesquels beaucoup des preuves de ce poly
+sont basées).
+5
+
+[Page 6]
+
+
+[Page 7]
+1 Introduction
+1.1 Processus stochastiques : définition
+Dans tout le cours, on considèrera un espace probabilisé(Ω, F, P), un espace mesurable
+(E, E) et un ensembleT .
+Définition 1.1.1.On appelle processus stochastique, ou processus aléatoire, une famille
+(Xt)t∈T de variables aléatoires à valeurs dansE. Autrement dit, pour toutt ∈ T, l’ap-
+plication ω 7→ Xt(ω) est une application mesurable de(Ω, F) dans (E, E). On appelleE
+l’espace d’états du processus.
+En pratique, on utilise souvent les processus pour de la modélisation dynamique :Xt
+est la valeur d’une variable d’intérêt à la datet. L’ensembleT représente alors l’ensemble
+des dates possibles.
+Définition 1.1.2.LorsqueT = N ou T = Z on dit que(Xt)t∈T est un processus à temps
+discret. LorsqueT = R, ou un intervalle deR, on parle de processus à temps continu.
+Exemple 1.1.1. Un exemple à temps discret : soitXt le PIB de la France à l’annéet
+(donc E = R+). En revanche, en finance, les prix des actifs, devises, etc. sont mises à
+jour avec une fréquence tellement élevée qu’on préfère utiliser une modélisation à temps
+continu : soitXt le cours EURO/DOLLAR à la datet, t mesurée en heures avect = 0
+correspondant au 1er janvier 1999 à 0h.
+On peut donc voir un processus comme une fonction de deux variables :
+Ω × T →E
+(ω, t) 7→ Xt(ω)
+qui doit vérifier la condition que, pourt fixé, ω 7→ Xt(ω) est mesurable (autrement dit,Xt
+vérifie bien la définition de variable aléatoire). Aω fixé, la fonctiont 7→ Xt(ω) s’appelle
+une trajectoire du processus.
+Définition 1.1.3.On appelle filtration une suite(Ft)t∈T de σ-algèbres vérifiant
+s ≤ t ⇒ Fs ⊂ Ft ⊂ F.
+7
+
+[Page 8]
+1 Introduction
+Explication sur cette notion : quand on observe un processus au cours du temps, à
+la date t, on connaît les valeurs deXs pour s ≤ t mais on ne connaît pas encore les
+valeurs deXs pour s > t. En terme de conditionnement, ça veut dire qu’on sera souvent
+amené à conditionner par les variables(Xs)s≤t, ou de façon équivalente par laσ-algèbre
+Ft := σ(Xs, s≤ t). On vérifie immédiatement que(Ft)t∈T est une filtration, on l’appelle
+filtration canonique.
+Donc, l’idée d’une filtration(Ft)t∈T est de représenter l’information disponible à la
+date t.
+On peut se poser la question naturelle : pourquoi introduire un concept général de
+filtration plutôt que d’utiliser toujours la filtration canonique? D’un point de vue intuitif :
+à la date t, on peut avoir plus d’informations que les valeurs passées(Xs)s≤t. Dans
+l’exemple où Xt est le PIB de la France à l’annéet, à la fin de l’annéet, on connaît
+certes le PIB de la France à l’annéet, mais aussi le PIB des USA, des autres pays de la
+zone euro, le cours du pétrôle, les différents taux de change, etc. qui peuvent donner de
+l’information sur les valeurs futures du PIB de la France. D’un point de vue plus formel,
+on peut avoir plusieurs processus définis sur le même(Ω, F, P), par exemple(Xt)t∈T et
+(Yt)t∈T , et la considérer la filtrationFt := σ(Xs, Ys, s≤ t) qui n’est PAS la filtration
+canonique pour le processus(Xt).
+Définition 1.1.4.Le processus(Xt)t∈T est dit adapté à la filtration(Ft)t∈T si pour tout
+t ∈ T, Xt est Ft-mesurable.
+Exemple 1.1.2.Dans cet exempleT = N, soit(εt)t∈N une suite de variables aléatoires
+i.i.d de loiN(0, 1), (α, β) ∈ R2, X0 = 0 et
+Xt+1 = αXt + β + εt.
+Ce processus est étudié dans le cours de séries temporelles sous le nom de processus
+autorégressif (AR). On définitFt = σ(εs, s≤ t) la filtration canonique pour(εt)t∈N. On
+peut vérifier de façon triviale que le processus(Xt)t∈N est adapté à la filtration(Ft)t∈N.
+On peut maintenant annoncer le plan du cours. Dans les Chapitres 3 et 2, on n’étudiera
+que des processus à temps discret avecT = N.
+Chapitre 2) On étudiera les chaînes de Markov, définies par la propriété
+L(Xt+1|Ft) = L(Xt+1|Xt)
+(où L se lit “loi de”, là encore, une définition formelle viendra plus tard). On se
+restreindra au cas oùE est fini ou dénombrable.
+Chapitre 3) On étudiera les martingales, c’est-à-dire la classe des processus à valeurs dansE =
+R vérifiant la relation
+E(Xt+1|Ft) = Xt
+(une définition formelle sera donnée plus loin).
+Chapitre 4) Une toute petite discussion du cas continu, à travers deux exemples (le processus
+de Poisson, et le mouvement brownien) définis surT = R+.
+Comme la définition de martingale repose sur une espérance conditionnelle, la fin de
+cette introduction contient quelques rappels sur cette notion.
+8
+
+[Page 9]
+1.2 Rappels sur l’espérance conditionnelle
+1.2 Rappels sur l’espérance conditionnelle
+On rappelle que pour deux événementsA et B dans F, avec P(B) ̸= 0 , on a par
+définition
+P(A|B) = P(A ∩ B)
+P(B) .
+Soient deux variables aléatoires réelles définies sur(Ω, F), X et Y . On suppose queX
+est intégrable. Dans un premier temps, on va supposer queY est une variable aléatoire
+discrète, à valeurs dansN. On suppose également que pour touty ∈ N, P(Y = y) > 0.
+On a alors, pour toutA ∈ F,
+P(A|Y = y) = P(A ∩ {Y = y})
+P(Y = y)
+ce qui définit une mesure de probabilité sur(Ω, F), notons-là Py, et il est naturel de
+définir
+E(X|Y = y) :=
+Z
+Ω
+X(ω)Py(dω) =
+Z
+XdPy. (1.1)
+On vérifie en fait directement que
+E(X|Y = y) =
+R
+X1{Y =y}dP
+P(Y = y) . (1.2)
+L’important est que l’on voit, que ce soit dans (1.1) ou (1.2), queE(X|Y = y) est une
+fonction dey, notons-làf(y). On définit alors simplementE(X|Y ) := f(Y ). Faire bien
+attention : E(X) est un nombre réel, déterministe, alors queE(X|Y ) = f(Y ) est une
+variable aléatoire, fonction de la variableY , autrement dit,σ(Y )-mesurable.
+Le problème de cette construction intuitive est qu’on ne peut pas l’étendre au cas
+où Y est une variable continue. Il faut alors trouver une caractérisation deE(X|Y ) qui
+n’implique pas de diviser parP(Y = y) et puisse s’étendre au cas général. On va démon-
+trer la propriété suivante : pour toute variableZ bornée qui est aussiσ(Y )-mesurable,
+autrement dit, ici,Z = g(Y ), on a
+E
+
+E(X|Y )Z
+
+= E(XZ ). (1.3)
+En effet :
+E[E(X|Y )Z] = E[E(X|Y )g(Y )]
+= E
+
+
+∞X
+y=0
+E(X|Y = y)g(y)1Y =y
+
+
+=
+∞X
+y=0
+g(y)E(X|Y = y)P(Y = y)
+=
+∞X
+y=0
+g(y)E(X1{Y =y}) d’après (1.1)
+9
+
+[Page 10]
+1 Introduction
+= E
+
+
+∞X
+y=0
+X1{Y =y}g(y)
+
+
+= E[Xg(Y )]
+= E(XZ ).
+Le théorème suivant dit justement que la propriété 1.3 peut s’étendre au cas général.
+Théorème 1.2.1.Soit A ⊂ Fune σ-algèbre etX une variable aléatoire réelle, positive
+ou intégrable. Alors il existe une variable aléatoireA-mesurable, positive ou intégrable,
+unique à un p.s près, notéeE(X|A), telle que pour toute variable aléaoireZ, A-mesurable,
+positive ou bornée, on a
+E
+
+E(X|A)Z
+
+= E(XZ ). (1.4)
+Dans le cas oùA = σ(Y ) pour une variable aléatoireZ, on note simplementE(X|Y ) au
+lieu deE(X|σ(Y )).
+Démonstration. La preuve a été faite en 1ère année, on ne la refait pas complètement.
+Rappel de l’idée générale : on commence par traiter le cas oùX ∈ L2 l’ensemble des
+variables de carré intégrable. Alors
+1. On vérifie que ⟨X, Y⟩ := E(XY ) est bien un produit scalaire qui fait deL2 un
+espace de Hilbert.
+2. On vérifie que l’ensemble des variablesA-mesurables et dansL2 est un sous-espace
+vectoriel fermé deL2. On peut donc définir la projection orthogonale sur ce sous-
+espace, Π.
+3. La variableX −Π(X) est alors orthogonale à toute variableZ A-mesurable et dans
+L2. Ceci se traduit par
+⟨X − Π(X), Z⟩ = E
+n
+X − Π(X)
+
+Z
+o
+soit
+E(XZ ) = E[Π(X)Z].
+On voit donc qu’en posantE(X|A) := Π( X) la relation (1.4) est immédiatement
+satisfaite.
+Il reste ensuite à travailler un peu pour étendre cette définition au cas où X est
+simplement intrégrable (X ∈ L1) ou positive.□
+On rappelle quelques propriétés qu’on utilisera en permanence tout a long de ce cours.
+Soient X et Y deux variables aléatoires réelles,λ et µ deux nombres réels,A et B deux
+σ-algèbre, (Xn)n∈N une suite de variables aléatoires, etf une fonctionR → R.
+1. E(λ|A) = λ.
+2. E(λX + µY |A) = λE(X|A) + µE(Y |A).
+10
+
+[Page 11]
+1.2 Rappels sur l’espérance conditionnelle
+3. X indépendant deA ⇒E(X|A) = E(X).
+4. X A-mesurable ⇒ E(X|A) = X et E(XY |A) = XE(Y |A).
+5. E[E(X|A)] = E(X).
+6. B ⊂ A ⇒E[E(X|A)|B] = E(X|B).
+7. X ≤ Y p.s ⇒ E(X|A) ≤ E(Y |A) p.s
+8. (“Jensen conditionnel”)f convexe ⇒ f(E(X|A)) ≤ E(f(X)|A).
+9. (“TCD cond.”)Xn
+p.s
+− − →X, |Xn| ≤Z, Z ∈ L1 ⇒ E(Xn|A)
+p.s
+− − →E(X|A).
+10. (“TCM cond.”)Xn
+↗,p.s
+− − − →X, Xn ≥ 0 ⇒ E(Xn|A)
+↗,p.s
+− − − →E(X|A).
+11. (“Fatou cond.”)Xn ≥ 0 ⇒ E(lim infXn|A) ≤ lim infE(Xn|A).
+11
+
+[Page 12]
+
+
+[Page 13]
+2 Chaînes de Markov
+2.1 Construction et définitions
+Dans tout ce chapitre,(Xt)t∈N un processus à valeurs dans un espace(E, E), et(Ft)
+sa filtration canoniqueFt = σ(X0, . . . , Xt).
+Définition 2.1.1.Le processus(Xt)t∈N est markovien si et seulement si
+∀t ∈ N, ∀A ∈ E, P(Xt+1 ∈ A|Ft) = P(Xt+1 ∈ A|Xt).
+Un processus markovien (à temps discret) est aussi appelé chaîne de Markov.
+Cette définition étant posée dans le cas général, on va maintenant se restreindre cas où
+E est un espace fini ou dénombrable (etE = P(E)). Le cas oùE est un espace quelconque
+sera uniquement abordé dans la Section 2.10.
+Dans ce cas, la propriété de Markov implique que, pour tout(x0, . . . , xt) ∈ Et+1,
+P(Xt = xt|Xt−1 = xt−1, . . . , X0 = x0) = P(Xt = xt|Xt−1 = xt−1).
+Mais alors, par récurrence,
+P(Xt = xt, Xt−1 = xt−1, . . . , X0 = x0)
+= P(Xt = xt|Xt−1 = xt−1, . . . , X0 = x0)P(Xt−1 = xt−1, . . . , X0 = x0)
+= P(Xt = xt|Xt−1 = xt−1)P(Xt−1 = xt−1, . . . , X0 = x0)
+= P(Xt = xt|Xt−1 = xt−1)P(Xt−1 = xt−1|Xt−2 = xt−2)
+. . .P(X1 = x1|X0 = x0)P(X0 = x0).
+Donc, on peut décrire la loi de la chaîne(Xt) par la loi deX0 et la loi deXt+1|Xt pour
+tout t ∈ N.
+Définition 2.1.2. On dit qu’une chaîne de Markov (Xt) est homogène si, pour tout
+(x, y) ∈ E2, P(Xt+1 = y|Xt = x) ne dépend que de(x, y), et pas det.
+A partir de maintenant, on ne considérera que des chaînes de Markov homogènes.
+Un abus (très) fréquent consiste à appeler “chaîne de Markov” uniquement les chaînes
+de Markov homogènes, et “chaîne de Markov non homogène” une chaîne de Markov
+quelconque. A partir de maintenant, on suivra cette convention.
+Définition 2.1.3.Soit (Xt) une chaîne de Markov (donc, homogène). Notons
+P(x, y) = P(Xt+1 = y|Xt = x),
+13
+
+[Page 14]
+2 Chaînes de Markov
+on appelle alorsP = (P(x, y))(x,y)∈E2 la matrice de transition de(Xt). Notons
+µ(x) = P(X0 = x),
+on appelle le vecteurµ = (µx)x∈E la loi initiale de(Xt).
+On a alors
+P(Xn = xn, Xn−1 = xn−1, . . . , X0 = x0) = µ(x0)P(x0, x1) . . . P(xn−1, xn).
+Même si c’est évident, n’importe quelle matrice ne peut pas être une matrice de tran-
+sition!
+Proposition 2.1.1. Soit une matrice de transitionP d’une chaîne de Markov (Xt).
+Alors, pour tout(x, y), P(x, y) ∈ [0, 1] et
+X
+y∈E
+P(x, y) = 1.
+Démonstration. Pour la première propriété,P(x, y) = P(X1 = y|X0 = x) ∈ [0, 1]. Pour
+la deuxième :
+X
+y∈E
+P(x, y) =
+X
+y∈E
+P(X1 = y|X0 = x) = P(X1 ∈ E|X0 = x) = 1
+On mentionne ensuite une méthode simple pour construire une chaîne de Markov.
+Proposition 2.1.2. Pour toute loi initialeµ, et matrice de transitionP, sur un espace
+dénombrable E, il existe des fonctionsf0 et f, et une suite de variables aléatoires IID
+(indépendantes et identiquement distribuées)U0, U1, . . .telles que la suite de variables
+aléatoires X0 = f0(U0), Xt = f(Xt−1, Ut) est une chaîne de Markov de loi initialeµ et
+de matrice de transitionP.
+Démonstration. Onvaprendrepourles Ut desvariablesdeloiuniformesur [0, 1].L’espace
+E est dénombrable, on peut sans perte de généralité appeler ses éléments1, 2, . . .. On
+définit f0(u) comme suit :f0(u) = 1 si u ∈ [0, µ(1)[, f0(u) = 2 si u ∈ [µ(1), µ1 + µ(2)[,
+etc. On montre facilement queX0 = f0(U0) est telle queP(X0) ∼ µ0. On procède de la
+même manière pourf : pourx ∈ E fixé, f(x, u) est la fonction qui renvoie l’entierk siPk−1
+i=1 P(x, i) ≤ u <Pk
+i=1 P(x, i).
+Ce résultat nous apporte deux choses :
+1. Théoriquement : il prouve l’existence des chaînes de Markov. Ce point peut pa-
+raître évident à horizon fini (l’existence deX0, . . . , Xt pour t fixé), il l’est un peu
+moins à horizon infini. En particulier, la construction de l’espace de probabilité des
+trajectoires de la chaîne de Markov semble être essentiellement la même que celle
+de l’espace de probabilité des suites infinies de variables IID.
+14
+
+[Page 15]
+2.2 Propriétés élémentaires
+2. Pratiquement : la preuve nous donne aussi un algorithme simple et générique pour
+simuler n’importe quelle chaîne de Markov. Ce point sera abordé à nouveau dans
+le cours de Simulation et méthodes de Monte Carlo au deuxième semestre. (La
+preuve utilise en fait la technique de simulation dite d’inversion de la fonction de
+répartition.)
+Dans ce chapitre on va essentiellement étudier le comportement asymptotique de(Xt).
+On va voir que les états deE peuvent se répartir dans des classes d’équivalences :
+— pour certaines classes (dites transientes) :(Xt) peut visiter la classe, puis en sort.
+— pour les autres (dites récurrentes) : une fois que(Xt) est dans la classe, il n’en sort
+plus.
+Cette classification occupera les Sections 2.2, 2.4 et 2.5.
+On s’intéressera ensuite au cas des chaînes n’ayant qu’une seule classe d’équivalence.
+Pour ces chaînes, on pourra établir en général une loi des grands nombres du type
+1
+n
+nX
+i=1
+f(Xi) − − − →
+n→∞
+EX∼π[f(X)]
+dans un sens à préciser, et oùπ est une loi à préciser! Sous des hypothèses un peu plus
+fortes, on pourra établir la convergence en loi de(Xt) vers π. Ceci sera traité dans les
+Sections 2.6 et 2.7 respectivement. Enfin, la Section 2.8 discutera d’une application en
+simulation, et la Section 2.10 discutera (à la main, sans rentrer dans les détails) quels
+sont les résultats parmi ceux qui précèdent qui peuvent s’étendre au cas oùE est un
+espace continu.
+2.2 Propriétés élémentaires
+Il y a une ambiguïté sur la notationPt(x, y) : s’agit-il du nombreP(x, y) à la puissance
+t, ou de l’entrée d’indices(x, y) de la matriceP à la puissancet ?
+Définition2.2.1. On notePt(x, y) l’entrée d’indices(x, y) de la matriceP à la puissance
+t, Pt.
+Proposition 2.2.1. Soit (Xt) une chaîne de Markov de matrice de transitionP. Pour
+tout (x, y) ∈ E2 et (m, n) ∈ N2,
+P(Xn+m = y|Xn = x) = Pm(x, y).
+Démonstration. Par récurrence. C’est vrai pourm = 1 par définition. Supposons que
+m >1 et que ce soit vrai pour1, 2, . . . , m− 1. Alors :
+P(Xn+m = y|Xn = x)
+=
+X
+z∈E
+P(Xn+m = y, Xn+m−1 = z|Xn = x)
+=
+X
+z∈E
+P(Xn+m = y|Xn+m−1 = z, Xn = x)P(Xn+m−1 = z|Xn = x)
+15
+
+[Page 16]
+2 Chaînes de Markov
+=
+X
+z∈E
+P(Xn+m = y|Xn+m−1 = z)P(Xn+m−1 = z|Xn = x) (Markov)
+=
+X
+z∈E
+P(z, y)Pm−1(x, z) (hypothèse de récurrence)
+= Pm(x, y). □
+En conséquence, remarquer quePm vérifie également les hypothèses d’une matrice de
+transition, en particulier,Pm(x, y) ∈ [0, 1] et P
+y Pm(x, y) = 1.
+Définition 2.2.2.Soit une loi initialeµ et une matrice de transitionP. On note
+µP(x) =
+X
+z∈E
+µ(z)P(z, x).
+Autrement dit, dans nos notations matricielles, on considère une loi initiale comme un
+vecteur ligne.
+Proposition 2.2.2. Soit (Xt) une chaîne de Markov de matrice de transitionP et de
+loi initialeµ. Pour toutx ∈ E et t ∈ N,
+P(Xt = x) = µPt(x).
+Démonstration. On a
+P(Xt = x) =
+X
+z∈E
+P(Xt = x|X0 = z)P(X0 = z)
+=
+X
+z∈E
+Pt(z, x)µ(z) d’après la Proposition 2.2.1
+=
+X
+z∈E
+µ(z)Pt(z, x)
+= µPt(x)
+Définition 2.2.3. Soit une fonctionf : E → R, positive ou bornée, et une matrice de
+transition P. On note
+P f(x) =
+X
+z∈E
+P(x, z)f(z).
+Autrement dit, dans nos notations matricielles, on considère une loi fonction comme
+un vecteurcolonne.
+Proposition 2.2.3. Soit (Xt) une chaîne de Markov de matrice de transitionP et une
+fonction f : E → R, positive ou bornée. Pour toutx ∈ E et t ∈ N,
+E[f(Xt)|X0 = x] = Ptf(x).
+16
+
+[Page 17]
+2.2 Propriétés élémentaires
+Démonstration. On a
+E[f(Xt)|X0 = x] =
+X
+z∈E
+f(z)P(Xt = z|X0 = x)
+=
+X
+z∈E
+f(z)Pt(x, z) d’après la Proposition 2.2.1
+=
+X
+z∈E
+Pt(x, z)f(z)
+= Pnf(x)
+Enfin avec les mêmes hypothèses on peut noter
+µPtf =
+X
+x∈E
+X
+y∈E
+µ(x)Pt(x, y)f(y) ∈ R
+et remarquer que
+µPtf = E[f(Xt)].
+On peut représenter une matrice de transitionP par un graphe orienté : on représente
+les états par les sommets du graphes, et siP(x, y) > 0, on trace une flèche dex à y sur
+laquelle on écrit la valeur deP(x, y). Le graphe est orienté, il peut y avoir une flèche de
+x vers y et/ou une flèche dey vers x. D’autre part, siP(x, x) > 0, il y a une flèche dex à
+lui-même. Noter que la conditionP
+y P(x, y) = 1 devient : “la somme des flèches partant
+du sommetx doit être égale à1”.
+Exemple 2.2.1.Lorsque E est un espace à deux éléments,E = {1, 2}, toute matrice de
+transition P peut se mettre sous la forme
+P =
+ p 1 − p
+1 − q q
+
+où (p, q) ∈ [0, 1]2. Le graphe de cette chaîne est alors :
+On termine par une petite discussion heuristique sur le comportement asymptotique
+d’une chaîne(Xt) : supposons queXt converge en loi vers une loiπ. Comme la loi deXt
+est en faitµPt, on aµPt → π. En multipliant les deux membres parP, on aµPtP → πP
+et d’autre partµPtP = µPt+1 → π. Donc on devrait avoirπP = π. Même si on n’a rien
+justifié proprement, cette relation sera très utile.
+17
+
+[Page 18]
+2 Chaînes de Markov
+Définition 2.2.4.On appelleπ loi invariante pour une chaîne(Xt) de transitionP une
+loi vérifiant
+πP = π.
+Proposition 2.2.4.Si (Xt) est une chaîne de transitionP et de loi initialeπ invariante
+par P alors, pour toutt ∈ N, Xt ∼ π.
+Démonstration. On sait déjà queXt ∼ πP t et par invariance,π = πP = πP 2 = ...
+Par la suite, on justifiera proprement que si(Xt) converge en loi, c’est vers une loi
+invariante. En revanche, il se peut très bien que(Xt) ne converge pas en loi. De même,
+l’existence d’une loi invariante ne garantit pas que(Xt) converge en loi vers cette loi
+invariante (car il peut y avoir plusieurs lois invariantes).
+Exemple 2.2.2.Revenons à l’Exemple 2.2.1, cherchons toutes les lois invariantes deP
+avec
+P =
+ p 1 − p
+1 − q q
+
+où (p, q) ∈ [0, 1]2. On écrit le systèmeπP = π, siπ = (π1 π2) ça donne :
+(π1 π2)
+ p 1 − p
+1 − q q
+
+= (π1 π2)
+soit :  pπ1 + (1 − q)π2 = π1
+(1 − p)π2 + qπ2 = π2.
+On remarque tout de suite que les deux équations de ce système sont liées : elles sont
+équivalentes à
+(1 − p)π1 = (1 − q)π2.
+C’est TOUJOURS le cas qu’il y a au moins une équation redondante dans le système
+πP = π. Mais il ne faut pas oublier qu’on a une équation supplémentaire :π est une
+probabilité, doncπ1 + π2 = 1. On cherche donc à résoudre :
+ (1 − p)π1 = (1 − q)π2
+π1 + π2 = 1.
+Noter que si(p, q) ̸= (1, 1) alors il y a toujours une solution unique. En effet, le système
+peut se réécrire  π1 = 1−q
+1−pπ2
+π1 + π2 = 1.
+et donc en injectant la première équation dans la deuxième,
+1 − q
+1 − p + 1
+
+π2 = 1
+18
+
+[Page 19]
+2.3 Propriété de Markov forte
+soit
+(2 − p − q)π2 = 1 − p
+soit π2 = 1−p
+2−p−q et la première équation du système donneπ1 = 1−q
+2−p−q donc la solution
+unique est
+π =
+ 1 − q
+2 − p − q , 1 − p
+2 − p − q
+
+.
+En revanche, dans le casp = q = 1, la première équation donne0 = 0... et on vérifie que
+l’ensemble des solutions est donné par
+π ∈ {(α, 1 − α), α ∈ [0, 1]}.
+On a donc deux cas différents : dans un cas, il y a une loi invariante unique; dans l’autre
+cas, il y a une infinité de lois invariantes.
+2.3 Propriété de Markov forte
+De la définition d’une chaîne de Markov, on peut aisément déduire des propriétés
+d’indépendance conditionnelle des variablesXt. Par exemple :
+P(Xt+2 = xt+2, Xt+1 = xt+1 |X0 = x0, . . . , Xt = xt) = P(xt, xt+1)P(xt+1, xt+2)
+et donc la loi du bloc(Xt+1, Xt+2) ne dépend pas du passéXt−1, . . . , X0 conditionnelle-
+ment au présentXt. C’est vrai aussi bien sûr pour un bloc plus grand(Xt+1, . . . , Xt+k),
+et pour les marginales correspondantes :Xt+k est indépendante deXt−l sachantXt, pour
+k, l≥ 1. Par ailleurs, la loi deXt+k sachant Xt = x est la même que celle que de(Xk)
+sachant X0 = x.
+Ce que nous venons d’énoncer est la version la plus basique de la propriété de Markov.
+Elle ne peut s’appliquer à des événements concernant latrajectoirecomplète de la chaîne :
+par exemple la probabilité de revisiter un étatx dans le futur, sachant Xt = x. On
+admettra les propriétés suivantes, dites de Markov forte.
+Proposition 2.3.1.Soit (Xt) une chaîne de Markov (de loi initialeµ) etφ : E∞ → R,
+mesurable, positive ou bornée, alors :
+Eµ[φ((Xt+k)t≥0)|Xk = x] = Ex [φ ((Xt)t≥0)]
+où Eµ est l’espérance sous la loi de(Xt), etEx := Eδx est l’espérance sous la même loi,
+mais avec loi initialeδx.
+En appliquant ce résultat à une fonction indicatrice, on obtient :
+Pµ((Xt+n)n≥0 ∈ A|Xt = x) = Px((Xn)n≥0 ∈ A)
+où A appartient à une tribu sur l’espace des trajectoires,E∞. (Grosso modo, le même
+type d’espace que celui auquel s’applique le p.s. dans la loi forte des grands nombres.)
+19
+
+[Page 20]
+2 Chaînes de Markov
+La vraie propriété de Markov forte est encore un peu plus générale, et permet de
+conditionner à un tempsaléatoire, à condition que ce temps aléatoire soit un certain type
+de variable aléatoire dit temps d’arrêt.
+Définition 2.3.1. On appelle temps d’arrêt par rapport à une filtration(Ft) (rappel :
+Ft = σ(X0, . . . , Xt) dans ce chapitre) une variable aléatoire à valeurs dansN∪+∞, telle
+que {τ ≤ t} ∈ Ft pour toutt ≥ 0.
+La notion de temps d’arrêt est assez technique, et sera vue plus en détail dans la
+partie sur les martingales. Pour l’instant, je vous propose l’interprétation semi-formelle
+suivante :
+— un temps d’arrêt est une fonction déterministe de la trajectoire du processus(Xt) ;
+— telle que l’indicatrice1{τ ≤ t} ne dépend que de(X0, . . . , Xt). En d’autres termes,
+observer le processus jusqu’au tempst suffit à déterminer siτ ≤ t ou pas.
+Et pour simplifier encore un peu plus les choses, gardez à l’esprit l’exemple suivant,
+du temps d’atteinte:
+τy = inf{t ≥ 0 : Xt = y} (2.1)
+C’est bien un temps d’arrêt. Si la trajectoire du processus ne passe jamais pary, on a :
+τy = +∞.
+On peut énoncer la propriété de Markov forte.
+Proposition 2.3.2. Sous les mêmes conditions que la proposition précédente, et pourτ
+un temps d’arrêt (par rapport àFt = σ(X0, . . . , Xt)), on a :
+Eµ[φ((Xτ+n)n≥0)|Xτ ]1{τ<+∞} = EXτ [φ ((Xt)t≥0)] 1{τ<∞} (2.2)
+En particulier, siPx(τ <∞) = 1 pour toutx ∈ E, cette identité se simplifie en :
+Eµ[φ((Xτ+n)n≥0)|Xτ = x] = Ex [φ ((Xt)t≥0)] . (2.3)
+Noter que siτ = +∞, la variableXτ n’est pas clairement définie. C’est pour cela que
+l’on a besoin d’indicatrices dans (2.2).
+En fait, dans ce chapitre, on va souvent appliquer cette propriété autemps de retour
+en x :
+σx = inf{t ≥ 1 : Xt = x}
+ce qui est presque la même chose qu’un temps d’atteinte (maisσx ≥ 1). Dans ce cas, la
+propriété de Markov forte s’écrit comme suit :
+Eµ [φ((Xt+σx)t≥0)] = Ex [φ ((Xt)t≥0)] (2.4)
+si σx < ∞ p.s. (ou alors rajouter une indicatrice des deux côtés).
+Unedernièreremarque:onpeutremplacerle Xτ duconditionnementpar Fτ dans(2.2),
+où Fτ ≈ σ(X0, . . . , Xτ ) ; la définition rigoureuse deFτ sera donnée dans le prochain cha-
+pitre. On peut retenir pour l’instant que{τ <∞} est Fτ -mesurable; intuitivement : si
+j’observe le processus jusqu’au tempsτ, je peux déterminer si la trajectoire correspon-
+dante est de longueur finie ou infinie.
+20
+
+[Page 21]
+2.4 Classes d’états
+2.4 Classes d’états
+Dans toute cette section, on considère une matrice de transitionP sur E.
+Définition 2.4.1. Soient (i, j) ∈ E2. On dit quei mène à j, et on notei ⇝ j, si il
+existe n ∈ N tel quePn(i, j) > 0.
+Autrement dit, il y a une probabilité non nulle de passer dei àj enn étapes. Bien noter
+que dans le casn = 0, Pn est la matrice identité, pour laquelleP0(i, i) = 1, autrement
+dit, par convention, on considère toujours quei ⇝ i.
+Définition 2.4.2.On dit quei et j communiquent, et on notei ↭ j, sii ⇝ j et j ⇝ i.
+Proposition 2.4.1. La relation↭ est une relation d’équivalence surE.
+Démonstration. Il faut prouver la transitivité, la réflexivité et la symétrie. Or la symé-
+trie est évidente à partir de la définition de↭ et la réflexivité est conséquence de la
+conventioni ⇝ i.
+Reste la transitivité, assez évidente, mais elle utilise une technique de preuve très
+classique que l’on réutilisera souvent. Sii ⇝ j, il existen tel quePn(i, j) > 0. Si de plus
+j ⇝ k, il existem tel quePm(j, k) > 0. Mais alors
+Pn+m(i, k) =
+X
+ℓ∈E
+Pn(i, ℓ)Pm(ℓ, k) ≥ Pn(i, j)Pm(j, k) > 0
+Définition 2.4.3. Les classes d’équivalences pour la relation↭ sont appelées “classes
+de communication” deP, et par extension, on les appelle également classes de communi-
+cation de toutes chaîne de Markov(Xn) ayant P pour matrice de transition.
+On omet souvent le terme communication, on parle alors des classes d’états ou sim-
+plement des classes de(Xn) et deP.
+Exemple 2.4.1.On revient à l’exemple à deux états.
+Si p <1 alors 1 ⇝ 2. Si q <1 alors 2 ⇝ 1. On a donc : soitp <1 et q <1 et alors
+1 ↭ 2, il y a une seule classe d’équivalence{1, 2} ; soit p = 1 ou q = 1 et alors il y a
+deux classes d’équivalence,{1} et {2}.
+Dans l’exemple précédent, sip = 1 , alors lorsque la chaîne entre dans l’état1, elle
+ne peut plus jamais en sortir, carP(1, 1) = 1 . C’est une situation que l’on rencontre
+fréquemment en modélisation, par exemple en épidémiologie où les états pour un individu
+peuvent être E = {sain, infecté, mort} : on ne sort pas de l’état “mort”. Un tel état
+constitue nécessairement une classe à lui tout seul.
+21
+
+[Page 22]
+2 Chaînes de Markov
+Définition 2.4.4.Si un étati vérifie P(i, i) = 1 on dit que c’est un “état absorbant”.
+A l’inverse, dans l’exemple ci-dessus, sip <1 et q <1 alors on a vu qu’il n’y a qu’une
+seule classe d’états :{1, 2}. Les chaînes de Markov avec une seule classe sont plus simples
+à étudier asymptotiquement.
+Définition 2.4.5.Soit (Xn) une chaîne de Markov avec une seule classe d’états. On dit
+que la chaîne(Xn) est irréductible.
+2.5 Opérateur potentiel et nature des classes d’états
+Dans toute cette section,(Xn) est une chaîne de Markov de matrice de transitionP
+et de loi initialeµ.
+Définition 2.5.1.On définit l’opérateur potentiel :
+U =
+X
+k∈N
+Pk.
+Bien noter que pour(i, j) ∈ E2,
+U(i, j) =
+X
+k∈N
+Pk(i, j) ∈ [0, ∞].
+Énormément des propriétés liées à la communication et aux classes d’états peuvent se
+lire sur l’opérateurU. Par exemple, il est évident que
+U(i, j) > 0 ⇔ ∃k : Pk(i, j) > 0 ⇔ i ⇝ j.
+On va maintenant, à l’aide deU, faire une étude plus fine des classes.
+Définition 2.5.2.Soit A ∈ F, on définitNA le nombre de passages enA :
+NA =
+X
+n∈N
+1{Xn∈A}.
+Lorsque A = {i} a un seul élément, on note souventNi au lieu deN{i} :
+Ni =
+X
+n∈N
+1{Xn=i}.
+Proposition 2.5.1. Pour tout(x, y) ∈ E2,
+U(x, y) = Ex(Ny).
+Démonstration. Fixons x et y,
+Ex(Ny) = Ex
+ ∞X
+n=0
+1{Xn=y}
+!
+=
+∞X
+n=0
+Px (Xn = y) =
+∞X
+n=0
+Pn(x, y) = U(x, y)
+22
+
+[Page 23]
+2.5 Opérateur potentiel et nature des classes d’états
+Définition 2.5.3.Un étatx est dit
+— récurrent siPx(Nx = ∞) = 1 ;
+— transient siPx(Nx < ∞) = 1.
+On pourrait se poser la question de l’existence d’un cas intermédiaire : est-ce qu’il peut
+exister par exemple un état tel quePx(Nx = ∞) = Px(Nx < ∞) = 1/2 ? On va voir dans
+le prochain théorème que la réponse est non : tout état est soit récurrent, soit transient.
+Théorème 2.5.2.Pour toutx ∈ E,
+U(x, x) = ∞ ⇔x récurrent⇔ Px(σx < ∞) = 1,
+U(x, x) < ∞ ⇔x transient⇔ Px(σx < ∞) < 1,
+où σx est le temps de retour enx (défini en 2.2).
+Démonstration. On introduit les temps d’arrêtσk
+x, k ≥ 1, par la relation de récurrence
+σk+1
+x = inf{n > σk
+x : Xn = x}
+que l’on initialise avecσ1
+x = σx. On commence par démontrer la relation
+Px(σn
+x < ∞) = [Px(σx < ∞)]n (2.5)
+qui nous permettra de conclure assez rapidement.
+On écrit pour ce faire :σn
+x = σn−1
+x + (σn
+x − σn−1
+x ), où le deuxième terme est le temps
+de premier retour en x, pour la trajectoire translatée(Xt+σn−1
+x
+)t≥0. Posons τ := σn−1
+x
+pour rendre les équations plus lisibles :
+Px(σn
+x < ∞) = Px(τ <∞, σn
+x − σn−1
+x < ∞)
+= Ex [1{τ <∞}1{σx ((Xt+τ )t≥0) < ∞}]
+= Ex [1{τ <∞}E[1{σx((Xt+τ )t≥0) < ∞}]]
+= Px(τ <∞)Px(σx < ∞)
+par la propriété de Markov forte.
+Supposons dans un premier temps quePx(σx < ∞) = 1. Alors d’après (2.5), pour tout
+n, Px(σn
+x < ∞) = 1. Donc
+Nx = 1{X0=x} +
+X
+n≥1
+1{σnx <∞} = ∞ p.s
+et finalementEx(Nx) = U(x, x) = ∞.
+Supposons maintenant quePx(σx < ∞) < 1, alors
+U(x, x) = Ex(Nx) = 1 +
+X
+n≥1
+Px(σn
+x < ∞)
+=
+X
+n≥0
+[Px(σx < ∞)]n = 1
+1 − Px(σx < ∞) < ∞
+et commeEx(Nx) = U(x, x) < ∞ on a nécessairementNx < ∞ p.s.
+23
+
+[Page 24]
+2 Chaînes de Markov
+Théorème 2.5.3. Si x ↭ y alors x et y sont de même nature (soit tous les deux
+récurrents, soit tous les deux transients).
+Avant de prouver le théorème, bien noter que son énoncé implique que la récurrence
+et la transience sont en fait des propriétés de classe : une classe contient soit unique-
+ment des états récurrents, soit uniquement des états transients. Du coup, on introduit la
+terminologie naturelle suivante.
+Définition 2.5.4. Si les états d’une classe sont récurrents, on dit que la classe est ré-
+currente. Si les états d’une classe sont transients, on dit que la classe est transiente.
+Si une chaîne est irréductible et que son unique classe d’états est récurrente, on dit
+que la chaîne est récurrente. Si l’unique classe est transiente, on dit que la chaîne est
+transiente.
+La preuve du théorème utilise un lemme.
+Lemme 2.5.4.Pour tout(x, y) ∈ E2, U(x, y) ≤ U(y, y).
+Preuve du Lemme 2.5.4.Pour cette preuve, on utilise le temps d’arrêtsy = inf{n ≥ 0 :
+Xn = y} :
+U(x, y) = Ex(Ny)
+= Ex
+ 
+1{sy < ∞}Ny((Xt+sy )t≥0)
+
+= Ex
+
+1{sy < ∞}Ex
+ 
+Ny((Xt+sy )t≥0)
+Fsy
+
+dble espérance,{sy < ∞} ∈ Fsy
+= Ex [1{sy < ∞}Ey (Ny)] Markov forte
+= Px(σy < ∞)U(y, y)
+≤ U(y, y).
+Preuve du Théorème 2.5.3.Soit x récurrent ety tel quex ↭ y. Alors en particulier, il
+existe n tel quePn(x, y) > 0. Alors on commence par utiliser le Lemme 2.5.4,
+U(y, y) ≥ U(x, y) =
+X
+k≥0
+Pk(x, y) ≥
+X
+k≥0
+Pk+n(x, y)
+≥
+X
+k≥0
+Pk(x, x)Pn(x, y) = U(x, x)| {z }
+=∞
+Pn(x, y)| {z }
+>0
+= ∞
+et doncy est récurrent.
+On finit par quelques exemples qui vont permettre de mieux comprendre ces notions.
+Proposition 2.5.5. Toute chaîne irréductible(Xn) définie surE fini est récurrente.
+Démonstration. Si elle était transiente, p.s, chaque état ne serait visité qu’un nombre
+fini de fois. Or, il existe au moins un état visité une infinité de fois.
+24
+
+[Page 25]
+2.5 Opérateur potentiel et nature des classes d’états
+Proposition 2.5.6. Sur un espaceE dénombrable, non fini, il existe des chaînes irré-
+ductibles récurrentes, et des chaînes irréductibles transientes.
+Démonstration. On va construire un exemple avecE = Z (on peut l’étendre à tout autre
+ensemble E infini dénombrable via une bijection avecZ). On définit la marche aléatoire
+sur Z comme la chaîne de Markov dont la matrice de transition est donnée par :
+P(i, i− 1) = 1 − p et P(i, i+ 1) = p
+pour unp ∈]0, 1[ fixé. Vérifier que sip = 1 ou p = 0 la chaîne n’est plus irréductible; on
+élimine ces cas. En revanche, sip ∈]0, 1[, pour touti, i ⇝ i + 1 ⇝ i et donc la chaîne
+est irréductible. On va vérifier que sip ̸= 1/2 la chaîne est irréductible transiente, et si
+p = 1/2 elle est irréductible récurrente.
+Commençons par le casp = 1/2 (on parle dans ce cas de marche aléatoire symétrique
+sur Z). Dans ce cas on peut calculer explicitementPn(0, 0). En fait, pour n impair,
+n = 2k + 1, on a évidemmentPn(0, 0) = 0. En revanche, sin pair, Pn(0, 0) > 0. En fait,
+il y a22k possibles chemins de longueur2k, et parmi ceux-ci, mènent de0 à 0 uniquement
+les chemins comportant autant de déplacements vers la gauche que de déplacements vers
+la droite. Le nombre de ces chemins est
+ 2k
+k
+
+(il faut choisir exactementk déplacements
+vers la gauche parmi2k déplacements). Donc :
+P2k(0, 0) = 1
+22k
+2k
+k
+
+= (2k)!
+(k!)222k .
+En utilisant la formule de Stirling, que l’on rappelle :
+m! ∼m→∞
+m
+e
+m √
+2πm
+on obtient :
+P2k(0, 0) ∼k→∞
+1√
+πk
+.
+Comme la sérieP
+k 1/
+√
+k diverge, la sériePP2k(0, 0) = P
+n Pn(0, 0) diverge également,
+donc U(0, 0) = ∞, et la chaîne est récurrente.
+Traitons maintenant le casp ̸= 1/2 - on va en fait supposerp >1/2, le casp <1/2
+étant symétrique. Posons, pour toutn, εn = Xn − Xn−1. Alors, siX0 = 0,
+Xn =
+nX
+i=1
+εi.
+On vérifie que lesεi sont indépendants. En effet, soiti < j, on a (pourf et g mesurables,
+positives),
+E0(f(εj)g(εi)) = E0(f(Xj − Xj−1)g(Xi − Xi−1))
+= E0 [E0 (f(Xj − Xj−1)g(Xi − Xi−1)|Fj−1)]
+= E0 [E0 (f(Xj − Xj−1)|Fj−1) g(Xi − Xi−1)]
+25
+
+[Page 26]
+2 Chaînes de Markov
+= E0 [(pf(1) + (1− p)f(−1)) g(Xi − Xi−1)]
+= (pf(1) + (1− p)f(−1)) (pg(1) + (1− p)g(−1))
+= E0(f(εj))E0(g(εi)).
+Du coup, par la loi des grands nombres,
+Xn
+n = 1
+n
+nX
+i=1
+εi
+p.s
+− − − →
+n→∞
+E0(ε1) = p × 1 + (1− p) × (−1) = 2p − 1 > 0
+car p >1/2. Ceci prouve que
+Xn
+p.s
+− − − →
+n→∞
+∞
+et donc que(Xn) ne passera presque sûrement qu’un nombre fini de fois par0 : la chaîne
+est donc transiente.
+On peut se poser la question de la généralisation dansZd. Pour information, on donne
+le résultat suivant. On ne le prouvera pas car la preuve est un peu technique, on renvoie
+le lecteur vers les références. (Mais de toutes façons ce théorème ne sera pas utilisé dans
+la suite de ce cours).
+Théorème 2.5.7(Théorème de Polya). Soit (Xn) la marche aléatoire symétrique dans
+Zd, c’est-à-dire une chaîne de Markov de matrice de transition donnée par
+P((i1, i2 . . . , id), (i1 + 1, i2, . . . , id)) = P((i1, i2 . . . , id), (i1 − 1, i2, . . . , id))
+= P((i1, i2 . . . , id), (i1, i2 + 1, . . . , id))
+= P((i1, i2 . . . , id), (i1, i2 − 1, . . . , id))
+= . . .
+= P((i1, i2 . . . , id), (i1, i2, . . . , id + 1))
+= P((i1, i2 . . . , id), (i1, i2, . . . , id − 1))
+= 1
+2d
+pour tout(i1, . . . , id) ∈ Zd. Alors(Xn) est irréductible récurrente sid = 1 ou d = 2, elle
+est irréductible transiente sid ≥ 3.
+La preuve pour le cas particulierd = 2 reste cependant faisable “à la main”, à essayer!
+2.6 Théorèmes ergodiques
+On garde toutes les notations de la section précédente.
+Théorème 2.6.1.Soit (Xn) une chaîne irréductible récurrente. Alors :
+— (Xn) possède au moins une mesure invarianteµ (qui n’est pas forcément une pro-
+babilité), unique (à une constante près), et pour toutx ∈ E, on a0 < µ(x) < ∞.
+26
+
+[Page 27]
+2.6 Théorèmes ergodiques
+— la mesure invarianteµx définie par la contrainte de normalisationµx(x) = 1 est
+donnée par :
+∀y ∈ E, µx(y) = Ex
+ σx−1X
+k=0
+1y(Xk)
+!
+.
+Avant de donner la preuve, on discute les conséquences (importantes) de ce résultat.
+Proposition 2.6.2. Pour toutx ∈ E, µx(E) = Ex(σx).
+Démonstration. On a
+µx(E) =
+X
+y∈E
+µx(y) =
+X
+y∈E
+Ex
+ σx−1X
+k=0
+1y(Xk)
+!
+= Ex
+
+
+σx−1X
+k=0
+X
+y∈E
+1y(Xk)
+
+ = Ex
+ σx−1X
+k=0
+1
+!
+= Ex(σx).
+Supposons µx(E) < ∞. Alors en définissant π par π(y) = µx(y)
+µx(E) , π est d’après le
+Théorème 2.6.1 une probabilité invariante pour(Xn) et elle est unique. En revanche, si
+µx(E) = ∞ alors (Xn) n’admet pas de probabilité invariante.
+Définition 2.6.1.Soit (Xn) une chaîne irréductible récurrente. Alors :
+— soit µx(E) = Ex(σx) < ∞ pour toutx, ce qui implique que(Xn) admet une unique
+probabilité invariante. On dit que(Xn) est une chaîne récurrente positive.
+— soit µx(E) = Ex(σx) = ∞ pour toutx, ce qui implique que(Xn) admet une unique
+mesure invariante qui ne peut pas se renormaliser en mesure de probabilité. On dit
+que (Xn) est une chaîne récurrente nulle.
+On donne quelques exemples : on va voir que toute chaîne irréductible surE fini est
+récurrente positive (on l’énonce comme une proposition), et on donne un exemple de
+chaîne irréductible récurrente nulle.
+Proposition 2.6.3. Toute chaîne irréductible (Xn) définie sur E fini est récurrente
+positive.
+Démonstration. On a
+µx(E) =
+X
+y∈E
+µx(y)| {z }
+<∞
+< ∞. □
+Exemple 2.6.1. On a déjà vu dans la preuve de la Proposition 2.5.6 que la marche
+aléatoire symétrique surZ est irréductible récurrente. Il est immédiat que la mesure de
+comptage, µ(z) = 1 , est invariante. Or elle ne peut pas être normalisée en probabilité.
+Donc cette chaîne est récurrente nulle.
+27
+
+[Page 28]
+2 Chaînes de Markov
+Un dernier petit résultat utile avant de passer à la preuve du théorème.
+Proposition 2.6.4. Supposons que (Xn) soit une chaîne irréductible admettant une
+probabilité invariante. Alors elle est récurrente positive.
+Démonstration. Soit π la loi invariante :π = πP = ··· = πP n. Autrement dit, pour tout
+x :
+π(x) =
+X
+y∈E
+π(y)Pn(y, x). (2.6)
+Supposons que la chaîne soit transiente. Alors pour tout(x, y) ; U(x, y) ≤ U(y, y) < ∞
+et comme U(x, y) = P
+n≥0 Pn(x, y) on a nécessairementPn(x, y) → 0 quand n → ∞.
+De plusPn(x, y) ≤ 1. Donc on peut appliquer le TCD au membre de droite dans (2.6)
+et on obtient
+π(x) = lim
+n→∞
+X
+y∈E
+π(y)Pn(y, x) =
+X
+y∈E
+π(y) lim
+n→∞
+Pn(y, x) = 0.
+Donc pour toutx, π(x) = 0, ce qui est en contradiction avec le fait queπ est une mesure
+de probabilité. Donc la chaîne ne peut pas être transiente, elle est donc récurrente.
+Passons maintenant à la preuve du théorème.
+Preuve du Théorème 2.6.1.On fixe une fois pour toutesx ∈ E. On procède en
+trois étapes :
+1. on va démontrer que la mesureµx définie par
+∀y ∈ E, µx(y) = Ex
+ σx−1X
+k=0
+1y(Xk)
+!
+est bien une mesure invariante.
+2. ensuite, on vérifie que pour touty, 0 < µx(y) < ∞.
+3. enfin, on vérifie l’unicité (à un facteur multiplicatif près).
+Etape 1. On va montrer que pour toute fonctionf : E → R+ on a µxP f= µxf. En
+effet :
+µxP f= µx(P f)
+=
+X
+y∈E
+µx(y)P f(y)
+=
+X
+y∈E
+Ex
+ σx−1X
+k=0
+1y(Xk)
+!
+P f(y)
+= Ex
+
+
+σx−1X
+k=0
+X
+y∈E
+1y(Xk)P f(y)
+
+
+28
+
+[Page 29]
+2.6 Théorèmes ergodiques
+= Ex
+ σx−1X
+k=0
+P f(Xk)
+!
+= Ex
+ ∞X
+k=0
+1{k<σx}E[f(Xk+1)|Xk)]
+!
+par définition deP f
+=
+∞X
+k=0
+Ex
+ 
+1{k<σx}f(Xk+1)
+
+Fubini, double espérance,{k < σx} est Fk mesurable
+= Ex
+ σxX
+k=1
+f(Xk)
+!
+= Ex
+ σx−1X
+k=0
+f(Xk)
+!
+car Xk = X0 = x sachant σx = k
+Etape 2. On fixey ∈ E. Dans un premier temps, montrons queµx(y) < ∞. En effet, la
+chaîne étant irréductible, il existen tel quePn(y, x) > 0 et alors
+1 = µx(x) = µxPn(x) =
+X
+z∈E
+µx(z)Pn(z, x) ≥ µx(y)Pn(y, x)
+et doncµx(y) < ∞.
+De la même façon, montrons queµx(y) > 0. En effet il existem tel quePm(y, x) > 0
+et alors
+0 < Pm(x, y) = µx(x)Pm(x, y) ≤
+X
+z
+µx(z)Pm(z, y) = µxPm(y) = µx(y).
+Etape 3. On montre maintenant l’unicité. Pour ceci, on introduit de nouvelles notations.
+On définit une nouvelle matrice de transitionP′ par
+P′(y, z) = µx(z)
+µx(y)P(z, y).
+C’est bien une matrice de transition, carP′(y, z) ≥ 0 et
+X
+z∈E
+P′(y, z) =
+P
+z∈E µx(z)P(z, y)
+µx(y) = µxP(y)
+µx(y) = µx(y)
+µx(y) = 1.
+Soit (Yn) une chaîne de Markov de transitionP′. Montrons que, comme(Xn), (Yn) est
+irréductible récurrente. En effet :
+P′2(y, z) =
+X
+t
+P′(y, t)P′(t, z) =
+X
+t
+µx(t)
+µx(y)P(t, y)µx(z)
+µx(t) P(z, t)
+= µx(z)
+µx(y)
+X
+t
+P(z, t)P(t, y) = µx(z)
+µx(y)P2(z, y).
+29
+
+[Page 30]
+2 Chaînes de Markov
+Par récurrence, on montre que pour toutn,
+P′n(y, z) = µx(z)
+µx(y)Pn(z, y).
+Donc :
+U′(y, z) =
+X
+n
+P′n(y, z) = µx(z)
+µx(y)
+X
+n
+Pn(z, y) = µx(z)
+µx(y)U(z, y).
+En particulier,U′(y, z) > 0 ⇔ U(z, y) > 0, ce qui montre que si(Xn) étant irréductible,
+alors (Yn) l’est aussi. De plus,U′(y, z) = ∞ ⇔U(z, y) = ∞, ce qui prouve que(Xn)
+étant récurrente,(Yn) aussi.
+Cette partie de la preuve repose sur la théorie des martingales, vue dans la prochaine
+section. Vous pouvez l’ignorer pour l’instant; voir aussi la remarque 2.6.1 pour une dé-
+monstration directe dans le cas récurent positif.
+On va montrer que pour toute fonctionf ≥ 0, siP′f(z) = f(z) pour tout z, alorsf
+est constante. PosonsZn = f(Yn) et Gn = σ(Y0, . . . , Yn). Alors
+E(Zn+1|Gn) = E(f(Yn+1)|Y0, . . . , Yn)
+= E(f(Yn+1)|Yn) (Markov)
+= P′f(Yn)
+= f(Yn) par hypothèse surf
+= Zn.
+On a donc montré que (Zn) est une martingale pour (Gn). Comme f est positive,
+(Zn) est une martingale positive, donc en particulier une sur-martingale positive. Donc,
+d’aprèsleLemme3.8.2duchapitresurlesmartingales, (Zn) convergep.sversunevariable
+aléatoire Z∞. Donc :f(Yn)
+p.s
+− − →Z∞. Soienty ̸= y′. Comme(Yn) est récurrente, il existe
+une infinités den tels que Yn = y et une infinités dem tels que Ym = y′. Ceci prouve
+que f(y)
+p.s
+− − →Z∞ et f(y′)
+p.s
+− − →Z∞, or commef(y) et f(y′) ne dépendent pas den, ceci
+montre forcément quef est une fonction constante (et queZ∞ est une variable aléatoire
+constante).
+On est maintenant en position de démontrer l’unicité. Soitλ une mesure invariante de
+(Xn), le but est de montrer queλ et µx sont proportionnelles. Posonsf(y) = λ(y)/µx(y),
+on a
+P′f(y) =
+X
+z
+P′(y, z) λ(z)
+µx(z)
+=
+X
+z
+µx(z)
+µx(y)P(z, y) λ(z)
+µx(z) par def. deP′
+= 1
+µx(y)
+X
+z
+λ(z)P(z, y)
+= 1
+µx(y)λP(y)
+30
+
+[Page 31]
+2.6 Théorèmes ergodiques
+= λ(y)
+µx(y) par hypothèse surλ
+= f(y).
+Donc f vérifie P′f(y) = f(y) pour touty, doncf est constante, ce qui signifie bien que
+λ et µx sont proportionnelles.□
+On énonce maintenant trois théorèmes, souvent appelés théorèmes ergodiques, qui sont
+l’analoguedelaloifortedesgrandsnombresetduthéorèmecentrallimitepourleschaînes
+de Markov. On démontrera les lois des grands nombres, mais le TCL sera admis...
+Théorème 2.6.5.Soit (Xn) une chaîne de Markov irréductible récurrente positive de loi
+invariante π, de transitionP et de loi initialeµ. Alors, pour toute fonctionf telle queR
+|f|dπ <∞ on a
+1
+n
+nX
+i=1
+f(Xi)
+Pµ−p.s
+− − − − →
+n→∞
+Z
+fdπ.
+Noter qu’on peut utiliser différentes notations :
+π(f) =
+Z
+fdπ =
+Z
+E
+f(x)π(dx) =
+X
+x∈E
+f(x)π(x) = EX∼π[f(X)] = . . .
+On a en particulier :
+1
+n
+nX
+i=1
+1{x}(Xi)
+p.s
+− − − →
+n→∞
+π(x),
+la proportion de temps passé enx est asymptotiquementπ(x).
+Théorème 2.6.6. Soit (Xn) une chaîne de Markov irréductible récurrence positive de
+loi invarianteπ. Soitf une fonction telle que
+R
+|f|dπ <∞ et
+∃x, s2(x) := Ex
+( σxX
+i=1
+
+f(Xi) −
+Z
+fdπ
+2)
+< ∞.
+Alors σ2 = s2(x)π(x) ne dépend en fait pas dex et on a
+√n
+"
+1
+n
+nX
+i=1
+f(Xi) −
+Z
+fdπ
+#
+loi− − − →
+n→∞
+N(0, σ2).
+(C’est ce théorème qui sera admis).
+Théorème 2.6.7.Soit (Xn) une chaîne de Markov irréductible récurrente nulle. Alors,
+pour toutx ∈ E,
+1
+n
+nX
+i=1
+1{x}(Xi)
+p.s
+− − − →
+n→∞
+0,
+31
+
+[Page 32]
+2 Chaînes de Markov
+Ceci donne une autre interprétation des différences entre chaînes (irréductibles) tran-
+sientes, récurrentes nulles et récurrentes positives : dans une chaîne transiente, chaque
+état est visité un nombre fini de fois. Dans une chaîne récurrente nulle, chaque état est
+visité un nombre infini de fois, mais la proportion de temps passé dans l’état est asymp-
+totiquement nul. Dans une chaîne récurrente positive, la proportion de temps passé dans
+l’état x est asymptotiquement égale àπ(x).
+Preuve simultanée des Théorèmes 2.6.5 et 2.6.7.Soit une fonctiong ≥ 0. Fixonsx ∈ E.
+On définit les sommes de blocs :
+Z0 =
+σ1
+x−1X
+h=0
+g(Xh), . . ., Zk =
+σk+1
+x −1X
+h=σkx
+g(Xh), . . .
+Propriété de Markov forte : les variablesZ1, Z2, . . .(mais pas nécessairementZ0) sont
+IID, d’espéranceµx(g).
+On peut donc utiliser la loi des grands nombres sur lesZi :
+1
+n
+nX
+i=1
+Zi
+p.s
+− − − →
+n→∞
+Z
+gdµx,
+soit :
+1
+n
+σn
+xX
+i=0
+g(Xi) = Z0
+n + 1
+n
+nX
+i=1
+Zi + g(x)
+n
+p.s
+− − − →
+n→∞
+Z
+gdµx.
+Pour m ≥ 0, on définit :ν(m) = Pm−1
+k=0 1x(Xk) ; c’est l’unique entier tel que
+σν(m)
+x ≤ m < σν(m)+1
+x
+Noter que
+ν(m) ≤
+mX
+k=0
+1{x}(Xk) = ν(m) + 1{x}(X0) ≤ ν(m) + 1
+et doncν(m) → ∞quand m → ∞. Mais alors
+ν(m)
+ν(m) + 1| {z }
+→1
+Pσν(m)
+x
+k=0 g(Xk)
+ν(m)| {z }
+→
+R
+fdµx
+≤
+Pm
+k=0 g(Xk)Pm
+k=0 1{x}(Xk) ≤ ν(m) + 1
+ν(m)| {z }
+→1
+Pσν(m)+1
+x
+k=0 g(Xk)
+ν(m) + 1| {z }
+→
+R
+fdµx
+ce qui montre le résultat intermédiaire :
+Pm
+k=0 g(Xk)Pm
+k=0 1{x}(Xk)
+p.s
+− − − − →
+m→∞
+Z
+gdµx. (2.7)
+On conclut d’abord la preuve du Théorème 2.6.5 : on commence par appliquer (2.7)
+avec g = 1. On a :
+Pm
+k=0 1Pm
+k=0 1{x}(Xk) = m + 1Pm
+k=0 1{x}(Xk)
+p.s
+− − − − →
+m→∞
+Z
+1dµx = µx(E).
+32
+
+[Page 33]
+2.6 Théorèmes ergodiques
+On prend le ratio de cette équation et de (2.7) on obtient :
+Pm
+k=0 g(Xk)
+m + 1
+p.s
+− − − − →
+m→∞
+R
+gdµx
+µx(E) =
+Z
+gdπ
+quelle que soit la fonctiong ≥ 0. On étend à une fonctionf quelconque en la découpant
+en partie positive et partie négative :f = f+ − f− et on applique le résultat précédent
+successivement surg = f+ ≥ 0 puis surg = f− ≥ 0.
+Maintenant : le Théorème 2.6.7. Dans ce cas, on prendF ⊂ E fini et on applique (2.7)
+respectivement surg = 1F . En prenant l’inverse de la relation obtenue :
+Pm
+k=0 1{x}(Xk)
+m + 1 ≤
+Pm
+k=0 1{x}(Xk)Pm
+k=0 1F (Xk)
+p.s
+− − − − →
+m→∞
+µx(x)
+µx(F) = 1
+µx(F).
+Comme µ(E) = ∞, on sait qu’on peut trouverF fini de façon à rendreµx(F) arbitrai-
+rement grand, ce qui permet de conclure.□
+Remarque 2.6.1. On peut utiliser ce résultat pour démontrer l’unicité de la loi in-
+variante (et ainsi éviter le recours aux martingales dans la preuve du Théorème 2.6.1,
+du moins dans le cas récurrent positif). Pour ce faire, considérer une “autre” loi in-
+variante π′, et prendreπ′ comme loi initiale. Dans ce cas,Xt ∼ π′ pour tout t, donc
+T−1 PT
+t=1 g(Xt) a pour espéranceπ′(g), or, par le TCD (prendreg borné, par ex.g = 1x),
+et le théorème précédent, on voit que l’espérance de cette quantité doit converger versπ(g).
+On termine cette section en traitant complètement l’exemple de la marche aléatoire
+sur N avec réflexion en0.
+Exemple 2.6.2.TransitionP(0, 1) = 1−P(0, 0) = p et ensuiteP(i, i+1) = 1 −P(i, i−
+1) = p ∈]0, 1[ pour i >0. La chaîne est irréductible.
+(Pour p > 1/2, on adapte facilement l’argument utilisé pour la marche surZ pour
+montrer que la chaîne est transiente).
+Cherchons une loi invariante. On note que le systèmeπP = π conduit à l’équation
+générique
+(1 − p)πj+1 − πj + pπj−1 = 0,
+une récurrence à deux pas, avec en plusπ1 = π0p/(1 − p).
+Dans le casp <1/2, la solution générique est de la forme
+πj = α + β
+ p
+1 − p
+j
+,
+l’équation surπ0 et π1 montre queα = 0 et
+πj = β
+ p
+1 − p
+j
+qui peut se normaliser en probabilité pourβ bien choisir :
+πj = 1 − 2p
+1 − p
+ p
+1 − p
+j
+.
+33
+
+[Page 34]
+2 Chaînes de Markov
+Donc la chaîne EST récurrente positive.
+Dans le casp = 1/2, la solution générique est de la forme
+πj = α + βj,
+l’équation surπ0 et π1 montre queβ = 0 et donc
+πj = α
+(constante). Cette mesure ne peut pas être normalisée en probabilité. Donc la chaîne n’est
+PAS récurrente positive.
+2.7 Périodicité, convergence des lois marginales
+Intuitivement,ons’attendàavoir,pourunechaîne (Xn) irréductiblerécurrentepositive
+de loi invarianteπ : Xn
+loi− →π. En fait, ça n’est pas toujours le cas, comme le montre
+l’exemple suivant.
+Exemple2.7.1. Soit une chaîne définie surE = {1, ..., N}, N ≥ 2, telle queP(i, i+1) =
+p, P(i, i− 1) = q, avec p + q = 1. De plus,P(N, 1) = p, et P(1, N) = q. En d’autres
+termes, on place lesN états sur un ‘’cadran”, avec probabilitép de se déplacer d’un pas
+dans le sens trigonométrique,q dans l’autre sens.
+Il est facile de vérifier que cette chaîne de Markov admet pour loi invariante la loi
+uniforme surE (le faire à titre d’exercice). Donc la proportion de visites d’un état donné
+tend vers 1/N (loi des grands nombres). Ce résultat reste vrai si on prendp = 0 ou
+p = 1. En revanche, dans ces cas limites, la chaîne devient périodique (de périodeN) :
+si on prend par exempleX0 = 1 comme loi initiale, la loi de chaque variableXt sera
+tout simplement un Dirac dépendant du reste de la division euclidienne det par N, i.e.
+XkN+l = l + 1 pour 0 ≤ l ≤ N − 1.
+On va voir dans cette section que si on élimine ces phénomènes de périodicité, alors
+on peut prouver la convergence en loi.
+Définition 2.7.1.On appelle la période d’un élémentx ∈ E le nombre entierd(x) défini
+par :
+d(x) = PGCD(J(x))
+où
+J(x) = {n ∈ N : Pn(x, x) > 0}.
+Exemple 2.7.2. Dans l’Exemple 2.7.1, si on prendN = 2, on aJ(1) = {0, 2, 4, 6, . . .}
+et doncd(1) = 2. En revanche, si on prenaitP(1, 2) = 1 mais P(2, 1) = 0.99 et P(2, 2) =
+0.01 on voit que2 ∈ J(1) et 3 ∈ J(1) donc nécessairementd(1) = 1.
+Proposition 2.7.1. Si x ↭ y alors d(x) = d(y).
+34
+
+[Page 35]
+2.7 Périodicité, convergence des lois marginales
+Démonstration. Comme x ⇝ y, il existe unn tel que Pn(x, y) > 0. De même comme
+y ⇝ x il existem tel quePm(y, x) > 0. DoncPm+n(x, x) > 0, soitm + n ∈ J(x) et donc
+m + n = kd(x) avec k ∈ N.
+Soit ℓ ∈ J(y), alors
+Pm+n+ℓ(x, x) ≥ Pn(x, y)Pℓ(y, y)Pm(y, x) > 0
+et donc m + n + ℓ ∈ J(x) et donc m + n + ℓ = hd(x). Donc ℓ = (m + n + ℓ) − (m +
+n) = (k − h)d(x) et doncd(x) divise ℓ. Donc,d(x) divise tout élément deJ(y) et donc
+d(x) ≤ PGCD(J(y)) = d(y).
+En refaisant la même preuve en échangeant les rôles dex et y on obtientd(y) ≤ d(x)
+et doncd(x) = d(y).
+Autrement dit, la période est une propriété de classe, et si la chaîne est irréductible,
+tous les éléments ont même période.
+Définition 2.7.2.Soit (Xn) une chaîne irréductible. Elle est dite apériodique sid(x) = 1
+pour unx ∈ E (et donc automatiquement pour toutx).
+Théorème 2.7.2. Supposons que (Xn) soit une chaîne irréductible récurrente positive
+de loi invarianteπ. Si, de plus,(Xn) est apériodique alors, quelle que soit la loi initiale
+µ,
+∀x ∈ E, Pµ(Xn = x) − − − →
+n→∞
+π(x).
+Définition 2.7.3. Lorsqu’une chaîne vérifie les conditions du Théorème 2.7.2 on dit
+qu’elle est ergodique.
+La preuve du théorème nécessite deux lemmes.
+Lemme 2.7.3.Si (Xn) est ergodique,∀x ∈ E, ∃n(x), ∀n ≥ n(x), Pn(x, x) > 0.
+Démonstration. Soient n1, . . . , nk tels quePni(x, x) > 0 et
+PGCD({n1, . . . , nk}) = 1.
+Alors le Théorème de Bezout implique qu’il existe(q1, . . . , qk) ∈ Zk tels que
+1 =
+kX
+i=1
+qini.
+En posant
+a(x) =
+X
+qi>0
+qini et b(x) = −
+X
+qi≤0
+qini
+on aa(x) − b(x) = 1. Posons enfinn(x) = b(x)2 − 1.
+Pour n ≥ n(x), en écrivant la division euclidienne den par b(x) on an = db(x) + r,
+avec 0 ≤ r ≤ b(x) − 1. Commen ≥ n(x) = b(x)2 − 1, d ≥ b(x) ≥ r. Donc :
+n = db(x) + r[a(x) − b(x)]
+35
+
+[Page 36]
+2 Chaînes de Markov
+= (d − r)b(x) + ra(x)
+= (d − r)
+X
+qi≤0
+(−qi)ni + r
+X
+qi>0
+qini
+=
+kX
+i=1
+αini
+où tous lesαi sont ≥ 0. Donc
+Pn(x, x) ≥ Pα1n1 (x, x) . . . Pαknk (x, x) > 0.
+Lemme 2.7.4. Soient (X1
+n) et (X2
+n) deux chaînes de Markov indépendantes, de même
+matrice de transitionP, irréductibles et apériodiques. Alors la chaîne produit(Yn), définie
+sur E2 par Yn = (X1
+n, X2
+n) l’est aussi. Si de plus(X1
+n) et (X2
+n) sont récurrentes positives
+alors (Yn) l’est aussi.
+Démonstration. La matrice de transitionQ de (Yn) est donnée par
+Q((x1, x2), (x′
+1, x′
+2)) = P(x1, x′
+1)P(x2, x′
+2).
+Or il existem1 et m2 tels que Pm1 (x1, x′
+1) > 0 et Pm2 (x2, x′
+2) > 0 (irréductibilité des
+deux chaînes). On utilise le Lemme 2.7.3 et on prendn ≥ n(x′
+1) + n(x′
+2) + m1 + m2.
+Alors :
+Qn((x1, x2), (x′
+1, x′
+2)) = Pn(x1, x′
+1)Pn(x2, x′
+2)
+≥ Pm1 (x1, x′
+1)Pn(x′
+1)+n(x′
+2)+m2 (x′
+1, x′
+1)
+× Pm2 (x2, x′
+2)Pn(x′
+1)+n(x′
+2)+m1 (x′
+2, x′
+2)
+> 0
+et donc(Yn) est irréductible. En refaisant le même calcul avecn + 1 à la place den on
+obtient également que(Yn) est apériodique.
+Enfin, siP est la matrice de transition de chaînes récurrentes positives, elle admet une
+unique loi invarianteπ, et on vérifie directement queπ ⊗ π est invariante pourQ.
+On peut maintenant prouver le théorème. La preuve utilise une technique dite de “cou-
+plage” de deux chaînes, qui est une technique récurrente pour démontrer des propriétés
+des chaînes de Markov.
+Preuve du Théorème 2.7.2.Soient (X1
+n) et (X2
+n) deux chaînes de Markov indé-
+pendantes, de même matrice de transition (P) que (Xn), et donc irréductibles et apé-
+riodiques, récurrentes, positives. Alors d’après le Lemme 2.7.4 la chaîne produit(Yn),
+définie surE2 par Yn = (X1
+n, X2
+n) l’est aussi. On pose
+T = inf
+n≥0:X1n=X2n
+.
+36
+
+[Page 37]
+2.8 Réversibilité, algorithme de Metropolis-Hastings
+En utilisant la propriété forte de Markov comme dans la preuve du Théorème 2.6.5, on
+obtient que pour toutn ≥ T, X1
+n et X2
+n ont la même distribution. Alors :
+P(X1
+n = x) = P(X1
+n = x, T > n) + P(X1
+n = x, T≤ n)
+= P(X1
+n = x, T > n) + P(X2
+n = x, T≤ n)
+≤ P(T > n) + P(X2
+n = x)
+et donc
+P(X1
+n = x) − P(X2
+n = x) ≤ P(T > n).
+En intervertissant les rôles de(X1
+n) et (X2
+n) on obtient
+|P(X1
+n = x) − P(X2
+n = x)| ≤P(T > n).
+En particulier, si on prend la loi initiale deX1
+0 étant µ et celle deX2
+0 étant π, on a
+|Pµ(X1
+n = x) − π(x)| ≤P(T > n).
+Or la chaîne(Yn) est récurrente positive doncT est fini p.s et doncP(T > n) → 0 quand
+n → ∞. □
+2.8 Réversibilité, algorithme de Metropolis-Hastings
+Pour l’instant, on s’est donné une chaîne de Markov, et on s’est demandé si elle ad-
+mettait une loi invariante, et, si oui, laquelle. On peut tourner le problème dans l’autre
+sens : soit une loiπ, est-il possible de construire une matrice de transitionP telle que
+πP = π ?
+On définit d’abord une propriété utile pour la suite.
+Définition 2.8.1. Soit P une matrice de transition etπ une loi de probabilité. On dit
+que P est π−réversible si, pour tout(i, j) ∈ E2, on a
+π(i)P(i, j) = π(j)P(j, i).
+Proposition 2.8.1. Cela implique queπ est la loi invariante deP.
+Démonstration. On montre queπP = π composante par composante. Pour toutj ∈ E,
+πP (j) =
+X
+i∈E
+π(i)P(i, j)
+=
+X
+i∈E
+π(j)P(j, i) (réversibilité)
+= π(j)
+X
+i∈E
+P(j, i)
+= π(j).
+37
+
+[Page 38]
+2 Chaînes de Markov
+Remarque 2.8.1. Dans cette section, l’intérêt principal de la notion de réversibilité
+est d’établir simplement qu’une chaîne estπ−invariante. Mais cette notion a d’autres
+applications. Par exemple, elle permet d’inverser le temps : si(Xt) est réversible, et si
+X0 ∼ π, alors le processusYt = XT−t, défini pour0 ≤ t ≤ T, est une chaîne de Markov
+homogène.
+L’algorithmeditdeMetropolis-Hastingsestbasésurl’idéesuivante:soit Q unematrice
+de transition sans lien évident avecπ, mais qui est « facile à simuler »; i.e., pour un
+i ∈ E fixé, il est facile de simuler selon la loiQ(i, ·). (On donnera des exemples concrets
+ci-dessous.) A chaque étapet, on va simuler selonQ, puis accepter la valeur simulée avec
+une certaine probabilité (qui dépend deπ); si la valeur n’est pas acceptée, on ne bouge
+pas (doncXt = Xt−1).
+Définition 2.8.2(Algorithme de Metropolis-Hastings). Soit E un espace d’états discret,
+et Q une matrice de transition telle que, pour toutx ∈ E, on sait simuler une variable
+aléatoire de loiQ(x, ·). SoitX0 fixé. SachantXt−1 = xt−1, t ≥ 1,
+1. on tireZt ∼ Q(xt−1, ·) (indépendamment de toutes les variables simulées jusqu’ici);
+2. on tireUt ∼ U([0, 1]) (idem);
+3. on définit :
+Xt =
+ Zt si Ut ≤ α(Xt−1, Zt)
+Xt−1 sinon
+
+où
+α(x, z) := min
+
+1, π(z)Q(z, x)
+π(x)Q(x, z)
+
+.
+Théorème 2.8.2. Le processus(Xt) (défini par l’algorithme ci-dessus) est une chaîne
+de Markov dont la transitionP est π−réversible (et doncπ−invariante).
+Démonstration. On considère d’abordx, y∈ E tels quex ̸= y. Alors
+π(x)P(x, y) = π(x)Q(x, y) min
+
+1, π(y)Q(y, x)
+π(x)Q(x, y)
+
+= min (π(x)Q(x, y), π(y)Q(y, x))
+qui est clairement symétrique enx, y.
+Par ailleurs, poury = x, l’identitéπ(x)Q(x, y) = π(y)Q(y, x) est triviale. Mais, pour
+la forme, on donne quand même l’expression correspondante :
+π(x)P(x, x) = π(x)
+
+
+Q(x, x) +
+X
+z̸=x
+Q(x, z)
+
+1 − min
+
+1, π(z)Q(z, x)
+π(x)Q(x, y)
+
+
+.
+Cette expression recouvre deux cas : le fait de proposerZ = x et d’accepter cette
+valeur (avec probababilité1), et le fait de proposer une autre valeur pourZ, puis de la
+rejeter.
+38
+
+[Page 39]
+2.9 Un autre algorithme à base de chaîne de Markov : le Gibbs sampler
+Passons aux choses concrètes. Pour commencer, supposonsE = Z, et supposons que
+Q(x, x+ 1) = Q(x, x− 1) = 1 /2 pour tout x. En d’autres termes, lorsqueXt = x, on
+va proposer comme valeur suivante soitx + 1, soit x − 1, avec probabilités égales. La
+probabilité d’acceptation est alorsmin(1, π(z)/π(x)), oùz est la valeur proposée. Cette
+probabilité vaut 1 dès queπ(z) ≥ π(x), et vautπ(z)/π(x) sinon.
+Cette exemple illustre un cadre typique d’utilisation de l’algorithme HM : on définit
+via Q un mécanisme d’exploration locale (similaire à ce qu’on trouve dans certains algo-
+rithmes d’optimisation), et on garantit que la chaîne simulée laisse bienπ invariante via
+le mécanisme d’acceptation-rejet.
+Metropolis-Hastings est un exemple important d’algorithme MCMC (Markov chain
+Monte Carlo), c’est à dire, un algorithme permettant d’approcher numériquement une
+espérance sous une loiπ :
+EX∼π [f(X)] =
+Z
+E
+f(x)π(dx)
+via une moyenne empirique (qui converge par la loi des grands nombres)
+1
+n
+nX
+t=1
+f(Xt)
+p.s
+− − − →
+n→∞
+Z
+E
+f(x)π(dx)
+calculée à partir d’une chaîne de Markov(Xt) π−invariante.
+Ce n’est sans doute pas la première fois que vous rencontrez la notion de Monte Carlo;
+elle est généralement présentée dans le cas simple où les variablesXt sont IID de loiπ.
+Cependant, il y a beaucoup de lois qui ne sont pas faciles à simuler indépendamment. En
+revanche, toutes les lois peuvent être « simulées » via Metropolis-Hastings, du moment
+que l’on est en mesure d’évaluerπ(x) pour toutx ; ou plus généralement d’évaluerπ(x)
+à une constante près.
+Exemple 2.8.1.Soit X une version discrète d’une variable aléatoire gaussienne :P(X =
+i) = π(i) := c exp(−i2) où c est une constante multiplicative, que l’on n’a pas besoin de
+connaître ici (mais qui est déterminée par la contraintePπ(i) = 1). On souhaite calculer
+E[cos(X)]. On propose d’utiliser l’algorithme de Metropolis avec la matrice de transition
+Q proposée ci-dessus, i.e.Q(x, x+ 1) = Q(x, x− 1) = 1/2 pour toutx ∈ Z.
+Le fait de ne pas avoir besoin de connaître la constante de normalisation de la loiπ
+donne une autre raison de la popularité des algorithmes de type MCMC, notamment
+en statistique bayésienne, où l’on a besoin de simuler la loi a posteriori, qui est propor-
+tionnelle (avec une constante difficile à calculer) au produit de la loi a priori et de la
+vraisemblance.
+2.9 Un autre algorithme à base de chaîne de Markov : le
+Gibbs sampler
+On considère dans cette partie une loi discrète, définie surE = Zd, de la forme :
+π(x1, . . . , xd) = 1
+Z ψ(x1, . . . , xd)
+39
+
+[Page 40]
+2 Chaînes de Markov
+avec ψ : Zd → R+. Noter que la constanteZ est automatiquement fixée par normalisa-
+tion :Z = P
+x∈Zd ψ(x).
+Il n’est pas a priori facile de simuler des vecteursX suivant cette loi (exactement, ou
+via l’algorithme de Metropolis). En revanche, dans certains cas, les lois conditionnelles de
+chaque composante sont particulièrement simples. Peut-on utiliser cette propriété d’une
+façon ou d’une autre?
+Donnons quelques exemples pour fixer les esprits.
+Exemple 2.9.1. Le modèle d’Ising en physique statistique attribue une loi jointe à des
+variables binairesX1, . . . , Xd (spins ferromagnétiques) associés à des emplacements sur
+une grille enk dimensions. Dans ce cas,
+ψ(x1, . . . , xd) = exp
+
+
+α
+X
+i
+xi + β
+X
+i∼j
+1{xi = xj}
+
+
+
+où i ∼ j est une relation de voisinage (sur la grille); par exemple, on peut décider que
+deux points sur la grille sont voisins s’ils sont à une distance de1 (sur une grille en
+dimension deux, chaque point à quatre voisins). Noter queZ est alors une somme de
+2d termes, impossible à calculer dès qued est grand, et que Z = Z(α, β) dépend des
+paramètres.
+Dans le cas particulierβ = 0 (pas intéressant), les composantes sont IID. En géné-
+ral, on prendβ >0, pour modéliser une corrélation « spatiale » : les spins proches ont
+tendance à être identiques. Il existe une valeur critique pourβ, correspondant à une
+« transition de phase » : en dessous de cette valeur critique, lesXi sont relativement
+« libres » de prendre les valeurs 0 ou 1; au dessus, ils ont tendance à former des gros
+amas de spins identiques, avec forte probabilité. Déterminer ce genre de valeur critique
+est un problème important en physique.
+La loi conditionnelle deXi sachant X−i (la collection desXj pour j ̸= i) est automa-
+tiquement une Bernoulli, de paramètre
+exp
+n
+α + β P
+j:j∼i 1{xj = 1}
+o
+exp
+n
+β P
+j:j∼i 1{xj = 0}
+o
++ exp
+n
+α + β P
+j:j∼i 1{xj = 1}
+o.
+Exemple 2.9.2.On considère un graphe (non orienté) aléatoire, constitué d’un nombre
+fixe den individus (noeuds), et des liens (arrêtes) aléatoires actifs ou non, représentés par
+un vecteurx à valeurs dans{0, 1}d, d = n(n − 1)/2. On attribue àx la loi de probabilité
+∝ ψ(x), avec
+ψ(x1, . . . , xd) = exp
+
+θT s(x)
+	
+où s est une statistiques : E → Rk résumant différentes propriétés du graphes (nombre
+d’arrêtes, nombre d’étoiles de rangk, etc.), etθ ∈ Rk. Ce genre de loi paramétrique peut
+être utilisée pour modéliser des graphes; on parle d’ERGM (exponential random graph
+model). On vérifie aisément que la loi conditionnelle d’une composante suit une Bernoulli
+dont le paramètre est simple à calculer.
+40
+
+[Page 41]
+2.9 Un autre algorithme à base de chaîne de Markov : le Gibbs sampler
+Appelons Pi la matrice de transition qui correspond à l’opération suivante : pour un
+vecteur x, remplacer la composantei par une simulation selon la loi deXi sachant X−i.
+Proposition 2.9.1. Les matrices de transition suivantes sontπ−invariantes : chaque
+Pi, le produitP = Pd ··· P1, et la moyenneQ = (P1 + . . .+ Pd)/d.
+Démonstration. Posons d = 2 pour simplifier les notations, et considérons une variable
+X = (X1, X2) de loiπ. Cela implique notamment que la loimarginale de X1 est π1(x1) =P
+x2 π(x1, x2), et la loiconditionnelle de X2|X1 = x1 est π2|1(x2|x1) = π(x1, x2)/π(x1).
+Considérons une nouvelle variable aléatoireX′
+2 (indépendante deX2), de même loi condi-
+tionnelle (sachantX1 = x1). Alors clairement le vecteurX′ = (X1, X′
+2) a pour loiπ. On
+vient de démontrer que siX ∼ π, etX′|X = x ∼ P2, alorsX′ ∼ π, ou en d’autres termes
+P2π = π. Le raisonnement est le même bien entendu pourP1, et plus généralement pour
+tout Pi si d >2. Pour le produit, par récurrence :πP2P1 = πP1 = π (pour d = 2 encore
+une fois). De même, pour la moyenne,πQ = (πP1 + . . . πPd)/d = π.
+Les deux matrices (produit et moyenne) introduites dans la proposition ci-dessus cor-
+respondent à deux algorithmes différents :
+— Le produit correspond à un Gibbs sampler déterministe, où l’on met à jour la
+composante 1, puis la composante 2, etc. à tour de rôle.
+— La moyenne correspond à un Gibbs sampler dit «random scan», où à chaque étape
+on choisit, avec une probabilité1/d, quelle composante sera mise à jour.
+Proposition 2.9.2. Supposons ψ(x) > 0 pour toutx ∈ E. Alors P et Q sont irréduc-
+tibles.
+Démonstration. PourP, soientx, y ∈ E. On peut passer dex à y en une seule étape avec
+probabilité non-nulle : d’abord en changeant la première composante dex pour qu’elle
+soit égale ày1, puis la deuxième, etc. Le raisonnement est sensiblement le même pour
+Q.
+IlestfaciledeconstruiredesGibbssamplersnonirréductibles.Considéronsparexemple
+le casd = 2, et supposonsψ(0, 1) = ψ(1, 0) = 0. Alors, partant de(0, 0), il est impossible
+d’atteindre (1, 1). L’algorithme n’a alors aucun intérêt pratique.
+Le Gibbs sampler nous donne un deuxième type d’algorithme MCMC (Markov chain
+Monte Carlo) pour approcher des espérances selon une certaine loiπ (via la simulation
+d’une chaîne de Markov de loi invarianteπ). Il est particulièrement intéressant quand on
+peut décomposer la loi d’intérêt en plusieurs « blocs » admettant des lois conditionnelles
+faciles à simuler. Nous nous sommes limités au cas où l’espaceE est discret, mais la
+statistique bayésienne (où l’on cherche à approcher la loi des paramètres du modèle,
+typiquement continus) offre beaucoup d’exemples intéressants de Gibbs sampler; cf. le
+cours de Monte Carlo et simulation que vous pouvez suivre au deuxième semestre (pub
+éhontée).
+En ce concerne le lien entre Gibbs et Metropolis-Hastings, faisons deux remarques :
+— On constate que dans les deux cas il est possible de simuler une loiπ que l’on ne
+peut évaluer qu’à une constanteZ près.
+41
+
+[Page 42]
+2 Chaînes de Markov
+— En travaillant un peu (exercice), on peut montrer que Gibbs est un cas particulier
+de Metropolis-Hastings.
+2.10 Extension à un espace d’états continu
+Le but de cette section est d’expliquer, à la main, comment construire une chaîne de
+Markov sur un espace d’étatsE quelconque (par exempleE = R). On ne donnera pas de
+preuve, elles sont un peu plus complexes dans ce cas. Le lecteur est invité à se reporter à
+la bibliographie, en particulier Meyn and Tweedie (2009) mais c’est une lecture un peu
+violente par moments! Ceci dit, on peut se faire une bonne intuition des cas simples...
+Dans le cas discret, on construisait une chaîne homogène à l’aide d’une matrice de
+transition P,
+P(i, j) = P(Xt+1 = j|Xt = i).
+Dans le cas continu, il faut définir de la même façon un objet qui permette de donner la
+loi deXt+1 sachant Xt. Par contre, pour une loi continue,P(Xt+1 = j) = 0 donc on va
+devoir passer par une mesure...
+Définition 2.10.1. Soit (E, E) un espace mesurable. On appelle noyau de transitionP
+une fonction
+P : E × E →[0, 1]
+telle que :
+1. pour toutx ∈ E fixé, l’applicationA 7→ P(x, A) est une mesure de probabilités;
+2. pour toutA ∈ Efixé, l’applicationx 7→ P(x, A) est mesurable.
+Etant donné une loiµ et un noyau de transitionP sur (E, E), on pourra définirX0
+comme une variable aléatoire de loiµ et les(Xt) par récurrence :
+P(Xt+1 ∈ A|Xt = x) = P(x, A).
+Remarquer qu’on peut étendre toutes les opérations que l’on a fait dans le cas discret
+sur les matrices de transition au cas de noyaux de transition. Par exemple,
+P2(i, j) =
+X
+k∈E
+P(i, k)P(k, j)
+dans le cas discret devient, dans le cas continu
+P2(x, A) =
+Z
+E
+P(x, dy)P(y, A).
+Pour une loi de probabilitéµ,
+µP(A) =
+Z
+µ(dx)P(x, A).
+En particulier, on dit qu’une loiπ est invariante siπP = π.
+42
+
+[Page 43]
+2.10 Extension à un espace d’états continu
+Exemple 2.10.1.On considère un processus AR(1) :X0 ∼ µ puis
+Xt+1 = α + βXt + εt+1
+où les(εn) sont i.i.d (et indép. deX0) de loiN(0, σ2). Noter qu’on peut alors donner la
+loi deXt+1|Xt directement, sans écrireεn+1 : Xt+1|Xt ∼ N(α + βXt, σ2). On peut alors
+écrire le noyau de transitionP sous une forme explicite :
+P(x, A) =
+Z
+A
+1√
+2πσ2 exp
+(
+−[y − (α + βx)]2
+2σ2
+)
+dy.
+En général, résoudre l’équationπP = π peut être très compliqué. Dans ce cas, on peut
+vérifier que si µ = N(m, s2) alors X1, en tant que somme de deux gaussiennes indé-
+pendantes, est aussi gaussienne, d’espéranceα + βm et de varianceβ2s2 + σ2. Donc, si
+|β| < 1, on voit queπ = N( α
+1−β , σ2
+1−β2 ) est une loi invariante.
+Exemple2.10.2. On peut généraliser l’algorithme de Metropolis-Hastings au cas continu,
+i.e. E = Rd, en prenant pourQ(x, ·) un noyau de transition, qui correspond par exemple à
+une loi normaleN(x, Σ) (pour unΣ bien choisi). En d’autres termes, pourXt−1 = xt−1,
+on simuleZt ∼ N(xt−1, Σ), et on « accepte » cette valeur, i.e.Xt = Zt, avec probabilité
+α(Xt−1, Zt),
+α(x, z) := min
+
+1, π(z)q(z, x)
+π(x)q(x, z)
+
+où q(x, ·) est la densité deQ(x, ·) (dont la densité d’une loi normaleN(x, Σ), que l’on
+notera φ(·; x, Σ)). Avec probabilité1 − α(Xt−1, Zt), on rejetteZt et on poseXt = Xt−1.
+On vient de décrire un algorithme, très couramment utilisé, dit de Metropolis-Hastings
+à marche aléatoire (random walk Metropolis). On peut écrire :
+P(x, dy) = α(x, y)Q(x, dy) + {1 − α(x, y)}δx(y)
+= α(x, y)φ(y; x, Σ)dy + {1 − α(x, y)}δx(y)
+où le premier terme correspond à l’«acceptation» de la valeur proposée, et le second terme
+son rejet. Pour mieux comprendre la notation « infinitésimale »P(x, dy) ci-dessus, on
+peut aussi écrire :
+P(x, A) =
+Z
+y∈A
+α(x, y)Q(x, dy)
++
+Z
+y∈E
+{1 − α(x, y)}Q(x, dy)
+
+1A(x)
+=
+Z
+y∈A
+α(x, y)φ(x; y, Σ)dy
++
+Z
+y∈E
+{1 − α(x, y)}φ(x; y, Σ)dy
+
+1A(x).
+Noter que le terme entre crochet est la probabilité de « ne pas bouger » lorsque la
+position actuelle estx.
+43
+
+[Page 44]
+2 Chaînes de Markov
+On va juste donner maintenant deux théorèmes ergodiques dans ce contexte (sans les
+démontrer, là encore, on renvoie le lecteur à Meyn and Tweedie (2009)). L’intérêt est
+qu’ils permettront d’analyser les versions de l’Algorithme de Metropolis-Hastings dans
+le cas continu, cf. le cours de simulation et Monte-Carlo. Ces énoncés nécessitent de
+généraliser les notions d’irréductiblité, récurrence, etc...
+Pour l’irréductibilité, attention :P(x, {y}) = 0 pour une loi continue, donc, il faut là
+encore procéder autrement.
+Définition2.10.2. Soit Φ une mesureσ-finie sur(E, E). On dit que(Xt) est Φ-irréductible
+si :
+∀A ∈ E, ∀x ∈ E : [Φ(A) > 0 ⇒ ∃n ∈ N : Pn(x, A) > 0] .
+On peut vérifier que si E est dénombrable et si Φ est la mesure de comptage, on
+retombe bien sur la définition précédente...
+Il faudrait ensuite étendre la notion de récurrence, mais il n’y a pas une extension
+unique : il y a plusieurs définitions de récurrence, qui permettent de démontrer des
+propriétés différentes. Ceci dit, on se souvient que dans le cas discret, si une chaîne est
+irréductible et admet une loi invariante, alors on avait directement le théorème ergodique.
+C’est de ce résultat qu’on on va donner une forme dans le cas continu, sans avoir à définir
+l’irréductibilité.
+Théorème 2.10.1. Supposons queE = Rd pour und ≥ 1 et queE est laσ-algèbre des
+boréliens. Si(Xt) est λ-irréductible, oùλ est la mesure de Lebesgue, et siπ est invariante
+pour (Xt), alorsπ est unique, et pour toute fonctionh intégrable par rapport àπ, on a
+1
+n
+nX
+i=1
+h(Xi)
+p.s
+− − − →
+n→∞
+Z
+h(x)π(dx).
+Définition 2.10.3. On dit que(Xt) est périodique si il existe une partition mesurable
+X0, . . . ,Xk de E, avec k ≥ 1, telle que pour toutx ∈ Xi avec i < k, P(x, Xi+1) = 1 ,
+et pour tout x ∈ Xk, P(x, X0) = 1 . On dit que (Xt) est apériodique si elle n’est pas
+périodique.
+Théorème 2.10.2.Sous les hypothèses du Théorème 2.10.1, si en plus(Xt) est apério-
+dique, alors pour tout borélienA on a
+Pµ(Xt) − − − →
+n→∞
+π(A).
+2.11 Chaînes de Markov cachées
+On revient au cas discret dans cette dernière section, et on présente succintement les
+modèles à chaînes de Markov cachées (ou modèles de Markov cachés), qui sont constitués
+de deux processus, définis aux temps0, . . . , T:
+1. Une chaîne de Markov,(Xt), à valeurs dans un espace finiE = {1, . . . , K}, non
+observée, de matrice de transitionP et loi initialeµ ;
+44
+
+[Page 45]
+2.11 Chaînes de Markov cachées
+2. Un processus (Yt), à valeurs dans un espace F (que l’on prendra discret pour
+commencer), tel que les variablesYt, informellement, ne dépendent que deXt ; plus
+précisément, la loi deYt, sachant toutes les autres variables (doncX0, . . . , XT , et
+les Ys pour s ̸= t) ne dépend que deXt ; appelonsR(x, y) la probabilité d’observer
+Yt = y conditionnellement àXt = x. (On fait l’hypothèse supplémentaire que cette
+probabilité ne dépend pas det).
+Remarque 2.11.1. Le processus joint(Xt, Yt) est une chaîne de Markov, telle que la
+loi de(Xt, Yt) sachant son passé ne dépend que deXt−1. En revanche, le processus(Yt)
+pris tout seul n’est pas une chaîne de Markov.
+Ce genre de modèle est apparu dans les années 60 en traitement du signal, notamment
+en traitement de la parole, où les Xt représentaient les phonèmes prononcés par un
+sujet, et lesYt leur enregistrements acoustiques. Ils sont devenus ensuite très populaires
+dans plusieurs domaines, notamment en génétique et en biostatistique. (Dans ce cas,t
+représente la position sur le génome.)
+En traitement automatique des langues (natural language processing), ces modèles
+peuvent être utilisés pour faire de l’étiquetage grammatical (part-of-speech tagging) :
+Yt est le t−ième mot du texte étudié, et Xt sa fonction grammaticale (sujet, verbe,
+article, etc.). Cet exemple montre bien ce que modélisent respectivementP (la loi de
+Xt|Xt−1) etR (la loi deYt|Xt). Le premier objet modélise comment différentes fonctions
+grammaticales s’articulent (un sujet est souvent suivi d’un verbe); le deuxième objet
+modélise le fait que certains mots ont des fonctions plus courantes que d’autres (Le mot
+« repas » n’est jamais un verbe, le mot « manger » est souvent un verbe, mais est parfois
+un mot commun qui peut servir de sujet).
+Dans ce genre d’application, on cherche à retrouver (estimer) lesXt, sachant les va-
+riables observées (Y0, . . . , Yt). Pour ce faire, on peut calculer la loi conditionnelle de
+(X0, . . . , XT ) sachant Yt = yt pour t = 0 , . . . , T. Pour alléger les notations, on pose
+X0:T = (X0, . . . , XT ), Y0:T = (Y0, . . . , YT ), etc.
+Proposition 2.11.1. On a :
+P(X0:T = x0:T | Y0:T = y0:T ) = P(X0:T = x0:T , Y0:T = y0:T )
+P(Y0 = y0, . . . , YT = yT )
+où le numérateur vaut :
+P(X0:T = x0:T , Y0:T = y0:T ) = µ(x0)
+TY
+t=1
+P(xt−1, xt)
+TY
+t=0
+R(xt, yt)
+et le dénominateur est égal à :
+P(Y0:T = y0:T ) =
+KX
+x0=1
+···
+KX
+xT =1
+(
+µ(x0)
+TY
+t=1
+P(xt−1, xt)
+TY
+t=0
+R(xt, yt)
+)
+.
+45
+
+[Page 46]
+2 Chaînes de Markov
+Ces expressions s’obtiennent en appliquant la formule de Bayes. Elles mettent en évi-
+dence le coût prohibitif à calculer directement ces probabilités : le dénominateur (la
+vraisemblance des observations) est une somme deKT+1 termes. On peut cependant
+calculer de telles probabilités (ou plus précisément, leurs marginales, voir plus loin) ré-
+cursivement, grâce à la propriété de Markov.
+Pour simplifier les écritures, on introduit les notations suivantes, pourt = 0, . . . , T:
+µt(x) := P(Xt = x | Y0:t−1 = y0:t−1)
+νt(x) := P(Xt = x | Y0:t = y0:t)
+νt|T (x) := P(Xt = x | Y0:T = y0:T )
+Lt := P(Y0:t = y0:t) .
+De plus, on écritµt, νt, etνt|T les vecteurs correspondants, i.e.µt est le vecteur desµt(x).
+Ces trois types de vecteur correspondent respectivement aux lois dites de prédiction, de
+filtrage, et de lissage. Noter que, au temps0, on doit interpréter la première ligne comme
+la loi initiale,P(X0 = x) = µ(x), i.e.µ0 = µ. Ces notations dépendent implicitement des
+données y0, y1, . . .qui sont considérées désormais comme fixes.
+Proposition 2.11.2. On a, pourx ∈ E = {1, . . . , K}, ett = 0, . . . , T(sauf la première
+ligne, qui n’est valable que pourt ≥ 1) :
+µt(x′) =
+KX
+x=1
+νt−1(x)P(x, x′) pour t ≥ 1 (2.8)
+νt(x) = 1
+ℓt
+µt(x)R(x, yt) (2.9)
+où ℓt :=
+KX
+x=1
+µt(x)R(x, yt) = P(Yt = yt|Y0:t−1 = y0:t−1) (2.10)
+Lt = Lt−1 × ℓt pour t ≥ 1 (et L0 = ℓ0) (2.11)
+Démonstration. Pour obtenir (2.8) au tempst ≥ 1, écrire :
+P(Xt = x′ | Y0:t−1 = y0:t−1) =
+X
+x∈E
+P
+ 
+Xt−1 = x, Xt = x′ | Y0:t−1 = y0:t−1
+
+=
+X
+x∈E
+νt−1(x)P
+ 
+Xt = x′ | Xt−1 = x
+
+.
+La simplification du conditionnement dans le deuxième facteur est une conséquence de
+la remarque 2.11.1.
+Pour montrer (2.9) au tempst ≥ 0, on applique la formule de Bayes :
+P(Xt = x | Y0:t = y0:t) = P(Xt = x, Yt = yt | Y0:t−1 = y0:t−1)
+P(Yt = yt | Y0:t−1 = y0:t−1)
+= P(Xt = x | Y0:t−1 = y0:t−1) P(Yt = yt|Xt = xt)
+P(Yt = yt | Y0:t−1 = y0:t−1)
+46
+
+[Page 47]
+2.11 Chaînes de Markov cachées
+et remarquer que le dénominateur est une constante de normalisation, qui vaut précisé-
+ment ℓt défini en (2.10).
+Ce premier résultat nous donne un algorithme pour calculer récursivement les lois de
+prédiction, de filtrage, et la vraisemblance. Il faut l’initialiser avecµ0 = µ. Noter que la
+première ligne revient à effectuer un produit matriciel (deνt−1 avec P).
+Pour calculer les lois de lissage, on a besoin d’un second algorithme, dit « backward »
+(par opposition au premier algorithme, dit forward). Vous pouvez essayer de retrouver
+cet algorithme à titre d’exercice.
+Le point essentiel à noter est que ces deux algorithmes ont une complexitéO(T K2) :
+chaquealgorithmeeffectue T itérations,etchaqueitérationcalculedesproduitsmatriciels
+sur des matricesK ×K. Cela donne une complexité beaucoup plus raisonnable que celle
+mentionnée ci-dessus. Le prix à payer est que l’on n’a calculé que des lois marginales, au
+lieudelaloijointedéfiniedanslaProp.2.11.1.Pourbeaucoupdeproblèmespratiques,ces
+probabilités sont suffisantes. Par exemple, pour l’étiquetage grammatical, on se contente
+de connaître la probabilité qu’un mot soit un verbe, après observation d’une suite de
+mots.
+Le point peut-être un peu surprenant de cette partie est que l’on n’a utilisé que la
+propriété de Markov pour obtenir les résultats ci-dessus. La théorie des chaînes de Markov
+homogènes n’y joue aucun rôle. D’ailleurs, à titre d’exercice, vous pouvez essayer de
+généraliser les calculs ci-dessus :
+— au cas où (Xt) n’est pas homogène (P devient Pt), ou la loi deYt|Xt n’est pas
+constante (on remplaceR par Rt);
+— un peu plus dur : au cas oùYt|Xt = xt suit une loi continue.
+La généralisation au cas où la chaîne(Xt) est à valeurs dans un espace continu est
+largement hors programme, et sera traité dans un cours de troisième année. Mais les
+lectrices et lecteurs plus curieux peuvent lire la page Wikipedia du filtre de Kalman, et
+le rôle qu’il a joué dans le programme Appolo.
+47
+
+[Page 48]
+
+
+[Page 49]
+3 Martingales
+3.1 Définitions
+Définition 3.1.1. Soit (Xt)t∈N un processus, à valeurs dansR, adapté à une filtration
+(Ft)t∈N. On dit que le processus est une martingale si, pour toutt ∈ N,
+i) Xt est intégrable, soitE(|Xt|) < ∞,
+ii) E(Xt+1|Ft) = Xt.
+On dit que le processus est une martingale positive si, pour toutt ∈ N,
+i) Xt ≥ 0 p.s,
+ii) E(Xt+1|Ft) = Xt.
+On définit de la même façon une sous-martingale (resp. une sous-martingale positive)
+en remplaçant la condition (ii) dans la définition de martingale (resp. de martingale
+positive) par E(Xt+1|Ft) ≥ Xt. On définit de la même façon une sur-martingale (une
+sur-martingale positive) en remplaçant (ii) parE(Xt+1|Ft) ≤ Xt.
+Quelques propriétés évidentes :(Xt) est une martingale si et seulement si c’est une
+sur-martingale et une sous-martingale. L’espérance d’une martingale est constante. En
+effet,
+E(Xt+1|Ft) = Xt
+et en prenant l’espérance des deux côtés, on obtient
+E[E(Xt+1|Ft)] = E(Xt),
+soit
+E(Xt+1) = E(Xt).
+Delamêmefaçon,pourunesur-martingale,lesespérancessontdécroissantes E(Xt+1) ≤
+E(Xt) et pour une sous-martingale, les espérances sont croissantesE(Xt+1) ≥ E(Xt).
+Proposition 3.1.1. Soit (Xt) une martingale, soitk, t≥ 0, alors
+E(Xt+k|Ft) = Xt.
+Pour une sur et une sous-martingale, la propriété tient en remplaçant le symbole= par
+≤ et ≥ respectivement.
+49
+
+[Page 50]
+3 Martingales
+Démonstration. Par récurrence surk : le cask = 1 est vrai par définition. Supposons
+que la propriété est vraie au rangk. Alors,
+E(Xt+k+1|Ft) = E
+h
+E(Xt+k+1|Ft+k)
+Ft
+i
+= E(Xt+k|Ft) par définition d’une martingale
+= Xt par hypothèse de récurrence.
+Proposition 3.1.2.Soit (Xt) une martingale etf une fonction convexe telle quef(Xt)
+soit intégrable pour toutt. Alors le processus[f(Xt)]t∈N est une sous-martingale.
+Démonstration. Par Jensen,E[f(Xt+1)|Ft] ≥ f [E(Xt+1|Ft)] = f(Xt) par définition.
+Donnons maintenant quelques exemples de martingales.
+Exemple 3.1.1.Soit (Xt)t∈N une suite de variables centrées et indépendantes. Posons
+Mt =
+tX
+i=0
+Xi.
+On poseFt = σ(X0, . . . , Xt), on peut vérifier qu’on a également la relationFt = σ(M0, . . . , Mt).
+Alors (Mt)t∈N est une martingale pour la filtration(Ft). En effet :
+E(Mt+1|Ft) = E(Xt+1 + Mt|Ft)
+= E(Xt+1|X0, . . . , Xt) + E(Mt|M0, . . . , Mt)
+= 0 + Mt.
+Un exemple :Xt ∼ N(0, σ2
+t ). Dans ce cas, notons que
+Mt ∼ N
+ 
+0,
+tX
+i=0
+σ2
+i
+!
+.
+Si P∞
+i=0 σ2
+i = S <∞ , on a la vague impression queMt va converger vers une variable
+aléatoire de loiN(0, S). A l’inverse, siP∞
+i=0 σ2
+i = ∞, la loi de la variable s’étale de plus
+en plus et on a l’impression qu’il n’y aura pas de convergence. Une bonne partie de ce
+chapitre sera consacré à étudier le comportement asymptotique des martingales.
+Définition 3.1.2. Soit (εt) un processus. On dit que c’est un incrément de martingale
+si il existe une filtration(Ft) et une martingale(Mt) telles queεt = Mt −Mt−1 pour tout
+t >0.
+Un des intérêts des incréments de martingales est qu’il existe énormément de propriétés
+vraies pour les variables indépendantes centrées que l’on peut étendre aux incréments de
+martingales. Par exemple, la loi faible des grands nombres.
+50
+
+[Page 51]
+3.1 Définitions
+Proposition 3.1.3. Soit (εt) un incrément de martingale avecE(ε2
+t ) = σ2 < ∞. Alors
+1
+n
+nX
+i=1
+εi
+proba.
+− − − − →0.
+Démonstration. On a
+P
+ 
+1
+n
+nX
+i=1
+εi
+ > t
+!
+≤
+E
+1
+n
+Pn
+i=1 εi
+2
+t2
+=
+Pn
+i=1 E
+ 
+ε2
+i
+
++ 2P
+1≤i<j≤n E(εiεj)
+n2t2
+= σ2
+nt2 +
+2 P
+1≤i<j≤n E(εiεj)
+n2t2 .
+Dans le cas de variables indépendantes, on aE(εiεj) = E(εi)E(εj) = 0, ce qui prouve que
+P
+ 
+1
+n
+nX
+i=1
+εi
+ > t
+!
+≤ σ2
+nt2 − − − →
+n→∞
+0.
+Or, pour des incréments de martingalesεt = Mt − Mt−1, on a :
+E(εiεj) = E[(Mi − Mi−1)(Mj − Mj−1)]
+= E[E[(Mi − Mi−1)(Mj − Mj−1)|Fj−1]]
+= E[(Mi − Mi−1)E[(Mj − Mj−1)|Fj−1]]
+= 0
+par définition d’une martingale.
+Une question naturelle est alors : “est-ce qu’il existe des exemples de martingales autres
+que les sommes de variables indépendantes” ou de façon équivalente, “est-ce qu’il existe
+des exemples d’incréments de martingales qui ne sont pas indépendants”. L’exemple sui-
+vant fournit une réponse positive.
+Exemple 3.1.2 (Processus ARCH). Soit (ηk) une suite de variables i.i.d gaussiennes
+centrées réduites et, pour toutk, Fk = σ(η1, . . . , ηk). Soit (Zk) un processus défini par
+récurrence :z0 = 1 et
+Zk+1 = ηk+1
+q
+α0 + α1Z2
+k
+où α0 > 0 et α1 ≥ 0. Le processus(Zk) est appelé processus ARCH(1) et est très souvent
+utilisé en finance. On pose
+Mn =
+nX
+k=1
+Zk.
+51
+
+[Page 52]
+3 Martingales
+Figure 3.1– Voici un exemple de réalisation de(Zn) : ressemble à un bruit blanc, avec
+des périodes de bruits extrêmes. Iciα0 = 0.5 et α1 = 0.7.
+On vérifie bien que(Mn) est une martingale, en montrant l’intégrabilité par récurrence
+puis
+E(Mn+1|Fn) = E(Zn+1 + Mn|Fn)
+= E(ηn+1
+p
+α0 + α1Z2n|Z0, . . . , Zn) + Mn
+= E(ηn+1|Z0, . . . , Zn)
+p
+α0 + α1Z2n + Mn
+= Mn.
+Les incréments de la martingale(Mn) sont les Zn et ceux-ci ne sont bien entendu pas
+indépendants, par exemple,
+E(Z2
+n+1|Zn) = E(η2
+n+1(α0 + α1Z2
+n)|Zn) = (α0 + α1Z2
+n)E(η2
+n+1) = (α0 + α1Z2
+n).
+En général, en finance, les actifs financiers ne sont pas modélisés directement par des
+processus ARCH, mais plutôt par la martingale associée(Mn) ou par une transformation
+de celle-ci commeYn = exp(λ−γMn) avecλ, γ >0. La Proposition 3.1.2 montre que(Yn)
+est une sur-martingale. Les Figures 3.1, 3.2 et 3.3 montrent des exemples de réalisation
+de tels processus.
+52
+
+[Page 53]
+3.1 Définitions
+Figure 3.2– Le processus(Mn) correspondant.
+Figure 3.3– Le prix(Yn) correspondant. Iciλ = 1 et γ = 0.03.
+53
+
+[Page 54]
+3 Martingales
+3.2 Temps d’arrêt
+Idée : supposons que je possède un actif financier, soitXt sa valeur à la datet. A un
+instant t, je peux décider de vendre l’actif, ou pas. Notonsτ l’instant auquel je me décide
+à vendre l’actif (noter qu’il s’agit d’une variable aléatoire, puisque ma décision dépendra
+des valeurs, aléatoires, de l’actif). Si ma modélisation est réaliste, il est important que le
+fait de vendre à l’instantt (i.e. τ = t) ne dépende que de l’information disponible à la
+date t. On rappelle qu’on représentait l’information disponible à la datet à l’aide d’une
+filtration.
+Définition 3.2.1. Soit τ une variable aléatoire à valeurs dansN = N ∪ {+∞} ou dans
+R+ = R+ ∪ {+∞}. Soit (Ft)t∈N une filtration. La variable τ est dite “temps d’arrêt
+pour la filtration(Ft)t∈N” si et seulement si, pour toutt dans N, ouR+ respectivement,
+{τ ≤ t} ∈ Ft.
+Proposition 3.2.1. Dans le cas oùτ une variable aléatoire à valeurs dansN, τ est un
+temps d’arrêt ssi pour toutt dans N, {τ = t} ∈ Ft
+Démonstration. Si τ est un temps d’arrêt, alors{τ = t} = {τ ≤ t} \ {τ ≤ t − 1} = {τ ≤
+t}∩ ({τ ≤ t−1}c) et par définition,{τ ≤ t} ∈ Ft et {τ ≤ t−1} ∈ Ft−1 ⊂ Ft. Comme une
+σ-algèbre est stable par passage au complémentaire et par intersection,{τ = t} ∈ Ft.
+Réciproquement, si pour toutt dans N, {τ = t} ∈ Ft, alors, pourt fixé, {τ ≤ t} =
+{τ = 0} ∪ ··· ∪ {τ = t} et chacun de ces ensembles sont dansFt donc {τ ≤ t}. Doncτ
+est un temps d’arrêt.
+A partir de maintenant (et jusqu’à la fin du Chapitre 2) on ne considèrera que des
+processus à temps discret avecT = N et des temps d’arrêt à valeurs dansN.
+Exemple 3.2.1.Exemples de temps d’arrêt :τ = 3 (ou n’importe quelle constante). Un
+exemple plus intéressant est le temps d’entrée dans un ensembleA :
+τA := inf{n ∈ N : Xn ∈ A}
+avec la convention habituelleinf ∅ = ∞.
+Définition 3.2.2.Soit τ un temps d’arrêt pour la filtration(Ft)t∈N. On définit
+F∞ = σ
+ ∞[
+t=0
+Ft
+!
+et
+Fτ = {A ∈ F∞ : ∀n ∈ N, {τ ≤ n} ∩A ∈ Fn}.
+Proposition 3.2.2. Les ensemblesF∞ et Fτ sont deuxσ-algèbres.
+54
+
+[Page 55]
+3.2 Temps d’arrêt
+Démonstration. C’est évident pourF∞, on passe directement àFτ . Il faut vérifier que
+∅ ∈ Fτ , que Fτ est stable par passage au complémentaire et est stable par réunion
+dénombrable.
+Pour toutn, {τ ≤ n} ∩ ∅= ∅ ∈ Fn et donc∅ ∈ Fτ .
+Soit A ∈ Fτ . Pour n ∈ N, {τ ≤ n} ∩Ac = {τ ≤ n} ∩(A ∩ {τ ≤ n})c ∈ Fn. Donc
+Ac ∈ Fτ .
+Enfin, supposons queA0, A1, ··· ∈ Fτ . Alors, pourn ∈ N,
+{τ ≤ n} ∩
+ ∞[
+k=0
+Ak
+!
+=
+∞[
+k=0
+({τ ≤ n} ∩Ak) ∈ Fn
+et donc∪kAk ∈ Fτ .
+Proposition 3.2.3. Soient τ1 et τ2 deux temps d’arrêt. Alors
+1. τ1 + τ2, τ1 ∧ τ2 = min(τ1, τ2) et τ1 ∨ τ2 = max(τ1, τ2) sont aussi des t.a.
+2. τ1 ≤ τ2 ⇒ Fτ1 ⊂ Fτ2 .
+3. Fτ1∧τ2 = Fτ1 ∩ Fτ2 .
+4. {τ1 < τ2} ∈ Fτ1∧τ2 , {τ1 = τ2} ∈ Fτ1∧τ2 .
+Démonstration. On prouve 1., les autres propriétés sont laissées en exercice.
+Pour τ1 + τ2 :
+{τ1 + τ2 = n} =
+n[
+k=0
+ 
+{τ1 = k} ∪ {τ2 = n − k}
+
+et {τ1 = k} ∈ Fk ⊂ Fn, {τ2 = n − k} ∈ Fn−k ⊂ Fn et donc{τ1 + τ2 = n} ∈ Fn. Donc
+τ1 + τ2 est un t.a.
+Pour τ1 ∧ τ2 : {τ1 ∧ τ2 ≤ n} = {τ1 ≤ n} ∪ {τ2 ≤ n} ∈ Fn. De même pourτ1 ∨ τ2 :
+{τ1 ∨ τ2 ≤ n} = {τ1 ≤ n} ∩ {τ2 ≤ n} ∈ Fn.
+Définition 3.2.3.Soit τ un temps d’arrêt pour la filtration(Ft)t∈N, et(Xt)t∈N un pro-
+cessus. Siτ <∞ p.s, on pose
+Xτ =
+X
+t∈N
+Xt1{τ=t}.
+Dans les cas oùτ peut être infini, on peut parfois étendre la définition. Par exemple,
+si Xn
+p.s
+− − →X il est naturel de poser
+Xτ =
+X
+t∈N
+Xt1{τ=t} + X1{τ=∞}.
+On conclut cette section par une application de la notion de temps d’arrêt pour énon-
+cer une version de l’idendité de Wald. L’idée est la suivante. Supposons que l’on a des
+55
+
+[Page 56]
+3 Martingales
+variables aléatoiresX1, X2, . . .indépendantes, intégrables (ou positives), avec la même
+espérance E(X1) = E(X2) = . . .Pour unN ∈ N (déterministe), on a évidemment
+E
+ NX
+i=1
+Xi
+!
+= NE(X1).
+La question est : siN est aléatoire, a-t’on
+E
+ NX
+i=1
+Xi
+!
+= E(N)E(X1)?
+Cette égalité n’est pas vraie en général. Quand elle est vraie, porte le d’indentité de Wald.
+Il en existe plusieurs versions, avec des hypothèses différentes. On en démontre ici une
+version oùN est un temps d’arrêt.
+Théorème 3.2.4(Identité de Wald). Soit (Xi)i≥1 une suite de variables aléatoires in-
+dépendantes, intégrables ou positives, de même espérance. SoitN un temps d’arrêt pour
+la filtration(Ft)t∈N∗ définie parFt = σ(X1, . . . , Xt). On suppose queE(N) < ∞. Alors
+E
+ NX
+i=1
+Xi
+!
+= E(N)E(X1).
+Démonstration. On commence par le cas positif. On a :
+E
+ NX
+i=1
+Xi
+!
+= E
+ ∞X
+i=1
+Xi1{N≥i}
+!
+on utilise Fubini, tout est positif
+=
+∞X
+i=1
+E
+ 
+Xi1{N≥i}
+
+=
+∞X
+i=1
+E
+ 
+Xi1{N≤i−1}c
+
+on utilise la définition de l’espérance conditionnelle
+=
+∞X
+i=1
+E
+ 
+E(Xi|Fi−1)1{N≤i−1}c
+
+or Xi indep. deσ(X1, . . . , Xi−1) = Fi−1
+=
+∞X
+i=1
+E
+ 
+E(Xi)1{N≤i−1}c
+
+or E(Xi) = E(X1) non aléatoire
+= E(X1)E
+ ∞X
+i=1
+1{N≤i−1}c
+!
+56
+
+[Page 57]
+3.3 Théorème d’arrêt : le cas borné
+= E(X1)E
+ ∞X
+i=1
+1{N≥i}
+!
+= E(X1)E(N) .
+Danslecasoùles Xi nesontplusforcémentpositifsmaisintégrables,lapreuveprécédente
+peut être réutilisée pour prouver que
+E
+ ∞X
+i=1
+|Xi|1{N≥i}
+!
+= E(N)E(|X1|) < ∞. (3.1)
+On réutilise ensuite la même preuve que dans le cas positif, l’unique différence étant
+que l’utilisation de Fubini n’est plus justifiée par le fait que lesXi sont positifs, mais
+par (3.1).
+On conclut par un contre-exemple amusant. Supposons que l’on lesXi sont i.i.d avec
+P(Xi = +1) = P(Xi = −1) = 1/2, et posons
+N = inf
+(
+n ∈ N :
+nX
+i=1
+Xi = 1
+)
+.
+Avec la terminologie de l’Exemple 3.2.1,N est le temps d’entrée du processusPn
+i=1 Xi
+dans l’ensemble{1}. On garde bien entendu la convention queinf ∅ = +∞. Supposons
+que E(N) < ∞. Alors en particulier,N <∞ p.s et
+NX
+i=1
+Xi = 1.
+L’identité de Wald que l’on vient de démontrer dit alors que
+1 = E
+ NX
+i=1
+Xi
+!
+= E(N)E(X1) = 0.
+C’est donc que la supposition initiale, à savoirE(N) < ∞, est fausse. On a donc établi
+que E(N) = ∞.
+3.3 Théorème d’arrêt : le cas borné
+Pour une martingale (Xt) on a vu qu’on a toujoursE(Xt) = E(X0). Une question
+naturelle est alors : est-ce que pour un temps aléatoireτ, on aE(Xτ ) = E(X0) ? Noter
+que ceci est assez proche de la question qu’on se posait pour l’identité de Wald, et en fait,
+il s’agit de la même question dans le cas particulier oùXt est une somme d’accroissements
+indépendants. On appelle “théorème d’arrêt” un théorème qui assure queE(Xτ ) = E(X0)
+pour un temps d’arrêt τ - ceci ne peut s’obtenir qu’avec certaines hypothèses sur la
+martingale (Xt) et/ou sur τ. De façon directe, on peut alors étendre ces résultats aux
+57
+
+[Page 58]
+3 Martingales
+cas de sur-martingales pour montrer queE(Xτ ) ≤ E(X0), et de sur-martingales pour
+montrer queE(Xτ ) ≥ E(X0).
+Dans cette section, on va démontrer un premier théorème d’arrêt, lorsqueτ est borné.
+Proposition 3.3.1. Soit (Xn) une martingale pour(Fn) et τ un temps d’arrêt. Soit le
+processus(Yn) donné parYn = Xn∧τ . Alors(Yn) est une martingale. On noteraXτ
+n := Yn,
+on appelle le processus(Xτ
+n) une “martingale arrêtée”.
+Démonstration. On a
+E(Yt+1|Ft) = E(X(t+1)∧τ |Ft)
+= E(Xτ 1{τ≤t} + Xt+11{τ≤t}c|Ft)
+= E
+ tX
+k=0
+Xk1{τ=k} + Xt+11{τ≤t}c
+Ft
+!
+=
+tX
+k=0
+Xk1{τ=k} + 1{τ≤t}cE(Xt+1|Ft)
+= Xτ 1{τ≤t} + 1{τ≤t}cXt
+= Xt∧τ = Yt
+Comme pour toutes les propriétés précédentes, on adapte celle-ci de façon directe pour
+les martingales positives et les sur et sous-martingales.
+Théorème 3.3.2(Théorème d’arrêt — cas borné). Soit (Xn) une martingale pour(Fn)
+et τ un temps d’arrêt. On suppose queτ est borné p.s, autrement dit, il existeT0 ∈ N tel
+que P(τ ≤ T0) = 1. Alors :
+E(Xτ ) = E(X0).
+Démonstration. D’aprèslapropositionprécédente, (Xτ
+t ) estunemartingaledonc E(Xτ
+T0 ) =
+E(Xτ
+0 ). De plus, il est immédiat queXτ
+T0 = Xτ et d’autre partXτ
+0 = X0. On récapitule :
+E(Xτ ) = E(Xτ
+T0 ) = E(Xτ
+0 ) = E(X0)
+ce qui conclut.
+Il existe en fait une formulation un peu plus générale.
+Théorème 3.3.3 (Théorème d’arrêt — cas borné, deuxième version). Soit (Xn) une
+martingale pour(Fn) et τ1 et τ2 deux temps d’arrêt avec0 ≤ τ1 ≤ τ2 ≤ T0 p.s Alors :
+E(Xτ2 |Fτ1 ) = Xτ1 .
+Pour voir que ceci implique bien la première version, prendreτ1 = 0 pour obtenir
+E(Xτ2 |F0) = X0, et en prenant l’espérance des deux côtés,E(Xτ2 ) = E(X0).
+58
+
+[Page 59]
+3.4 Décomposition de Doob
+Démonstration. Par définition de l’espérance conditionnelle, il s’agit de démontrer que
+pour toutA ∈ Fτ1 on a
+E(1AXτ2 ) = E(1AXτ1 ).
+On commence donc le calcul :
+E(1AXτ2 ) = E(1AXτ2∧T0 )
+= E
+ T0X
+t=0
+1A1{τ1=t}Xτ2∧T0
+!
+=
+T0X
+t=0
+E
+ 
+1A∩{τ1=t}Xτ2∧T0
+
+=
+T0X
+t=0
+E
+
+E(1A∩{τ1=t}Xτ2∧T0 |Ft)
+
+, orA ∩ {τ1 = t} ∈ Ft
+=
+T0X
+t=0
+E
+h
+1A∩{τ1=t}E(Xτ2
+T0 |Ft)
+i
+=
+T0X
+t=0
+E
+ 
+1A∩{τ1=t}Xτ2
+t
+
+=
+T0X
+t=0
+E
+ 
+1A∩{τ1=t}Xt∧τ2
+
+, ort = τ1 ≤ τ2
+= E
+ T0X
+t=0
+1A1{τ1=t}Xt
+!
+= E(1AXτ1 )
+ce qui conclut.
+3.4 Décomposition de Doob
+Définition 3.4.1.On appelle processus croissant un processus(Yt)t∈N tel que pour tout
+t, Yt ≤ Yt+1 p.s.
+Définition 3.4.2.On appelle processus prévisible pour la filtration(Ft)t∈N un processus
+(Yt)t∈N tel que pour toutt, Yt+1 est Ft mesurable.
+Théorème 3.4.1 (Théorème de décomposition de Doob). Soit (Xt)t∈N une SOUS-
+martingale pour la filtration(Ft)t∈N. Alors on a la décomposition :
+Xt = Mt + Yt
+où (Mt) est une martingale, etYt est un processus croissant prévisible. Si on rajoute la
+condition Y0 = 0, cette décomposition est unique. Elle s’appelle “décomposition de Doob”
+de (Xt) et le processus(Yt) s’appelle le “compensateur de(Xt)”.
+59
+
+[Page 60]
+3 Martingales
+Démonstration. Poser Y0 = 0, Yt+1 = Yt + E(Xt+1 −Xt|Ft) puis Mt = Xt −Yt. On a par
+récurrence queYt+1 est Ft-mesurable, et donc(Yt) est prévisible. De plus
+Yt+1 − Yt = E(Xt+1 − Xt|Ft) = E(Xt+1|Ft) − Xt ≥ 0
+car (Xt) est une sous-martingale, donc(Yt) est croissant. Il reste à vérifier que(Mt) est
+une martingale. Or :
+E(Mt+1|Ft) = E(Xt+1 − Yt+1|Ft) = E(Xt+1 − (Yt + Xt+1 − Xt)|Ft) = Mt
+donc (Mt) est bien une martingale.
+Démontrons enfin l’unicité. SupposonsXt = Mt + Yt = M′
+t + Y ′
+t avec(M′
+t) martingale,
+Y ′
+0 = 0 et (Y ′
+t ) croissant prévisible. Alors
+Y ′
+t+1 − Y ′
+t = Xt+1 − Xt + M′
+t+1 − M′
+t
+et en prenantE(·|Ft) on a
+Y ′
+t+1 − Y ′
+t = E(Xt+1 − Xt|Ft).
+Comme Y ′
+0 = 0 = Y0, par récurrence,Y ′
+t = Yt pour tout n, et du coupM′
+t = Mt pour
+tout n.
+Exemple 3.4.1. Soit (Xn) une martingale pour (Fn) avec E(X2
+n) < ∞ pour tout n.
+Alors en utilisant la Proposition 3.1.2, ou en invoquant directement l’inégalité de Jensen,
+on a immédiatement que(X2
+n) est une sous-martingale. On en déduit que
+X2
+n = Mn + Yn
+où (Mn) est une martingale et(Yn) un processus croissant prévisible, avecY0 = 0. On
+appelle le processus(Yn) la “variation quadratique de la martingale(Xn)” ou parfois le
+“crochet de(Xn)”, et on note⟨X⟩n := Yn, donc la décomposition se ré-écrit :
+X2
+n = Mn + ⟨X⟩n .
+Le terme “crochet” se justifie par la notation, le terme “variation quadratique” par le fait
+qu’on peut démontrer que
+⟨X⟩n =
+nX
+i=1
+E
+ 
+(Xi − Xi−1)2|Fi−1
+
+. (3.2)
+En effet, à partir de la preuve de la décomposition de Doob, on a⟨X⟩0 = 0 et ⟨X⟩n+1 =
+⟨X⟩n + E(X2
+n+1 − X2
+n|Fn), et par récurrence on obtient :
+⟨X⟩n =
+nX
+i=1
+E(X2
+i − X2
+i−1|Fi−1).
+60
+
+[Page 61]
+3.5 Inégalités maximales
+Or :
+E
+ 
+(Xi − Xi−1)2|Fi−1
+
+= E
+ 
+X2
+i |Fi−1
+
+− 2E(Xi−1Xi|Fi−1) + X2
+i−1
+= E
+ 
+X2
+i |Fi−1
+
+− 2Xi−1E(Xi|Fi−1) + X2
+i−1
+or (Xn) est une martingale donc
+= E
+ 
+X2
+i |Fi−1
+
+− 2X2
+i−1 + X2
+i−1
+= E
+ 
+X2
+i − X2
+i−1|Fi−1
+
+et donc (3.2) est prouvée.
+3.5 Inégalités maximales
+Il s’agit de borner le max de martingales.
+Lorsqu’on souhaite borner la probabilité qu’une variable X ≥ 0 soit trop grande,
+on utilise en général l’inégalité de Markov. On la rappelle ici avec sa preuve, car la
+construction des inégalités maximales repose sur une sophistication de cette preuve.
+Théorème 3.5.1(Inégalité de Markov). Soit X une v.a. positive. Pour toutt >0,
+P(X ≥ t) ≤ E(X)
+t .
+Démonstration. On aE(X) ≥ E
+ 
+X1{X≥t}
+
+≥ E
+ 
+t1{X≥t}
+
+= tP(X ≥ t).
+Sil’onsouhaitebornerlemaxde N variablesaléatoires X1, . . . , XN demêmeespérance,
+de façon générale, on utilise un outil appelé borne d’union :
+P( max
+1≤i≤N
+Xi ≥ t) = P
+
+ [
+1≤i≤N
+{Xi ≥ t}
+
+
+≤
+NX
+i=1
+P(Xi ≥ t)
+=
+NX
+i=1
+E(Xi)
+t
+= NE(X1)
+t .
+Le facteur N semble être le prix à payer pour passer au max. Cette borne est très
+grossière, mais sans hypothèse supplémentaire sur lesXi, on ne peut pas vraiment l’amé-
+liorer. On peut faire par exemple des hypothèses de moments, etc. ceci est énormément
+utilisé dans les cours de statistique et machine learning théorique. Ici, on va voir que si
+on suppose que les(Xi) sont en fait une (sur ou sous) martingale, il n’y a pas de prix à
+payer pour passer au max.
+61
+
+[Page 62]
+3 Martingales
+Proposition 3.5.2. Soit a >0. Soit(Xn) une SUR-martingale positive. Alors
+P
+
+sup
+n∈N
+Xn > a
+
+≤ E(X0)
+a .
+Démonstration. On définit le temps d’arrêt
+τa = inf {n ∈ N : Xn > a},
+on remarque que
+{τa < ∞} =
+
+sup
+n∈N
+Xn > a
+
+et que
+Xn∧τa ≥ a1{τa≤n}. (3.3)
+Puisque (Xτa
+n ) est une sur-martingale,E(Xτa
+0 ) ≥ E(Xτa
+n ), et donc :
+E(X0) = E(Xτa
+0 ) ≥ E(Xn∧τa)
+≥ E
+ 
+a1{τa≤n}
+
+d’après (3.3)
+= aP(τa ≤ n) − − − →
+n→∞
+aP(τa < ∞)
+Proposition 3.5.3. Soit a >0. Soit(Xn) une SOUS-martingale positive. Alors
+P
+
+max
+0≤k≤n
+Xk > a
+
+≤ E(Xn)
+a .
+Démonstration. On utilise le même temps d’arrêtτa, et cette fois-ci on veut contrôler
+
+max
+0≤k≤n
+Xk > a
+
+= {τa ≤ n}.
+Or on a
+aP(τa ≤ n) = E
+ 
+a1{τa≤n}
+
+= E
+ nX
+k=0
+a1{τa=k}
+!
+≤ E
+ nX
+k=0
+Xk1{τa=k}
+!
+=
+nX
+k=0
+E
+ 
+Xk1{τa=k}
+
+≤
+nX
+k=0
+E
+ 
+E(Xn|Fk)1{τa=k}
+
+62
+
+[Page 63]
+3.5 Inégalités maximales
+=
+nX
+k=0
+E
+ 
+E(Xn1{τa=k}|Fk)
+
+=
+nX
+k=0
+E
+ 
+Xn1{τa=k}
+
+= E
+ 
+Xn
+nX
+k=0
+1{τa=k}
+!
+= E
+
+Xn1{max0≤k≤n Xk>a}
+
+(3.4)
+≤ E(Xn)
+On rappelle que pour1 ≤ p <∞ on définit l’espaceLp comme l’ensemble des variables
+aléatoires X telles queE(|X|p) < ∞. On munit cet espace de la norme
+∥X∥p = [E(|X|p)]
+1
+p .
+Dans le cas p = ∞ l’espace Lp est l’espace des variables aléatoires bornées presque
+sûrement, et on pose
+∥X∥∞ = inf {u ≥ 0 : P(|X| ≤u) = 1}.
+Définition 3.5.1.Soit un processus(Xn)n∈N. On dit que le processus est borné dansLp
+pour p ∈ [1, ∞] si et seulement si chaqueXn ∈ Lp et
+sup
+n∈N
+∥Xn∥p < ∞.
+Théorème 3.5.4(Inégalité de Doob). Soit p ∈]1, ∞], (Xn) une martingale ou une sous-
+martingale positive, et on suppose que(Xn) est bornée dansLp. Alors supn∈N |Xn| est
+dans Lp, et on a sup
+n∈N
+|Xn|
+
+p
+≤ p
+p − 1 sup
+n∈N
+∥Xn∥p.
+Bien remarquer que la borne ne s’étend pas au casp = 1, ceci aura des conséquences
+importantes dans l’étude de la convergence des martingales dans la section suivante.
+Démonstration. Dans le casp = ∞, l’inégalité est en fait une égalité trivialement vraie.
+Onvamaintenantsupposer p ∈]1, ∞[.Remarquerquesi (Xn) estunemartingale,parJen-
+sen, (|Xn|) est une sous-martingale positive. Dans le cas où(Xn) est une sous-martingale
+positive, Xn = |Xn|. Donc, dans les deux cas,(|Xn|) est une sous-martingale positive.
+On fixe a > 0, et pour faire court, on poseYn = max 0≤k≤n |Xk|. On peut utiliser la
+Proposition 3.5.3, ou plutôt l’inégalité (3.4) dans la preuve de la Proposition 3.5.3, qui
+donne :
+aE
+ 
+1{Yn>a}
+
+≤ E
+ 
+|Xn|1{Yn>a}
+
+.
+63
+
+[Page 64]
+3 Martingales
+On multiplie les deux membres parpap−2 :
+pap−1E
+ 
+1{Yn>a}
+
+≤ pap−2E
+ 
+|Xn|1{Yn>a}
+
+.
+On intégre poura dans R+ et on obtient :
+Z ∞
+0
+pap−1E
+ 
+1{Yn>a}
+
+da ≤
+Z ∞
+0
+pap−2E
+ 
+|Xn|1{Yn>a}
+
+da.
+Les quantités intégrées étant toutes positives, on peut utiliser Fubini :
+E
+Z ∞
+0
+pap−11{Yn>a}da
+
+≤ E
+Z ∞
+0
+pap−2|Xn|1{Yn>a}da
+
+soit
+E
+Z Yn
+0
+pap−1da
+
+≤ E
+
+|Xn| p
+p − 1
+Z Yn
+0
+(p − 1)ap−2da
+
+.
+On fait le changement de variableb = ap à gauche etc = ap−1 à droite
+E
+ Z Y p
+n
+0
+db
+!
+≤ p
+p − 1E
+ 
+|Xn|
+Z Y p−1
+n
+0
+dc
+!
+et le calcul des deux intégrales devient trivial. On obtient :
+E(Y p
+n ) ≤ p
+p − 1E
+ 
+|Xn|Y p−1
+n
+
+.
+On remarque que le membre de gauche est∥Yn∥p
+p et on applique Hölder sur le membre
+de droite :
+∥Yn∥p
+p ≤ p
+p − 1∥Xn∥p∥Y p−1
+n ∥ p
+p−1
+= p
+p − 1∥Xn∥p∥Yn∥p−1
+p .
+Une simplification des deux membres par∥Yn∥p−1 donne
+∥Yn∥p ≤ p
+p − 1∥Xn∥p,
+soit, en revenant à la définition deYn,
+ max
+0≤k≤n
+|Xn|
+
+p
+≤ p
+p − 1∥Xn∥p.
+En prenant le sup enn ∈ N des deux membres on obtient
+sup
+n∈N
+|Xn|
+
+p
+≤ p
+p − 1 sup
+n∈N
+∥Xn∥p
+ce qui est bien le résultat voulu.
+64
+
+[Page 65]
+3.6 Convergence dansL2 (et plus généralementLp, p >1)
+3.6 Convergence dansL2 (et plus généralementLp, p >1)
+On rappelle d’abord queLp est l’espace vectoriel des variables aléatoires réelles telles
+∥X∥p := E{|X|p}1/p < ∞.
+On peut définir cette quantité pour toutp >0, mais nous ne considérerons que le cas
+p ≥ 1, pour lequel c’est une norme (si l’on travaille sur les classes d’équivalence définies
+par X = Y p.s.); notamment on a l’inégalité triangulaire (dite inégalité de Minkowski) :
+∥X + Y ∥p ≤ ∥X∥p + ∥Y ∥p
+encore une fois pourp ≥ 1.
+On peut aussi définirL∞, l’ensemble des variables bornées p.s. Noter que les ensembles
+Lp forment une suite décroissante (X ∈ Lp ⇒ X ∈ Lq si p > q).
+On dira qu’un processus(Xt) est bornée dansLp si lesXt sont bornésuniformément
+dans Lp :
+Définition3.6.1. Un processus(Xt) est dit borné dansLp s’il existeC tel que∥Xt∥p ≤ C
+pour toutt ≥ 0. (Cela implique notamment queXt ∈ Lp pour toutt ≥ 0.)
+Les deux espaces Lp les plus importants en pratique sontL2 (qui est un espace de
+Hilbert), et L1 (l’espace des variables intégrables). Les résultats concernant L2 sont
+souvent plus simples à établir, mais, par construction, les résultats concernantL1 sont
+plus généraux. On s’intéresse donc pour commencer à des martingales bornées dansL2.
+Proposition 3.6.1.Soit (Xn) une martingale bornée dansL2. Alors(Xn) converge p.s
+et dansL2.
+Exemple 3.6.1.Avant de passer à la preuve, revenons à un exemple présenté au début
+du chapitre : des variables indépendantesεt ∼ N(0, σ2
+t ) et
+Xt =
+tX
+i=0
+εi.
+Dans ce cas, notons que
+Xt ∼ N
+ 
+0,
+tX
+i=0
+σ2
+i
+!
+⇒ ∥Xt∥2 =
+tX
+i=0
+σ2
+i .
+Si P∞
+i=0 σ2
+i = S <∞, la martingale(Xn) est bornée dansL2, et donc elle converge p.s
+et dansL2 vers une variable aléatoire que l’on pourra noterX∞. Par ailleurs, en passant
+par exemple par la fonction caractéristique, on démontre que
+X∞ ∼ N
+ 
+0,
+∞X
+i=0
+σ2
+i
+!
+.
+65
+
+[Page 66]
+3 Martingales
+Exemple 3.6.2.Un exemple plus amusant. On sait que la série harmonique diverge, en
+fait
+nX
+k=1
+1
+k ∼ log(n) − − − →
+n→∞
+∞.
+Mais quid de la série X
+k∈N
+±1
+k
+où les signes sont tirés à pile-ou-face? Soient donc des variables i.i.d(Xk) avec P(Xk =
++1) = P(Xk = −1) = 1/2 et on définitM0 = 0 puis
+Mn =
+nX
+k=1
+Xk
+k .
+On vérifie que(Mn) est une martingale, que
+E(M2
+n) =
+nX
+k=1
+1
+k2 ≤
+∞X
+k=1
+1
+k2 = π2
+6
+et donc(Mn) converge p.s (et dansL2). Autrement dit, presque sûrement par rapport au
+tirage des signes± à pile-ou-face, la série
+X
+k∈N
+±1
+k
+converge.
+Démonstration. On commence par montrer la convergence dansL2. Pour ceci, il suffit
+de démontrer que(Xn) est une suite de Cauchy dansL2.
+Par Jensen, (X2
+n) est une sous-martingale, doncE(X2
+n) est une suite croissante. De
+plus c’est une suite bornée par hypothèse. DoncE(X2
+n) converge vers une limiteC >0.
+Donc :
+∥Xn+p − Xn∥2
+2 = E
+
+(Xn+p − Xn)2
+= E
+
+E
+ 
+(Xn+p − Xn)2|Fn
+
+= E
+
+E
+ 
+X2
+n+p|Fn
+
+− 2XnE(Xn+p|Fn) + X2
+n
+
+= E
+
+E
+ 
+X2
+n+p|Fn
+
+− X2
+n
+
+= E
+ 
+X2
+n+p
+
+− E
+ 
+X2
+n
+
+≤ C − E
+ 
+X2
+n
+
+− − − →
+n→∞
+0.
+Donc (Xn) est une suite de Cauchy dansL2, donc elle converge dansL2.
+Reste à démontrer que(Xn) converge également presque sûrement. Là encore, on va
+démontrer que(Xn) est p.s de Cauchy. Pour celà, on pose
+Vn = sup
+i,j≥n
+|Xi − Xj|.
+66
+
+[Page 67]
+3.7 Interlude : urnes de Polya
+On note que(Vn) est p.s positive et décroissante, donc, elle converge presque sûrement
+vers une limiteV . De plus,
+P(Vn > t) = P
+ 
+sup
+i,j≥n
+|Xi − Xj| > t
+!
+≤ P
+ 
+sup
+k≥0
+|Xk+n − Xn| > t
+2
+!
+≤
+2
+t
+2
+E
+
+
+ 
+sup
+k≥0
+|Xk+n − Xn|
+!2
+ par Markov
+≤
+2
+t
+2 2
+2 − 1 sup
+k≥0
+E
+ 
+|Xk+n − Xn|2
+par Doob avecp = 2
+= 8
+t2 sup
+k≥0
+E
+ 
+|Xk+n − Xn|2
+− − − →
+k→∞
+0
+car (Xk) est de Cauchy dansL2. Ceci prouve que
+Vn
+proba.
+− − − − →
+n→∞
+0.
+Or on a déjà montré que
+Vn
+p.s
+− − − →
+n→∞
+V.
+Par unicité de la limite (à un p.s près),V = 0 p.s et donc
+Vn
+p.s
+− − − →
+n→∞
+0
+ce qui prouve que(Xn) est p.s une suite de Cauchy, donc elle converge p.s.
+3.7 Interlude : urnes de Polya
+Le problème de l’urne de Polya fournit une première illustration de la théorie des
+martingales (et notamment des théorèmes de convergence de la section précédente).
+On place dans une urne deux boules, une blanche, une noire. Puis on répète l’opération
+suivante : tirage d’une boule au hasard, remise de cette boule, et ajout d’une boule
+supplémentaire de même couleur que la boule tirée. SoitNt le nombre de boules blanches
+à l’itérationt (parmi un total det + 2 boules). On poseN0 = 1, et on voit que :
+E(Nt − Nt−1|Nt−1 = n) = n
+t + 1 (3.5)
+donc
+E(Nt|Nt−1) =
+t + 2
+t + 1
+
+Nt−1.
+67
+
+[Page 68]
+3 Martingales
+(Noter que le processus est aussi Markovien.)
+On considère désormais laproportion de boules blanches :Mt = Nt/(t + 2). C’est une
+martingale :E(Mt|Mt−1) = Mt−1.
+Cette martingale est à valeur dans[0, 1] (c’est une proportion), donc elle est bornée,
+de façon déterministe et a fortiori dansLp pour toutp ≥ 1. On sait donc queMt → M∞
+p.s. et dansLp, p >1 (Théorème 3.6.1). On veut maintenant déterminer la loi deM∞.
+Pour ce faire, on détermine d’abord la loi deNt.
+Proposition 3.7.1. La variableNt suit une loi uniforme sur l’ensemble{1, . . . , t+ 1}.
+Démonstration. Par récurrence : on a bienP(N1 = 1) = P(N2 = 2) = 1 /2 (ou même
+N0 = 1, ce qui est bien une loi uniforme sur le singleton{1}). Si la propriété est vraie au
+temps t − 1, on a, pour1 ≤ n ≤ t + 1 :
+P(Nt = n) = P(Nt−1 = n − 1)n − 1
+t + 1 + P(Nt−1 = n)
+
+1 − n
+t + 1
+
+= 1
+t + 1
+On en déduit aisément queMt converge en loi vers une loi uniforme sur[0, 1] ; puis par
+unicité de la limite, queM∞ ∼ U[0, 1].
+Ce problème peut se généraliser comme suit : on place initialementni boules de couleur
+i dans l’urne, pouri = 1, . . . , k. Quelle est alors la loi limite? La façon la plus élégante
+de traiter cette généralisation est d’utiliser des propriétés des lois gamma et de Dirichlet.
+Lemme 3.7.2.Une variable aléatoire positive de densité :
+f(x) = βα
+Γ(α)xα−1 exp(−βx)
+où α, β >0 est dite de loi Gamma(α, β). La somme de variables indépendantesV1, . . . , Vk
+telles queVi ∼ Gamma(αi, β) suit une loiGamma(Pk
+i=1 αi, β). En particulier une somme
+de k variables exponentielles (αi = 1) de paramètreβ suit une loiGamma(k, β).
+Lemme 3.7.3. Soient V1, . . . , Vk, k ≥ 2, des variables aléatoires indépendantes telles
+que Vi ∼ Gamma(αi, 1), αi > 0. SoientUi = Vi/ Pk
+j=1 Vj. Le vecteur(U1, . . . , Uk−1) suit
+une loi dite de Dirichlet(α1, . . . , αk), de densité :
+f(u1, . . . , uk−1) = Γ(Pk
+i=1 αi)Qk
+i=1 Γ(αi)
+kY
+i=1
+uαi−1
+i 1Sk (u1, . . . , uk−1)
+où uk = 1 − u1 − . . .− uk−1, et
+Sk = {(u1, . . . , uk−1) : ui > 0,
+k−1X
+i=1
+ui ≤ 1}.
+Pour α1 = . . .= αk = 1, on parlera de loi uniforme sur le simplexe.
+68
+
+[Page 69]
+3.8 Convergence : résultats plus généraux
+Onnoteraquecetteloiestdéfiniepourlevecteur (U1, . . . , Uk−1),plutôtque (U1, . . . , Uk),
+pour éviter les problèmes techniques liées aux lois définies sur des variétés (l’espace fermé
+défini par la contrainteU1 + . . . Uk = 1.) Mais, par abus de langage, on dira aussi que le
+vecteur (U1, . . . , Uk) suit aussi cette loi de Dirichlet.
+Lemme 3.7.4. Si (U1, . . . , Uk) ∼ Dirichlet(α1, . . . , αk), alors pour des entiersj ≥ 2,
+l1, . . . , lj ≥ 1 tels que l1 + . . .+ lj = k, le vecteur(W1, . . . , Wj) des sommes partielles
+W1 = U1 + . . .+ Ul1 , ...,Wj = Uk−lj+1 + . . .+ Uk suit une loi de Dirichlet, de paramètres
+β1, . . . , βj, avecβ1 = α1 + . . .+ αl1 , ...,βj = αk−lk+1 + . . .+ αk.
+Les preuves sont laissées au lecteur. On peut maintenant généraliser assez aisément le
+résultat précédent.
+Proposition 3.7.5.Soit une urne de Polya contenant initialementni boules de couleur
+i, pouri = 1, . . . , k, et soitMt le vecteur des proportions de chaque couleur au tempst.
+Le processusMt converge p.s. vers une variableM∞ de loi de Dirichlet(n1, . . . , nk).
+Démonstration. On suppose pour commencer quen1 = . . .= nk = 1. Comme dans le cas
+k = 2, on montre aisément que queMt suit une certaine loi uniforme (sur des ensembles
+d’entiers), qui doit converger (en loi) vers une loi uniforme sur le simplexe. Noter aussi
+que chaque composante du vecteurMt est bien une martingale (par rapport à quelle
+filtration?), et donc converge p.s.
+Pour une configuration de départ quelconque, on peut toujours numéroter les boules
+de départ de 1 à m = Pk
+i=1 ni pour distinguer les boules de même couleur. Puis on
+effectue un tirage de Polya, en remplaçant les « couleurs » par les catégories définies par
+ces nombres : i.e. au temps 1 on tire une boule au hasard, et on replace dans le sac deux
+boules avec le même nombre. Le résultat précédent montre que le vecteur des proportions
+tend vers une loi uniforme (c’est à dire, une Dirichlet(1, . . . ,1)). On réunit ensuite les
+boules de même couleur, et on applique le Lemme 3.7.4, pour conclure.
+3.8 Convergence : résultats plus généraux
+Lorsqu’un processus est borné dans L1, les choses deviennent nettement plus tech-
+niques. En particulier, on peut avoir convergence presque sûre sans convergence dansL1.
+On commence par énoncer et démontrer deux résultats de convergence ps.
+Théorème 3.8.1. Soit (Xn) une sous-martingale bornée dansL1. Alors elle converge
+presque sûrement.
+La preuve nécessite un lemme qui est un résultat intéressant en soi.
+Lemme 3.8.2. Soit (Xn) une sur-martingale positive. AlorsXn
+p.s
+− − − →
+n→∞
+X∞. De plus,
+{X0 < ∞} ⊂ {X∞ < ∞} et E(X∞|Fn) ≤ Xn.
+Noter que ces deux résultats sont assez intuitifs, par analogie avec les suites détermi-
+nistes : une suite croissante (resp. décroissante) et bornée supérieurement (resp. inférieu-
+rement) converge vers une limite finie.
+69
+
+[Page 70]
+3 Martingales
+Preuve du Lemme 3.8.2.Comme (Xn) est une sur-martingale positive,(Yn) défini par
+Yn = exp(−Xn) est une sous-martingale positive (Jensen) avec0 ≤ Yn ≤ 1. On peut
+donc écrire sa décomposition de Doob :
+Yn = Mn + An (3.6)
+où (Mn) est une martingale,(An) un processus croissant prévisible etA0 = 0. Comme
+(An) est un processus croissant, il converge presque sûrement versA∞ à valeurs dans
+R+ ∪ {∞}. Par le TCM,E(An) → E(A∞) et de plus,
+E(An) = E(Yn) − E(Mn) par (3.6)
+= E(Yn) − E(M0) car (Mn) martingale
+= E(Yn) − E(Y0) par (3.6) encore
+≤ 1 car 0 ≤ Yn ≤ 1.
+Ceciprouveque E(A∞) ≤ 1 etdoncque A∞ < ∞ p.s.Pour p ∈ N posons τp = inf{n ∈ N :
+An+1 > p}, comme(An) est prévisible,τp est bien un temps d’arrêt. De plus,An∧τp ≤ p.
+Donc :
+|Mτp
+n | = |Mn∧τp| = |Yn∧τp − An∧τp| ≤1 + p
+donc la martingale arrêtée(Mτp
+n ) est une martingale bornée, donc bornée dansL2, et
+donc d’après la Proposition 3.6.1 elle converge presque sûrement et dansL2. Donc
+Yn∧τp = Mτp
+n + An∧τp
+converge p.s. Autrement dit :
+{τp = ∞} ⊂ {(Yn) converge}
+soit (passage au complémentaire)
+{(Yn) diverge} ⊂ {τp < ∞} ⊂ {A∞ > p}
+et donc
+P((Yn) diverge) ≤ P(τp < ∞) ≤ P(A∞ > p) − − − →
+p→∞
+0
+car A∞ < ∞ p.s. Or P((Yn) diverge) ne dépend bien entendu pas de p donc on a
+P((Yn) diverge) = 0, autrement dit,(Yn) converge p.s. En revenant àXn = −log(Yn), on
+a directement que(Xn) converge également p.s, la limite étant à valeurs dansR+ ∪{∞}.
+Reste à prouver la relation sur l’espérance :
+E(X∞|Fk) = E
+
+lim inf
+n→∞
+Xn|Fk
+
+≤ lim inf
+n→∞
+E(Xn|Fk) par Fatou conditionnel
+≤ Xk car (Xn) sur-martingale.
+70
+
+[Page 71]
+3.8 Convergence : résultats plus généraux
+On peut maintenant prouver le théorème.
+Preuve du Théorème 3.8.1.Rappel :(Xn) est cette fois une sous-martingale bornée dans
+L1.Onpose X+
+n = Xn∨0,entantquefonctionconvexede (Xn),c’estunesous-martingale
+(positive). On peut donc encore une fois écrire la décomposition de Doob :
+X+
+n = Mn + An
+et, comme dans la preuve du Lemme 3.8.2,(An) étant positif et croissant, il converge
+vers une limiteA∞ à valeurs dansR+ ∪ {∞}. Cette fois
+E(A∞) = sup
+n∈N
+E(An)
+= sup
+n∈N
+
+E(X+
+n ) − E(Mn)
+
+≤ sup
+n∈N
+E(|Xn|) − E(M0)
+< ∞ par hypothèse,
+donc là encoreE(A∞) < ∞ et A∞ < ∞ p.s. On définit un nouveau processus,
+Yn = Mn + E(A∞|Fn) .
+Le processus(Mn) est une martingale, quand à(E(A∞|Fn)), c’est une martingale régu-
+lière (notion définie dans la prochaine section, mais la démonstration du fait que c’est
+bien une martingale est immédiate). Donc(Yn) est aussi une martingale. Comme(An)
+est un processus croissant,A∞ ≥ An ⇒ E(A∞|Fn) ≥ E(An|Fn) = An. Donc,
+Yn = Mn + E(A∞|Fn) ≥ Mn + An = X+
+n ≥ 0.
+Donc (Yn) est une (sur-)martingale positive, d’après le Lemme 3.8.2,Yn
+p.s
+− − →Y∞. On
+pose également
+Zn = Yn − Xn,
+en tant que somme d’une martingale et d’une sur-martingale, c’est une sur-martingale
+et commeYn ≥ X+
+n ≥ Xn on a immédiatementZn ≥ 0. On peut là-encore invoquer le
+Lemme 3.8.2,Zn
+p.s
+− − →Z∞. CommeXn = Yn − Zn on a presque établi la convergence p.s.
+de (Xn), il faut juste vérifier qu’il n’y a pas de forme indéterminée. En fait,on va montrer
+que Y∞ et Z∞ sont finies p.s.
+Tout d’abord,E(Yn) = E(Mn) + E(A∞) < ∞, or le Lemme 3.8.2 dit également que
+E(Y∞|Fn) ≤ Yn donc
+E(Y∞) = E[E(Y∞|Fn)] ≤ E(Yn) < ∞
+et doncY∞ < ∞ p.s.
+De la même façon,
+E(Z∞) ≤ E(Zn) = E(Yn) − E(Xn) < ∞
+et doncZ∞ < ∞ p.s.
+71
+
+[Page 72]
+3 Martingales
+3.9 Deuxième interlude : processus de branchement
+(Galton-Watson)
+On considère une population évoluant dans le temps : chaque individu au tempst − 1
+aura un nombre aléatoire de descendants au tempst. Ce nombre de descendants suit une
+loi fixe. Donc, au tempst ≥ 1, le nombre d’individu est :
+Zt =
+Zt−1X
+i=1
+Xt,i
+où les Xt,i sont des copies IID deX. On prend classiquementZ0 = 1. On va supposer
+que P(X = 0) > 0 et P(X >1) > 0 pour rendre l’étude plus intéressante. (Pourquoi?)
+Bien entendu, le nombre de descendantsX est à valeurs dansN.
+Les processus de branchement sont très utiles pour modéliser différents phénomènes
+en biologie notamment. Ils présentent aussi une belle application de la théorie des mar-
+tingales.
+Posons d’abord le décor. Soitµ := E(X) et G(x) := E(xX), pour x ∈ [0, 1] ; G est la
+fonction génératrice de la loi deX :
+G(x) = P(X = 0) + P(X = 1)x + P(X = 2)x2 + . . .
+On montre aisément les propriétés suivantes :G(0) = P(X = 0), G′(1) = µ, G est
+croissante, convexe. Par ailleurs, siGt est la fonction génératrice deZt, on a : Gt =
+G ◦ Gt−1 (par récurrence).
+Par ailleursE[Zt|Zt−1] = µZt−1, doncE[Zt] = µt, et :
+— si µ >1 (cas sur-critique) :(Zt) est une sous-martingale (positive).
+— si µ = 1 (cas critique) :(Zt) est une martingale (positive).
+— si µ <1 (cas sous-critique) :(Zt) est une sur-martingale (positive).
+(Dans les trois cas, la filtration associée est la filtration canonique.) On peut en déduire
+que pourµ ≤ 1, Zt converge p.s. vers une limiteZ∞. Nous aimerions en savoir plus sur
+Z∞. (Et sur le comportement asymptotique deZt quand µ >1.)
+Intéressons-nous tout d’abord à la probabilité d’extinction de la population; soit l’évé-
+nement E : Zt = 0 au bout d’un certain tempst. On note que
+E = ∪∞
+t=1{Zt = 0}
+et doncπ := P(E) est la limite de la suite croissanteP(Zt = 0) = Gt(0) (théorème de la
+convergence monotone). Reste à savoir dans quels casπ = 1 ou π <1. (On sait déjà que
+π >0.)
+Puisque π = limt→+∞ Gt(0), c’est une solution de l’équationπ = G(π). (Gt+1(0) =
+G(Gt(0)), et on passe à la limite;G est continue.)
+Le lemme suivant devient évident si l’on trace les graphes correspondants (se rappeler
+que G est croissante, convexe, queG(0) = P(X = 0) > 0 et G′(1) = µ).
+72
+
+[Page 73]
+3.9 Deuxième interlude : processus de branchement (Galton-Watson)
+Lemme 3.9.1.Si µ ≤ 1, l’unique solution dans[0, 1] de l’équationπ = G(π) est π = 1.
+Si µ > 1, cette équation admet une solution dans]0, 1[ que l’on notera π par la suite
+(reste à démontrer que c’est bien la probabilité d’extinction.)
+En d’autres termes, pourµ ≤ 1, Zt s’annule en un temps fini. (Et donc la limiteZ∞
+est simplement un Dirac en0). Pourµ <1, on peut de plus montrer que la probabilité
+de survie jusqu’à la datet décroît exponentiellement. Par l’inégalité de Markov :
+P(Zt ≥ 1) ≤ E(Zt) = µt.
+Pour µ = 1 , il est possible de montrer que la probabilité de survie décroît en1/t :
+montrer que(1−G(x))−1 −(1−x)−1 = c+O((1−x)3) pour une certaine constantec, en
+déduire un développement similaire pour(1 − Gn(x))−1 − (1 − x)−1, le reste est laissé à
+titre d’exercice. Noter que cela implique que le temps jusqu’à extinction a une espérance
+infinie.
+Pour étudier plus finement le casµ >1, on introduit la martingale suivante :Mt :=
+Zt/µt. (Expliquer pourquoi c’est une martingale.)
+Proposition 3.9.2. Si X ∈ L2 (et donc σ2 := Var(X) < ∞), la martingale Mt est
+bornée dansL2. Donc elle converge p.s. et dansL2 vers une limiteM∞.
+Démonstration. On peut écrire par exemple (en partant deVar(X) = E(X2) − E(X)2)
+que
+E(Z2
+t |Zt−1 = z) = σ2z + µ2z2
+et en déduire que
+E(M2
+t − M2
+t−1|Mt−1) = σ2
+µt+1 Mt−1
+et donc
+E(M2
+t ) = 1 + σ2
+tX
+s=1
+1
+µs+1 ≤ 1 + σ2
+µ(µ − 1).
+La preuve ci-dessus nous donne d’ailleurs la variance de la loi limiteM∞. Puisque cette
+variance est non-nulle, on a bien montré que la probabilité d’extinction est strictement
+inférieure à 1. (Si cette probabilité valait1, alors Zt et donc aussi Mt s’annulerait au
+bout d’un certaint.)
+Donc, pour conclure, quandµ >1, le comportement asymptotique de la population
+est le suivant :
+— Avec probabilitéπ (l’unique solution dans]0, 1[ de l’équationπ = G(π)), la popu-
+lation s’éteint en un temps fini.
+— Avec probabilité (1-π), la taille de la population diverge exponentiellement, au
+taux M∞(ω)µt. (La constante devant le µt est aléatoire, et suit la loi de M∞
+conditionnellement àM∞ > 0.)
+73
+
+[Page 74]
+3 Martingales
+Si la loi de X n’a pas de variance, on peut avoir des comportements un peu plus
+compliqués.
+Notons enfin que si la martingaleMt n’est pas très utile en soi dans le casµ ≤ 1, c’est
+un exemple simple de martingale qui converge p.s. (vers 0 comme on l’a déjà expliqué)
+mais pas dansL1, puisqueE(Mt) = 1. Intuitivement, la loi deMt s’écrase vers zéro, mais
+avec une probabilité non nulle de prendre de très grandes valeurs, qui « compensent ».
+3.10 Martingales régulières et théorème d’arrêt
+On a insisté dans les sections précédentes sur le fait qu’une martingale pouvait conver-
+ger p.s. sans converger dansL1. (Les processus de branchement nous ont donné un tel
+exemple). On va caractériser dans cette section les martingales qui convergent selon ces
+deux modes.
+On commence par définir les martingales régulières :
+Définition 3.10.1.Un processus(Xt) qui peut se mettre sous la forme
+Xt = E(X|Ft)
+pour une certaine filtration(Ft) et une certaine variable intégrableX, est appelé martin-
+gale régulière.
+(Le fait qu’un tel processus soit effectivement une martingale associée à la filtration
+(Ft) est facile à démontrer.)
+Théorème 3.10.1. Soit Xt = E(X|Ft) (avec X variable intégrable) une martingale
+régulière, alorsXt converge p.s. et dansL1 vers X∞ = E(X|F∞).
+Réciproquement, si(Xt) est une martingale qui converge vers une certaine limiteX∞
+dans L1, alors c’est une martingale régulière, et elle converge p.s. versX∞.
+Démonstration. Commençons par la réciproque. Noter que SiXt
+L1
+− →X∞ alors
+|Xt| ≤ |X∞| + |Xt − X∞|
+donc supt E(|Xt|) < ∞, et on peut invoquer le Théorème 3.8.1 qui montre queXt
+p.s
+− − →
+X∞ (même limite, car convergence L1 et convergence p.s. impliquent convergence en
+probabilité).
+Par ailleurs,Xt = E(Xt+k|Ft) pour toutk ≥ 0, et pour faire tendrek → ∞, prendre
+A ∈ Ft, et noter queE(Xt1A) = E(Xt+k1A), et
+|E(Xt+k − X∞) 1A| ≤E(|Xt+k − X∞|1A) ≤ ∥Xt+k − X∞∥1 → 0
+et donc E(Xt1A) = E(X∞1A), on a bienXt = E(X∞|Ft), et (Xt) est une martingale
+régulière. (X∞ est bien intégrable, puisque c’est la limite dansL1.)
+Dans l’autre sens, supposons queXt = E(X|Ft) avec X intégrable. On a alors
+E(|Xt|) = E(|E(X|Ft)|) ≤ E(E(|X||Ft)) = E(|X|)
+74
+
+[Page 75]
+3.10 Martingales régulières et théorème d’arrêt
+donc (Xt) est bornée dansL1 et le Théorème 3.8.1 dit qu’elle converge p.s vers une v.a.
+X∞. Démontrons maintenant que la convergence a aussi lieu dansL1 (vers la même limite
+X∞, même argument que ci-dessus). Pour ceci on va démontrer que(Xt) est de Cauchy
+dans L1. On aX = X+ − X− avec X+ = X ∨ 0 et X− = (−X) ∨ 0 ; on décompose
+Xt = E(X|Ft) = E(X+|Ft) − E(X−|Ft) et on va démontrer queE(X+|Ft) et E(X−|Ft)
+sont des suites de Cauchy. On traite le cas deE(X+|Ft), le casE(X−|Ft) est identique.
+On a :
+∥E(X+|Fs) − E(X+|Ft)∥1 = ∥E(X+|Fs) − E(X+ ∧ a|Fs)∥1| {z }
+− − − →
+a→∞
+0 (TCD)
++ ∥E(X+ ∧ a|Fs) − E(X+ ∧ a|Ft)∥1 + ∥E(X+ ∧ a|Ft) − E(X+|Ft)∥1| {z }
+− − − →
+a→∞
+0 (TCD)
+.
+Pour le terme∥E(X+ ∧ a|Ft) − E(X+ ∧ a|Fs)∥1, noter que(E(X+ ∧ a|Fn)) est une
+martingale bornée dansL1, donc elle converge p.s, et de plus c’est une martingale bornée,
+donc, la convergence p.s implique la convergence dansL1. Donc cette suite est de Cauchy
+dans L1 et donc le terme peut être rendu aussi petit que l’on veut quands et t sont assez
+grands.
+La dernière étape est de démontrer queX∞ = E(X|F∞). On procède de la même façon
+que ci-dessus (dans la réciproque). PourA ∈ Ft, on a
+∀k ≥ 0, E(Xt+k1A) = E(Xt1A) = E(X1A)
+et puisque
+|E(Xt+k − X∞) 1A| ≤E(|Xt+k − X∞|1A) ≤ ∥Xs − X∞∥1 → 0
+on a bien :
+E(X∞1A) = E(X1A). (3.7)
+et cette relation est plus généralement vraie pour toutA ∈ ∪t∈NFt.
+Malheureusement, ceci ne montre pas que c’est vrai pour toutA ∈ F∞ = σ
+ S
+n∈N Fn
+
+.
+Ons’ensortaveclethéorèmedeclassemonotone(admis,horsprogramme):toutd’abord,
+l’ensemble desA qui satisfait (3.7) est une classe monotone (contientΩ, stable par union
+croissante et par différence). De plus,S
+n∈N Fn est unπ-système (stable par intersection
+finie) inclus dans cette classe monotone. Le théorème de classe monotone dit alors que
+σ
+ S
+n∈N Fn
+
+est aussi inclus dans la classe monotone.
+Théorème 3.10.2.Soit Xn = E(X|Fn) une martingale régulière etτ un temps d’arrêt
+quelconque (à valeurs dansN ∪ {∞}). AlorsE(X|Fτ ) = Xτ .
+En particulier, en prenant l’espérance, on obtientE(Xτ ) = E(X) = E(X0).
+Démonstration.
+Xτ =
+X
+k∈N
+E(X|Fk)1{τ=k} + E(X|F∞)1{τ=∞}.
+75
+
+[Page 76]
+3 Martingales
+En particulierE(|Xτ |) ≤ E(|X|) < ∞ donc Xτ est intégrable.
+Pourdémontrer E(X|Fτ ) = Xτ ,ilsuffitdedémontrerquepourtout A ∈ Fτ ,E(1AX) =
+E(1AXτ ). Or on a :
+E(1AX) = E
+ 
+1A
+X
+k∈N
+X1{τ=k} + 1AX1{τ=∞}
+!
+=
+X
+k∈N
+E(X 1A∩{τ=k}| {z }
+∈Fk
+) + E(X 1A∩{τ=∞}| {z }
+∈F∞
+)
+=
+X
+k∈N
+E(Xk1A∩{τ=k}) + E(X∞1A∩{τ=∞})
+= E(1AXτ ).
+76
+
+[Page 77]
+4 Processus en temps continu
+Le but de cette section est d’introduire les deux processus en temps continu les plus
+courament utilisés :
+— le processus de Wiener, dit mouvement brownien;
+— le processus de Poisson;
+sans trop rentrer dans la théorie.
+Comme bien expliqué dans la préface du livre de Kingman (1993), il est plus intuitif
+de présenter certaines propriétés de ces processus dans un cadre plus général que le cadre
+temporel; c’est à dire comme des fonctions aléatoiresτ → R, sans se restreindre àτ = R+
+(espace des temps). C’est l’approche que nous suivrons.
+4.1 Processus ponctuels, processus de Poisson
+4.1.1 Préliminaires : loi de Poisson
+On commence par rappeller la définition d’une loi de Poisson.
+Définition 4.1.1. La loi de Poisson de paramètre µ > 0 est la loi d’une variable
+aléatoireX, à valeurs dansN, telle que :
+P(X = k) = e−µµk
+k! , k = 0, 1, . . . .
+Il sera utile par la suite d’étendre cette définition :
+— au casµ = 0 : X = 0 p.s.;
+— au casµ = +∞ : X = +∞ p.s.
+La fonction génératrice d’une loi de Poisson se calcule aisément :
+G(x) := E
+
+xX
+= exp {µ(x − 1)}, |x| ≤1,
+etpermetd’obtenirtouscesmomentspardérivation: G′(1) = E[X],G′′(1) = E[X(X − 1)],
+etc. Notamment :
+E[X] = Var[X] = µ.
+UnepropriétéfondamentaledesloisdePoissonestleuradditivité,ouplusgénéralement
+leur sigma-additivité.
+Proposition 4.1.1. Soient Xi ∼ Poisson(µi) des variables indépendantes, avecµi ∈
+[0, ∞]. Alors
+∞X
+i=1
+Xi ∼ Poisson
+ ∞X
+i=1
+µi
+!
+.
+77
+
+[Page 78]
+4 Processus en temps continu
+0.0 0.2 0.4 0.6 0.8 1.0
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Figure 4.1– Réalisation d’un processus ponctuel sur[0, 1]2 ; pour un processus de Pois-
+son, les nombres de points qui tombent dans chacun des deux rectangles
+sont indépendants.
+Démonstration. Dès qu’un desµi = +∞, le résultat devient évident. On suppose tous
+les µi < +∞.
+On montre aisément que cette propriété est vraie pour une somme finie :
+nX
+i=1
+Xi ∼ Poisson(
+nX
+i=1
+µi).
+(Preuve par récurence, et pourn = 2, simple calcul de probabilité discrète, laissé à votre
+soin. Ou alors passer par la fonction génératrice.) Il suffit ensuite d’invoquer le théorème
+de convergence monotone pour conclure. Ce raisonnement est valable que la sérieP∞
+i=1 µi
+converge ou pas. (Exercice : vérifier les détails du raisonnement dans ces deux cas!).
+4.1.2 Les processus de Poisson comme processus ponctuels
+On appelleprocessus ponctuel(point process)dans un espaceE une variable aléa-
+toire Π dont les réalisations sont des ensembles, au plus dénombrables, de points dans
+E ; la figure 4.1 représente une telle réalisation pourE = [0, 1]2.
+Cesprocessusponctuelssontutilisésparexempleenstatistiquespatiale,pourmodéliser
+la positions de tremblements de terre, d’arbres, d’étoiles, etc. Un exemple historique est
+l’étude du caractère « aléatoire » des impacts de missiles V1 sur la ville de Londres à la
+fin de la seconde guerre mondiale; cf. Shaw and Shaw (2019).
+Il est commode de représenter un tel processus via leprocessus de comptage(coun-
+ting process)associé. Soit l’application (aléatoire) qui à un ensembleA ⊂ E associe le
+nombre de points deΠ qui tombe dansA :
+N(A) = # {Π ∩ A}.
+78
+
+[Page 79]
+4.1 Processus ponctuels, processus de Poisson
+Remarque 4.1.1.Techniquement, il faut donc imposer que pour des ensemblesA “inté-
+ressants”, la variable aléatoireN(A) soit bien définie, i.e. l’applicationω → # {Π(ω) ∩ A}
+soit bien mesurable. Les ensembles “intéressants” seront généralement les éléments d’une
+tribu associée àE, comme cela va apparaître clairement par la suite.
+Les processus de Poisson sont des processus ponctuels vérifiant les propriétés suivantes.
+Définition 4.1.2. Soit (E, E) un ensemble mesurable, etµ une mesure associée à cet
+ensemble. On appelle processus de Poisson de mesure moyenneµ un processus
+ponctuel Π tel que le processus de comptage associé,N(A) = # {Π ∩ A}, vérifie les deux
+propriétés suivantes :
+1. Pour A1, . . . , Ak ∈ Edisjoints, les variablesN(Ai) sont indépendantes.
+2. Pour A ∈ E, N(A) ∼ Poisson (µ(A)).
+La première propriété est la plus fondamentale : un processus de Poisson modélise une
+notion d’«indépendance locale» : la position d’un point n’a pas d’influence sur la position
+des autres; voir à nouveau la figure 4.1. Cette propriété est vraisemblable dans beaucoup
+d’applications. Il est aussi possible de construire des processus ponctuels répulsifs (les
+points se repoussent), ou attractifs (les points s’agglutinent) mais ces processus sont
+nettement plus compliqués et ne seront pas abordés dans le cours.
+Dans la définition, la mesureµ sert bien de “moyenne”, dans le sens où
+E[N(A)] = µ(A).
+Si µ(E) < +∞ (resp. = ∞), Π est p.s. un ensemble fini (resp. infini dénombrable).
+Dans beaucoup d’applications,E ⊂ Rd, etµ est dominée par la mesure de Lebesgue :
+µ(dx) = λ(x)dx, où la fonctionλ est ditefonction d’intensité. Quandλ est constante,
+on dit que le processus esthomogène. Pour une mesureµ plus générale, il n’est pas
+forcément possible de construire un processus de Poisson de mesure moyenne µ. En
+particulier, siµ est atomique (i.e.µ({x}) > 0 pour un certainx ∈ E), l’existence d’un tel
+processusentraîneraitlacontradictionsuivante: N({x}) ≤1(pardéfinition),et N({x}) ∼
+Poisson(c) pour un certaine constantec >0. Le théorème suivant donne des conditions
+suffisantes surµ pour l’existence d’un processus de Poisson.
+Théorème 4.1.2. (Existence) Soitµ une mesure sigma-finie non-atomique sur(E, E).
+Alors il existe un processus de Poisson de mesure moyenneµ.
+Démonstration. On commence par le cas oùµ est une mesure finie,µ(E) < ∞. On pose
+µp = µ/µ(E) ; c’est une mesure de probabilité.
+On se donne un espace de probabilité(Ω, F, P) sur lequel on peut construire les va-
+riables aléatoires suivantes :X1, X2, . . .une suite de variables IID de loiµp, et N une
+variable indépendante desXi, de loiPoisson(µ(E)). On pose alors :
+Π = {X1, . . . , XN }.
+79
+
+[Page 80]
+4 Processus en temps continu
+Montrons que Π est bien un processus de Poisson. Pour A1, . . . , Ak ∈ E, soit A0 le
+complémentaire de∪k
+i=1Ai. Conditionnellement àN = n, le vecteur desN(Ai) suit une
+loi multinomiale :
+P(N(A0) = n0, . . . , N(Ak) = nk|N = n) = n!Qk
+i=0 ni!
+kY
+i=0
+µ(Ai)
+µ(E)
+ni
+et donc
+P(N(A0) = n0, . . . , N(Ak) = nk) =
+
+e−µ(E) µ(E)n
+n!
+ n!Qk
+i=0 ni!
+kY
+i=0
+µ(Ai)
+µ(E)
+ni
+=
+kY
+i=0
+e−µ(Ai)µ(Ai)ni
+ni! .
+Les N(Ai) sont bien indépendants et de loiPoisson (µ(Ai)).
+Dans le cas sigma-fini,µ = P∞
+i=1 µi, avecµi(E) < ∞. Soit
+Π = ∪∞
+i=1Πi
+où Πi est un processus de Poisson de mesure moyenneµi. On invoque le théorème (admis)
+de superposition, qui dit queΠ suit alors un processus de Poisson de mesureµ.
+Noter que ce théorème de superposition est à première vue un corrolaire direct de la
+sigma-additivité des lois de Poisson : siNi(A) = # {Πi ∩ A} ∼Poisson (µi(A)), alors
+∞X
+i=1
+Ni(A) ∼ Poisson(
+∞X
+i=1
+µi(A)).
+Mais, pour que cette somme soit bien le cardinal deΠ ∩ A, il faut s’assurer que les
+ensembles Πi ∩ A sont bien disjoints p.s. C’est vrai pourA tel queµ(A) < ∞ mais non
+trivial, voir les pages 14 à 17 de Kingman (1993).
+Laconstructionexpliciteci-dessus(danslecas µ finie)donneunenouvelleinteprétation
+d’un processus de Poisson : chaque réalisation est un « jeu de données » (une collection
+de variables IID) dont la taille est aléatoire.
+4.1.3 Cas E = R+
+Ons’intéressedésormaisaucas E = R+.Ilestalorspossibled’ordonnerlespointsde Π ;
+soit 0 < X1 < X2 < . . . .Ces variables sont interprétées comme des dates d’événements
+(par exemple de tremblements de terre). On pose
+Nt := N([0, t]) =
+∞X
+i=1
+1 {Xi ≤ t}.
+C’est ce processus(Nt)t≥0 que l’on appelle communément processus de Poisson. Ses pro-
+priétés principales se déduisent immédiatement de sa définition et de celle des processus
+de Poisson généraux.
+80
+
+[Page 81]
+4.1 Processus ponctuels, processus de Poisson
+Proposition 4.1.3.La trajectoiret → Nt est p.s. constante par morceaux, càdlàg (conti-
+nue à droite, limitée à gauche) et croissante. Le processus(Nt) est à accroissements
+indépendants : i.e. les variablesNs et Nt − Ns sont indépendants pour0 ≤ s ≤ t.
+Le processus(Nt) nous donne un premier exemple de processus Markovien en temps
+continu : pour0 ≤ s ≤ t, Nt = Ns + (Nt − Ns), où l’accroissement est indépendant de la
+trajectoire sur[0, s] ; doncNt sachant cette même trajectoire ne dépend que deNs. Nous
+formaliserons la notion de processus Markovien en temps continu à la fin du chapitre.
+De la même façon, on se doute queMt = Nt − µ([0, t]) définit une martingale en temps
+continu, puisqueE[Mt|Ms] = Ms.
+On s’intéresse désormais au cas homogène :µ([0, t]) = λt, pour un certainλ >0. Dans
+ce cas, les lois des datesXi des événements, et des durées d’attente entre ces événements,
+Yi := Xi − Xi−1 (i ≥ 2, Y1 := X1) sont particulièrement simples.
+Proposition 4.1.4. Les variablesYi sont IID (indépendantes et identitiquement distri-
+buées) de loiExp(λ). Les variablesXi sont de loiGamma(i, λ).
+Démonstration. Pour X1 = Y1, on a :
+P(X1 > t) = P(Nt = 0) = exp(−λt)
+puisque Nt ∼ Poisson(λt). Ceci est bien la fonction de survie d’une loi exponentielle.
+Plus généralement pourXi :
+Si(t) := P(Xi > t) = P(Nt ≤ i − 1) = exp(−λt)
+i−1X
+k=0
+(λt)k
+k!
+et on obtient la densité deXi en dérivant (par rapport àt) :
+−S′
+i(t) = −exp(−λt)
+(i−1X
+k=1
+λktk−1
+(k − 1)! − λ
+i−1X
+k=0
+(λt)k
+k!
+)
+= λi
+(i − 1)!ti−1 exp(−λt)
+qui est bien la densité d’une loiGamma(i, λ).
+Pour montrer que Y1 et Y2 sont IID, de loi exponentielle, on peut partir de (pour
+0 ≤ s ≤ t) :
+P(X1 > s, X2 > t) = P(Ns = 0, Nt ≤ 1)
+= P(Ns = 0)P(Nt − Ns ≤ 1)
+puis dériver (ens et en t) pour obtenir la densité jointe de(X1, X2), et en déduire la
+densité jointe de(Y1, Y2). Mais c’est rapidement laborieux pour(Y1,Y2, . . . , Yk).
+Le résultat devient évident si l’on admet que le processusN
+′
+t = Nt−X1 −1 (qui compte
+le nombre d’événements à partir du temps X1) est indépendant de X1, et de même
+81
+
+[Page 82]
+4 Processus en temps continu
+loi que (Nt); alors Y2 = X2 − X1 a forcément la même loi que X1. Cette propriété
+admise est essentiellement la propriété de Markov forte en temps continu; pour un preuve
+relativement simple (mais spécifique au processus de Poisson), voir par exemple les pages
+39 et 40 de Kingman (1993).
+Remarque 4.1.2. Indirectement, on vient de redémontrer que la somme de variables
+IID de loi exponentielle suit une loi Gamma. A titre d’exercice, démontrer la réciproque
+de la Proposition 4.1.4 : un processus ponctuel défini à partir de durées inter-événements
+IID, de loi exponentielle est un processus de Poisson.
+Remarque 4.1.3. L’apparition de lois exponentielles n’est pas très surprenante. On
+rappelle qu’une loi exponentielle est dite sans mémoire, car sa fonction de hasard (la
+densité deY ∼ Exp(λ) conditionnellement àY ≥ y) est constante. En d’autre termes :
+la probabilité instantannée d’occurence d’un événement est constante, ce qui est bien le
+comportement attendu pour un processus de Poisson.
+La proposition ci-dessus est lié au « paradoxe » dit du temps d’attente : Pour une
+ligne de bus « poissonienne », le temps de passage entre deux bus suit une loiExp(λ),
+d’espérance 1/λ. En revanche, si j’arrive à à une date arbitrairet >0 à l’arrêt de bus, la
+durée entre le passage du bus précédent et le bus suivant est la somme de deux variables
+exponentielles, soit une loiGamma(2, λ) d’espérance 2/λ. En d’autres termes, si un bus
+passe toutes les dix minutes (en moyenne), mon temps d’attente moyen est aussi de 10
+minutes.
+4.1.4 Généralisation aux processus Markovien en temps discret
+Pour un processus de Poisson homogène d’intensitéλ >0, on a :
+P(Nt+h = n + 1|Nt = n) = λh + o(h),
+P(Nt+h = n|Nt = n) = 1 − λh + o(h),
+et les autres valeursn+2, . . .ont une probabilité eno(h). En d’autres termes, d’un point
+de vue «infinitésimal»,(Nt) ressemble à une chaîne de Markov dont les seules transitions
+possibles sont n → n, et n → n + 1. Une généralisation naturelle est de considérer un
+processus (Xt), à valeurs dansX ⊂Z, permettant d’autres transitions : pouri, j∈ X:
+P(Xt+h = j|Xt = i) = A(i, j)h + o(h), i ̸= j,
+P(Xt+h = i|Xt = i) = 1 −
+
+
+
+X
+j̸=i
+A(i, j)
+
+
+h + o(h).
+On pose A(i, i) = −P
+j̸=i A(i, j) : chaque ligne de la matriceA somme à 0. (Comme
+pour P dans les chaînes de Markov,A est bien une matrice si l’espace d’étatX est fini;
+sinon c’est juste une applicationX × X →R.)
+Danslecasparticulieroù A(i, j) > 0 sietseulementsi |i−j| ≤1,onparlede processus
+de vie et de mort. Le processus de Poisson est un cas particulier (processus de vie pur).
+82
+
+[Page 83]
+4.2 Mouvement brownien
+On admettra les propriétés suivantes, qui semblent intuitives, par analogie avec les
+propriétés correspondantes du processus de Poisson :
+1. de tels processus existent.
+2. Le temps passé dans un étati suit une loi exponentielleExp
+P
+j̸=i A(i, j)
+
+. Une
+foiscetempsécoulé,onchoisitunnouvelétat j ̸= i,avecprobabilité A(i, j)/ P
+k̸=i A(i, k).
+3. Si (Xt) admet une loi invariante, alorsπA = 0.
+4. La loi marginale de(Xt) est donnée par le vecteurp(t) = p(0) exp (At) .
+Pour justifier (informellement) la propriété 4, on peut écrire :
+P(Xt+h = j) =
+X
+i
+P(Xt = i)P(Xt+h = j|Xt = i),
+= P(Xt = j) {1 + A(i, i)h} +
+X
+i̸=j
+P(Xt = i)A(i, j)h + o(h),
+donc
+P(Xt+h = j) − P(Xt = j)
+h =
+X
+i
+P(Xt = i)A(i, j)
+et passer à la limiteh → 0 :
+p′(t) = p(t)A
+où p(t) est le vecteur desP(Xt = i). Cette équation justifie aussi indirectement la pro-
+priété 3 : dans le régime stationnaire,p(t) = π, p′(t) = 0, doncπA = 0.
+4.2 Mouvement brownien
+4.2.1 Processus gaussiens
+On appelleprocessus gaussienune variable aléatoiref à valeurs dans un espace de
+fonctions X →R (typiquement X = Rd) telle que, pour toutx1, . . . , xd ∈ X, d ≥ 1, le
+vecteur 
+
+f(x1)
+...
+f(xd)
+
+
+suit une loi normale (multivariée de dimensiond).
+La théorie des processus gaussiens (notamment leur existence, la nature de leur sup-
+port, etc) dépasse très largement le cadre de ce cours. On admettra donc que de tels
+processus existent, et qu’ils sont caractérisés entièrement par leurs “moments d’ordre
+deux”, définis comme suit :
+— La fonction moyennem : X →R : m(x) := E(f(x)).
+— La fonction de covariance,C : X2 → R, qui définitC(x1, x2) := Cov(f(x1), f(x2)).
+83
+
+[Page 84]
+4 Processus en temps continu
+La fonction de covarianceC est souvent appelé « noyau » (un terme polysémique en sta-
+tistiques...). Cette fonction doit être choisie de manière à ce que, pour tousx1, . . . , xd, la
+matrice de covariance(C(xi, xj))i,j=1,...,d soit bien définie positive. Un notau couramment
+utilisé est le noyau dit Gaussien (ousquared exponential) :
+C(x1, x2) = c exp
+
+−∥x1 − x2∥2
+2ℓ2
+
+.
+Les réalisations d’un processus avec un tel noyau sont très régulières (infiniment déri-
+vables). Ces processus sont beaucoup utilisés dans différents domaine du machine lear-
+ning, notamment en optimisation bayésienne et en apprentissage par renforcement.
+4.2.2 Mouvement brownien
+Le mouvement brownien(ou processus de Wiener) est un processus en temps
+continu, noté classiquement(Wt)t≥0 ou simplement(Wt). Vu comme une fonctiont →
+Wt, c’est un processus gaussien tel que :
+— W0 = 0 p.s.
+— la fonction moyenne est nulle :E[Wt] = 0.
+— la fonction de covariance est :C(s, t) := Cov(Ws, Wt) = σ2s ∧ t, pour s, t≥ 0 et
+un certainσ2 > 0.
+On déduit de la dernière propriété que ce processus est à accroissements indépendants.
+En effet, pour0 ≤ s ≤ t :
+Cov(Ws, Wt − Ws) = C(s, t) − C(s, s) = 0.
+donc Ws et Wt − Ws sont non corrélés et donc indépendants (en tant que composantes
+d’un vecteur gaussien).
+Comme pour le processus de Poisson, on peut utiliser cette propriété d’accroissements
+indépendants pour en déduire (informellement) que
+— (Wt) est Markovien :Wt = Ws + (Wt −Ws), doncWt ne dépend de(Wu)u∈[0,s] que
+via Ws.
+— (Wt) est une martingale en temps continu :E(Wt|Ws) = Ws pour s ≤ t.
+On admet par ailleurs la propriété suivante.
+Proposition 4.2.1.La trajectoire d’un mouvement brownien est p.s. une fonction conti-
+nue, non-dérivable.
+La quantité suivante :
+Wt+h − Wt ∼ N(0, σ2h)
+tend bien vers 0 quandh → 0 (continuité), mais à un tauxO(h1/2) trop lent pour en
+faire une fonction dérivable. On peut montrer plus précisément que la trajectoire est
+α−Hölder pour toutα <1/2 :
+Wt+h − Wt
+hα ∼ N(0, σ2h1−2α)
+(Une fonction α−Hölder f est telle que|f(x) − f(y)| ≤C|x − y|α ; pour α = 1, f est
+Lipschitz et donc dérivable.)
+84
+
+[Page 85]
+4.2 Mouvement brownien
+4.2.3 Processus markovien en temps continu
+On conclut ce chapitre par un aperçu de la théorie des processus Markoviens (homo-
+gènes) en temps continu.
+En temps discret, une chaîne de Markov homogène est définie via un noyauP(x, dy),
+qui donne la loi deXt+1 sachant Xt. La loi deXt+k sachant Xt est alors donnée par le
+noyau Pk(x, dy). On a notamment :
+Pk+l(x, dz) =
+Z
+y
+Pk(x, dy)Pl(y, dz)
+En temps continu, on est obligé de se donner unecollection de noyaux de transition,
+(Ph)h≥0, qui définit la loi deXt+h sachantXt. Par analogie avec le temps discret, on doit
+imposer la contrainte suivante :
+Pt+h(x, dz) =
+Z
+Pt(x, dy)Ph(y, dz).
+Une collection de noyau de transition est appelésemi-groupe Markovien.
+On peut remarquer notamment que le semi-groupe markovien :
+1. d’un processus de Weiner (de volatilitéσ2 > 0) est tel que Ph(x, dy) est la loi
+N(x, σ2h) ;
+2. d’un processus de Poisson (d’intensité constanteλ >0) est tel quePh(x, dy) est la
+loi Poisson(λh) translatée dex vers la droite.
+Cependant, pour les processus à valeurs dansZ (comme le processus de Poisson), il est
+pluscommodedecaractériserleurcomportementvialanotiondegénérateurinfinitésimal,
+comme expliqué en Section 4.1.4.
+85
+
+[Page 86]
+
+
+[Page 87]
+Bibliographie
+Baldi, P., Mazliak, L., and Priouret, P. (2002).Martingales and Markov chains. Chapman
+& Hall/CRC, Boca Raton, FL. Solved exercises and elements of theory, Translated
+from the 1998 French original.
+Brémaud, P. (1999). Markov chains, volume 31 of Texts in Applied Mathematics.
+Springer-Verlag, New York. Gibbs fields, Monte Carlo simulation, and queues.
+Kingman, J. F. C. (1993).Poisson processes, volume 3 ofOxford Studies in Probability.
+TheClarendonPress,OxfordUniversityPress,NewYork. OxfordSciencePublications.
+Lawler, G. F. (2006).Introduction to stochastic processes. Chapman & Hall/CRC, Boca
+Raton, FL, second edition.
+Meyn, S. and Tweedie, R. L. (2009).Markov chains and stochastic stability. Cambridge
+University Press, Cambridge, second edition. With a prologue by Peter W. Glynn.
+Shaw, L. P. and Shaw, L. F. (2019). The flying bomb and the actuary.Significance,
+16(5) :12–17.
+87

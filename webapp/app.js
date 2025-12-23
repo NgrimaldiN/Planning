@@ -47,23 +47,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // === Set today as current day ===
+// === Set today as current day ===
 function setTodayAsCurrentDay() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    // Get today's date in Paris formatted as YYYY-MM-DD
+    const todayStr = new Date().toLocaleDateString('fr-CA', { timeZone: 'Europe/Paris' }); // fr-CA gives YYYY-MM-DD
 
-    const dayIndex = PLANNING_DATA.days.findIndex(day => {
-        const dayDate = new Date(day.date);
-        dayDate.setHours(0, 0, 0, 0);
-        return dayDate.getTime() === today.getTime();
-    });
+    const dayIndex = PLANNING_DATA.days.findIndex(day => day.date === todayStr);
 
     if (dayIndex !== -1) {
         state.currentDayIndex = dayIndex;
     } else {
         // If today is before start, show first day
         // If today is after end, show last day
-        const startDate = new Date(PLANNING_DATA.days[0].date);
-        if (today < startDate) {
+        // Simple string comparison works for ISO dates
+        const startDate = PLANNING_DATA.days[0].date;
+        if (todayStr < startDate) {
             state.currentDayIndex = 0;
         } else {
             state.currentDayIndex = PLANNING_DATA.days.length - 1;
@@ -463,13 +461,12 @@ function renderCalendar() {
     const grid = document.getElementById('calendar-grid');
     grid.innerHTML = '';
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const todayStr = new Date().toLocaleDateString('fr-CA', { timeZone: 'Europe/Paris' });
 
     PLANNING_DATA.days.forEach((day, index) => {
         const dayDate = new Date(day.date);
-        const isPast = dayDate < today;
-        const isToday = dayDate.getTime() === today.getTime();
+        const isPast = day.date < todayStr;
+        const isToday = day.date === todayStr;
 
         const subjects = [...new Set(day.blocks.map(b => b.subject))];
         const completedHours = calculateDayCompletedHours(day);

@@ -1,0 +1,1527 @@
+--- Extracting from Liste questions.pdf (3/3 pages) ---
+
+[Page 1]
+ENSAE Paris Année 2024-2025 Statistique 1
+2e année Arnak Dalalyan
+Questions de cours
+L’examen à mi-parcours porte sur les chapitres 1 à 3.
+L’examen final porte sur les chapitres 2 à 5.
+Chapitre 1 : rappel des probabilités
+1. Définir la convergence presque sûr d’une suite de variables aléatoires et énoncer la loi forte
+des grands nombres.
+2. Définir la convergence en loi d’une suite de variables aléatoires et énoncer le théorème
+central limite.
+3. Enoncer le lemme de Slutsky.
+4. Donner les relations 1 entre les 4 types de convergences de suites de variables aléatoires sui-
+vants : convergence presque-sûr, convergence dansL2, convergence en probabilité, conver-
+gence en loi.
+5. Enoncer le premier théorème de continuité. Démontrer les assertions de ce théorème concer-
+nant la convergence presque-sûr.
+6. Enoncer le premier théorème de continuité. Démontrer les assertions de ce théorème concer-
+nant la convergence en probabilité dans le cas où la limite est une valeur déterministe.
+7. Enoncer le premier théorème de continuité. Démontrer les assertions de ce théorème concer-
+nant la convergence en loi.
+8. Enoncer le deuxième théorème de continuité dans le cas multidimensionnel.
+9. Démontrer la version suivante du deuxième théorème de continuité unidimensionnel.
+Soit I un intervalle de R et g : I → R une fonction continûment différentiable. Si(Xi)i⩾1 est
+une suite de variables aléatoires à valeurs dans I telle que √n(Xn − a) loi− − − →n→∞ N(0, σ2) où
+a ∈ R et σ ⩾ 0 sont deux constantes, alors √n(g(Xi) − g(a)) loi− − − →n→∞ N(0, v2) où v = σg′(a).
+Chapitre 2 : Echantillonnage et méthodes empiriques
+10. Définir la fonction de répartition empirique bFn(t) et donner la loi de la variable aléatoire
+nbFn(t) dans le cas où les observations sont iid.
+11. Définir la fonction de répartition empirique bFn(t) et donner les propriétés asymptotiques
+de la suite (bFn(t))n⩾1 lorsque n → ∞, dans le cas où les observations sont iid.
+12. Enoncer le théorème de Glivenko-Cantelli.
+13. Démontrer le théorème de Glivenko-Cantelli pour les fonctions de répartition continues.
+(Ici, on peut se contenter de la preuve donnée dans le polycopié, qui est moins détaillée
+que celle donnée en amphi.)
+14. Définir la moyenne et la variance empiriques des observations X1, . . . ,Xn. Dans le cas où
+les observations sont iid, démontrer que la moyenne et la variance empiriques convergent
+presque sûrement lorsquen → ∞. On précisera les limites et les conditions qui garantissent
+chacune de ces convergences.
+15. Définir la moyenne ¯Xn et la variance S2
+n empiriques des observations X1, . . . ,Xn. Dans le
+cas où les observations sont iid N(µ, σ2), que peut-on dire de la loi de ( ¯Xn, S2
+n)?
+(La réponse attendue est que¯Xn ∼ N(µ, σ2
+n ), nS2
+n ∼ σ2χ2
+n−1 et ¯Xn est indépendant de S2
+n.)
+16. Démontrer que si Xi
+iid∼ N(µ, σ2), alors ¯Xn ∼ N(µ, σ2
+n ).
+17. Démontrer que si Xi
+iid∼ N(µ, σ2), alors nS2
+n ∼ σ2χ2
+n−1.
+1. Il s’agit de préciser quelle convergence implique quelle autre convergence. Par exemple, la convergence presque-sûr
+implique la convergence en probabilité.
+1
+
+[Page 2]
+18. Démontrer que si Xi
+iid∼ N(µ, σ2), alors ¯Xn et S2
+n sont indépendants.
+Chapitre 3 : Estimation de paramètres
+19. Donner la définition d’un modèle statistique paramétrique.
+20. Donner la définition d’un modèle identifiable. Donner un exemple de modèle identifiable
+et un exemple de modèle non identifiable.
+21. Donner la définition d’un modèle dominé et d’un modèle discret. Donner un exemple de
+modèle statistique {Pθ : θ ∈ [0, 1]} qui n’est pas discret, alors que toutes les lois Pθ sont
+discrètes.
+22. Donner la définition d’un estimateur sans biais et d’un estimateur fortement consistant.
+Donner un exemple d’un estimateur qui a ces deux propriétés.
+23. Donner la définition d’un estimateur sans biais et d’un estimateur fortement consistant.
+Donner un exemple d’un estimateur sans biais qui n’est pas fortement consistant.
+24. Donner la définition d’un estimateur sans biais et d’un estimateur fortement consistant.
+Donner un exemple d’un estimateur fortement consistant mais biaisé.
+25. Soit {Pθ : θ ∈ Θ} un modèle paramétrique avec Θ ⊂ Rp un ouvert. On sait que pour
+une fonction g : X →Rp, la fonction M : Θ → Rp définie par M(θ) = Eθ[g(X1)] est
+continue et injective. Proposer un estimateur fortement consistant du paramètre θ. Justifier
+la consistance forte de cet estimateur.
+26. Définir le risque quadratique d’un estimateur d’un paramètre p-dimensionnel θ. Quelle est
+la décomposition biais-variance de ce risque ?
+27. Montrer que le risque R( ¯θn, θ) d’un estimateur ¯θn d’un paramètre θ vérifie
+R( ¯θn, θ) =∥Eθ[ ¯θn] − θ∥2 + Eθ∥¯θn − Eθ[ ¯θn]∥2. (1)
+Chapitre 4 : Estimateur du maximum de vraisemblance
+28. Donner la définition de la vraisemblance, de la log-vraisemblance et de l’estimateur du
+maximum de vraisemblance (dans un modèle dominé).
+29. Donner un exemple de modèle dominé et identifiable où l’EMV n’est pas unique.
+30. Donner un exemple de modèle dominé où l’EMV n’existe pas.
+31. Enoncer et prouver le résultat portant sur la convergence de la log-vraisemblance négative
+et le fait que sa limite est minimisée en θ∗.
+32. Enoncer le résultat concernant la consistance de l’EMV .
+33. Enoncer les hypothèses de régularité d’un modèle statistique. On pourra remplacer la for-
+mulation rigoureuse de l’hypothèse 3 par une explication informelle.
+34. Définir le score d’un modèle statistique, puis l’information de Fisher. Montrer que dans un
+modèle régulier le score est centré.
+35. Montrer que si la 3e hypothèse de régularité est vérifiée, alors l’information de Fisher peut
+être calculée par la formule I(θ) =−Eθ[ℓ′′(X, θ)] où ℓ(x, θ) =log f (x, θ), f (x, θ) = dPθ
+dµ (x)
+et la dérivée seconde est par rapport à θ.
+36. Enoncer le théorème concernant la normalité asymptotique de l’EMV . Donner un exemple
+où la première hypothèse de régularité n’est pas satisfaite et la conclusion du théorème est
+fausse.
+37. Prouver le théorème de la normalité asymptotique de l’EMV . Les passages les plus tech-
+niques peuvent être admis sans démonstration.
+38. Enoncer et prouver l’inégalité de Cramér-Rao.
+39. Donner la définition d’un estimateur asymptotiquement efficace (dans la famille des esti-
+mateurs asymptotiquement normaux). Énoncer le théorème portant sur l’efficacité asymp-
+totique de l’EMV .
+Chapitre 5 : Estimateur Bayesien
+2
+
+[Page 3]
+40. Définir le risque intégré (par rapport à une mesure a priori) et l’estimateur bayésien pour
+le risque quadratique.
+41. Définir la mesure a posteriori et donner la formule de l’estimateur bayésien qui fait in-
+tervenir la mesure a posteriori. Donner un exemple de modèle statistique où l’estimateur
+bayésien est calculable de manière explicite.
+42. Prouver que l’estimateur bayésien est l’espérance par rapport à la mesure a posteriori.
+43. Donner la définition d’une famille de lois conjuguées pour le modèle {Pθ : θ ∈ Θ}, en
+donner un exemple.
+44. Enoncer le théorème portant sur la normalité asymptotique et l’efficacité asymptotique de
+l’estimateur bayésien.
+3
+
+==================================================
+
+--- Extracting from Polycopié Statistiques.pdf (20/46 pages) ---
+
+[Page 1]
+SIAHAAN--GENSOLLEN Rémy
+GERON Alban
+
+[Page 2]
+
+
+[Page 3]
+Table des matièresSiahaan–Gensollen Rémy
+Géron Alban
+—
+Statistique 1
+Table des matières
+T able des matières 1
+Introduction 2
+I Rappels de probabilités 3
+II Échantillonnage 8
+II.1 Introduction : hypothèse d’échantillonnage . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+II.2 Fonction de répartition empirique . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+II.3 Théorèmes de Kolmogorov et de Donsker . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+II.4 Méthode de substitution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+II.5 Moyenne et variance empirique . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+III Estimation des paramètres 15
+III.1 Modèle statistique . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+III.2 Estimateur . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+III.3 Risque d’estimation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+IV Méthode des moments 20
+V Méthode du maximum de vraisemblance 23
+V.1 Définitions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+V.2 Motivation de la méthode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+V.3 Exemples . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+V.4 Consistance de l’EMV . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+V.5 Modèles réguliers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+V.6 Information de Fisher . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+V.7 Normalité asymptotique de l’EMV . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+V.8 Interprétation de l’information de Fisher . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+V.9 Efficacité asymptotique . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+VI Estimateur de Bayes 37
+VI.1 Définitions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+VI.2 Choix de la loi a priori . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+VI.3 Propriétés de ¯θB
+n . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+VI.4 Calcul approché de ¯θB
+n par la méthode de Monte-Carlo . . . . . . . . . . . . . . . . . . . . . . . 40
+VII Ensembles de confiance 42
+VII.1 Définition et exemple . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+VII.2 Méthode de la fonction pivotale . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+VII.3 Méthode basée sur le théorème de Slutsky . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+VII.4 Stabilisation de la variance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+1
+
+[Page 4]
+Introduction
+Ce cours est le résultat de notes prises lors du cours de Statistique 1 en-
+seigné par Arnak Dalalyan au premier semestre de deuxième année du cycle
+ingénieur de l’ENSAE Paris, ainsi que du travail que nous avons effectué par la
+suite pour les réarranger en un document unique. Nous avons tenté d’être ex-
+haustifs, sans nous attarder sur trop de détails ou nuances. Malgré tout, certaines
+sections sont peut-être trop peu fournies. Aussi, nous ne saurions que trop vous
+conseiller de prendre des notes de votre côté.
+La structure visuelle est normalement assez claire, mais ne soyez pas surpris
+si elle change de temps à autre au fil du document : il s’agit d’un projet réalisé
+en parallèle des cours, et il n’est aucunement prévu que ce document soit publié
+(ailleurs que sur le drive commun de l’école). Ceci étant dit, nous espérons que
+ce cours vous sera utile. Si vous avez des remarques pour l’améliorer ou si vous
+repérez des erreurs, n’hésitez pas à nous contacter. Bonne lecture !
+Convention. Sauf indication contraire, la loi E(θ) pour θ > 0 désigne la loi
+exponentielle de moyenne θ, c’est-à-dire la loi de densité
+x ↦−→1
+θe−x/θ 1 [0, +∞ [(x)
+2
+
+[Page 5]
+I Rappels de probabilités
+I Rappels de probabilités
+Dans tout ce chapitre, d est un entier naturel non nul, (Xn)n≥1 est une
+suite de vecteurs aléatoires dans Rd et X un vecteur aléatoire dans Rd.
+Définition I.1 Convergences
+On dit que (Xn)n≥1 converge…
+. … presque sûrement vers X lorsqu’il existe un événement Ω 0 ⊂ Ω de
+probabilité 1 tel que
+∀ω ∈ Ω 0, X n(ω) − − − − − →
+n→ +∞
+X(ω)
+On note alors Xn
+p.s.
+− − − − − →
+n→ +∞
+X.
+. … dans Lp (p ≥ 1) vers X lorsque X et tous les Xn admettent un
+moment d’ordre p et
+E[∥Xn − X∥p] − − − − − →
+n→ +∞
+0
+On note alors Xn
+Lp
+− − − − − →
+n→ +∞
+X.
+. … en probabilité vers X lorsque
+∀ε > 0, P (∥Xn − X∥ ≥ ε) − − − − − →
+n→ +∞
+0
+On note alors Xn
+P
+− − − − − →
+n→ +∞
+X.
+. … en loi / en distribution vers X lorsque pour toute fonction f :
+Rd −→ R continue et bornée, on a
+E[f(Xn)] − − − − − →
+n→ +∞
+E[f(X)]
+On note alors Xn
+loi
+− − − − − →
+n→ +∞
+X.
+Remarques.
+— La Figure 1 rappelle les implications entre les différents modes de conver-
+gence.
+— La définition de la convergence presque sûre est bien équivalente à celle du
+cours de probabilité de première année 1 : 1 Voir cours de Théories des proba-
+bilités.
+Xn
+p.s.
+− − − − − →
+n→ +∞
+X ⇐⇒ P
+({
+ω ∈ Ω : Xn(ω) − − − − − →
+n→ +∞
+X(ω)
+}{
+= 1
+En effet :
+⇐ Ω 0 =
+{
+ω ∈ Ω : Xn(ω) − − − − − →
+n→ +∞
+X(ω)
+}
+convient, c’est bien un événe-
+ment comme prouvé dans le cours de Brunel.
+⇒ Puisque ∀ω ∈ Ω 0, Xn(ω) − − − − − →
+n→ +∞
+X(ω), on a :
+Ω 0 ⊂
+{
+ω ∈ Ω : Xn(ω) − − − − − →
+n→ +∞
+X(ω)
+}
+3
+
+[Page 6]
+Statistique 1
+donc
+1 = P(Ω 0) ≤ P
+({
+ω ∈ Ω : Xn(ω) − − − − − →
+n→ +∞
+X(ω)
+}{
+≤ 1
+— L’inégalité large dans la définition de la convergence en probabilité peut être
+remplacée par une égalité stricte. En d’autres termes, les deux assertions
+suivantes sont équivalentes :
+(i) ∀ε > 0, P (∥Xn − X∥ ≥ ε) − − − − − →
+n→ +∞
+0 ;
+(ii) ∀ε > 0, P (∥Xn − X∥> ε) − − − − − →
+n→ +∞
+0.
+Xn
+P
+− − − − − →
+n→ +∞
+XXn
+p.s.
+− − − − − →
+n→ +∞
+X
+Xn
+Lp
+− − − − − →
+n→ +∞
+X
+Xn
+Lq
+− − − − − →
+n→ +∞
+X
+Xn
+loi
+− − − − − →
+n→ +∞
+X
+(avec hyp. du TCD)
+(réciproque vraie
+si X = c p.s.)
+Figure 1 Liens entre les modes de convergence. Ici c est un vecteur fixé de Rd,
+et p et q deux réels tels que 1 ≤ p ≤ q.
+Lorsque d = 1 , on n’utilise pas la plupart du temps la définition de la
+convergence en loi mais plutôt la propriété suivante :
+Propriété I.2
+Supposons que d = 1 . Notons FXn (resp. FX) la fonction de répartition de
+Xn (resp. X).
+Les deux assertions suivantes sont équivalentes :
+(i) (Xn)n≥1 converge en loi vers X ;
+(ii) Pour tout réel t en lequel FX est continue (ce qui revient à dire que
+t n’est pas un atome de X), on a
+FXn (t) − − − − − →
+n→ +∞
+FX(t)
+Théorème I.3 Loi forte des grands nombres
+Supposons que les (Xn)n≥1 sont i.i.d. et que E[∥X1∥] < +∞ .
+On note pour tout n ≥ 1, ¯Xn = 1
+n
+n∑
+i=1
+Xi. Alors
+¯Xn
+p.s.
+− − − − − →
+n→ +∞
+E[X1]
+import numpy as np
+f = lambda x: 1 / (x ** 5 + 1)
+U = np.random.random(10_000)
+m = np.mean([f(u) for u in U])
+print(m)
+>>> 0.888046176564409
+Figure 2 Approximation de
+l’intégrale
+´ 1
+0
+1
+x5+1 dx par la
+méthode de Monte-Carlo.
+Application : méthode de Monte-Carlo. Si f : [0 , 1]d −→ R est intégrable,
+on peut approximer
+´
+[0, 1]d f(x)dx facilement. En effet cette intégrale est égale
+à E[f(U)] où U ∼ U([0, 1]d) donc il suffit de générer un grand nombre n de
+réalisations U1, . . . , Un i.i.d. de la loi U([0, 1]d), et une approximation de l’intégrale
+est 1
+n
+∑n
+i=1 f(Ui).
+4
+
+[Page 7]
+I Rappels de probabilités
+Théorème I.4 Théorème central limite
+Supposons que les (Xn)n≥1 sont i.i.d. et que E[∥X1∥2] < +∞ .
+Alors √n
+(¯Xn − E[X1]
+{ loi
+− − − − − →
+n→ +∞
+N(0, Var(X1))
+Interprétation. Si la matrice Var(X1) est inversible,2 alors cette convergence se 2 Correspond à l’hypothèse d’une
+variance non nulle dans le cas d = 1 .réécrit : √n Var(X1)−1/ 2(¯Xn − E[X1]
+{ loi
+− − − − − →
+n→ +∞
+N(0, I d)
+Autrement dit, lorsqu’on centre et qu’on réduit ¯Xn, la suite obtenue converge en
+loi vers une gaussienne centrée réduite. De façon plus informelle, lorsque n est
+grand, la loi de ¯Xn peut être approchée par N
+(
+E[X1], Var(X1)
+n
+{
+(voir Figure 3) :
+la moyenne empirique se concentre autour de la moyenne théorique à une vitesse
+1/ √n. Peut se formaliser sous forme d’une inégalité :
+0. 2 0. 4 0. 6 0. 8 1
+2
+4
+Figure 3 Histogramme
+de 10 000 réalisations
+de la variable ¯X10 où
+X1, . . . , X10
+i.i.d.
+∼ U([0, 1]).
+On voit que l’histogramme
+se superpose avec la den-
+sité de la loi N
+(1
+2 , 1
+120
+{
+=
+N
+(
+E[X1], Var(X1)
+10
+{
+.
+Théorème I.5 Inégalité de Berry-Esseen (hors programme)
+Supposons que d = 1 . Si X1, X 2, . . . sont i.i.d. admettant un moment
+jusqu’à l’ordre 3, et si Φ est la f.d.r. de la loi N(0, 1), alors
+∀t ∈ R, |F ¯Xn (t) − Φ( t)| ≤0.5E[|X1 − µ|3]√n Var(X1)3/ 2
+QCM de convergence.
+1. Est-ce que si Xn converge p.s. vers X alors
+∀A ∈ B(R), P (Xn ∈ A) − − − − − →
+n→ +∞
+P(X ∈ A) ?
+Non. Considérer Xn = 1 /n et A = ]0 , +∞ [.
+En revanche ça marche si Xn converge en loi vers X et qu’on impose à A
+d’être un segment de R.
+2. Est-ce que si Xn converge p.s. vers X et si les Xn sont discrètes alors X
+aussi ?
+Non. Prendre Xn ∼ U
+({
+0, 1
+n , . . . ,1
+}{
+.
+3. Est-ce que si Xn converge p.s. vers X et si les Xn sont à densité alors X
+aussi ?
+Non. Prendre Xn ∼ E(1/n ).
+4. Est-il vrai que, de manière informelle, B(n, θ )
+loi
+≈ N(nθ, nθ(1 − θ)) ?
+Oui. En effet, si Sn ∼ B(n, θ ), alors Sn a la même loi que X1 + ·· ·+ Xn où
+les Xi sont indépendantes de loi B(θ). Par le théorème central limite,
+Yn := √n
+(Sn
+n − E[X1]
+{
+loi
+− − − − − →
+n→ +∞
+N(0, θ (1 − θ))
+Ainsi, la loi de Yn pour des grandes valeurs de n est proche de la loi
+N(0, θ (1 − θ)). Comme Sn = nθ+ √nYn, on a B(n, θ )
+loi
+≈ N(nθ, nθ(1 − θ)).
+Théorème I.6 1 er théorème de continuité
+La composition par une fonction continue conserve la convergence presque
+sûre, en probabilité et en loi.
+5
+
+[Page 8]
+Statistique 1
+Preuve. Soit g : Rd − → Rq une fonction continue.
+1. Supposons que Xn
+p.s.
+− − − − − →
+n→ +∞
+X.
+Alors, il existe Ω 0 ⊂ Ω tel que P(Ω 0) = 1 et
+∀ω ∈ Ω 0, X n(ω) − − − − − →
+n→ +∞
+X(ω)
+Donc P(Ω 0) = 1 et pour tout ω ∈ Ω 0, g(Xn(ω)) − − − − − →
+n→ +∞
+g(X(ω)) par
+continuité de g.
+Ainsi g(Xn)
+p.s.
+− − − − − →
+n→ +∞
+g(X).
+2. Cas particulier. On suppose que Xn
+P
+− − − − − →
+n→ +∞
+a où a est déterministe.
+Soit δ > 0. Montrons que
+P(∥g(Xn) − g(a)∥> δ) − − − − − →
+n→ +∞
+0
+Comme g est continue en a, il existe ε > 0 tel que
+∥x − a∥ ≤ ε =⇒ ∥ g(x) − g(a)∥ ≤ δ
+i.e.
+∥g(x) − g(a)∥> δ =⇒ ∥ x − a∥> ε
+donc
+{
+ω ∈ Ω : ∥g(Xn(ω)) − g(a)∥> δ
+}
+⊂
+{
+ω ∈ Ω : ∥Xn(ω) − a∥> ε
+}
+d’où
+P(∥g(Xn) − g(a)∥> δ) ≤ P(∥Xn − a∥> ε) − − − − − →
+n→ +∞
+0
+Donc g(Xn)
+P
+− − − − − →
+n→ +∞
+g(a).
+3. On suppose que Xn
+loi
+− − − − − →
+n→ +∞
+X.
+Soit h continue bornée, alors h ◦g est continue et bornée donc
+E[h ◦g(Xn)] − − − − − →
+n→ +∞
+E[h ◦g(X)]
+d’où g(Xn)
+loi
+− − − − − →
+n→ +∞
+g(X).
+■
+Propriété I.7 Convergence coordonnée par coordonnée
+Les deux assertions suivantes sont équivalentes :
+(i) Xn
+p.s.
+− − − − − →
+n→ +∞
+X ;
+(ii) Pour chaque j = 1 , . . . , d, on a X(j)
+n
+p.s.
+− − − − − →
+n→ +∞
+X(j).
+On a le même résultat en remplaçant les convergences presque sûres par
+des convergences en probabilité. Idem pour la convergence Lp (sous réserve
+que X et les Xn admettent des moment d’ordre p).
+En revanche, pour la convergence en loi, on a seulement l’implication
+Xn
+loi
+− − − − − →
+n→ +∞
+X =⇒ ∀ j = 1 , . . . , d, X (j)
+n
+loi
+− − − − − →
+n→ +∞
+X(j)
+qui provient du 1 er théorème de continuité appliqué à la fonction continue x ↦−→
+x(j). La réciproque n’est pas vraie : en général, on ne peut pas déduire de la
+convergence en loi coordonnée par coordonnée une convergence en loi du vecteur
+aléatoire.3
+3 Considérer par exemple
+Xn = X′
+n = Yn = −Y ′
+n = X où
+X ∼ N(0, 1). Ces quatre suites
+convergent en loi vers N(0, 1),
+mais si ((Xn, Y n))n≥1 et
+((X′
+n, Y ′
+n))n≥1 convergeaient en loi
+vers le même vecteur aléatoire,
+alors (Xn + Yn)n≥1 et
+(X′
+n + Y ′
+n)n≥1 auraient la même
+limite en loi. Or on voit bien que
+ce n’est pas le cas, puisqu’elles
+convergent en loi respectivement
+vers 2X et 0.
+6
+
+[Page 9]
+I Rappels de probabilités
+Néanmoins il existe des cas particulier où on peut quand même le faire. Le
+plus important est le suivant :
+Théorème I.8 Slutsky
+Soient (Xn)n≥1 (resp. (Yn)n≥1) une suite de variables aléatoires dans Rd
+(resp. Rd′
+), et X (resp. Y ) une variable aléatoire dans Rd (resp. Rd′
+).
+Si Xn
+loi
+− − − − − →
+n→ +∞
+X et Yn
+loi
+− − − − − →
+n→ +∞
+c ∈ Rd′
+fixé, alors
+( Xn
+Yn
+{
+loi
+− − − − − →
+n→ +∞( X
+c
+{
+.
+Théorème I.9 2 ème théorème de continuité (« méthode δ »)
+On suppose qu’il existe a ∈ Rd tel que 4
+√n(Xn − a)
+loi
+− − − − − →
+n→ +∞
+N(0, Σ)
+Soit g : Rd −→ R une fonction continûment dérivable (i.e. C1), alors
+√n(g(Xn) − g(a))
+loi
+− − − − − →
+n→ +∞
+N(0, ∇g(a)⊤Σ ∇g(a))
+4 On dit que la distribution de Xn
+est asymptotiquement normale , et
+Σ est appelée variance
+asymptotique de (Xn)n≥1.
+Remarque. Si les Xi sont i.i.d. et E[∥X1∥2] < +∞ , alors par le TCL :
+√n( ¯Xn − E[X1])
+loi
+− − − − − →
+n→ +∞
+N(0, Var(X1))
+On peut donc appliquer la méthode δ à la suite ( ¯Xn)n≥1 (prendre a = E[X1] et
+Σ = Var( X1)). On a donc la normalité asymptotique de g( ¯Xn), et l’expression de
+sa variance asymptotique.
+Preuve. Cas particulier. On fait la preuve en supposant que d = 1 . (Du coup
+on note σ2 la variance asymptotique de Xn plutôt que Σ .)
+On pose
+h(x) =
+{ g(x)−g(a)
+x−a si x ̸= a
+g′(a) si x = a
+h est continue étant donnée l’hypothèse sur g.
+De plus,
+Xn − a = 1√n
+√n(Xn − a)
+loi
+− − − − − →
+n→ +∞
+0
+donc
+Xn − a
+P
+− − − − − →
+n→ +∞
+0
+donc
+Xn
+P
+− − − − − →
+n→ +∞
+a
+Par le premier théorème de continuité,
+h(Xn)
+P
+− − − − − →
+n→ +∞
+h(a)
+D’autre part, √n(g(Xn) − g(a)) = √n(Xn − a) × h(Xn)
+Par Slutsky, si on note Z ∼ N(0, σ 2), alors
+√n(g(Xn) − g(a))
+loi
+− − − − − →
+n→ +∞
+Z × h(a)
+Il ne reste plus qu’à remarquer que Z × h(a) ∼ N(0, σ 2(h(a))2) et que h(a) =
+g′(a). ■
+7
+
+[Page 10]
+Statistique 1
+II Échantillonnage
+II.1 Introduction : hypothèse d’échantillonnage
+Hypothèse E. On observe une réalisation de n variables aléatoires indépen-
+dantes et de même loi P∗.
+— X1, . . . , Xn s’appelle l’échantillon.
+— On suppose l’existence d’un espace probabilisé (Ω , F, P ) tel que pour tout
+i, Xi : Ω −→ Rm.
+— On suppose que les vraies données observées x1, . . . , xn peuvent s’écrire
+X1(ω), . . . , Xn(ω) pour un certain ω ∈ Ω .5 5En gros : les données qu’on
+observe sur un tableur Excel
+par exemple sont des nombres
+x1, . . . , xn, qui correspondent à la
+réalisation de l’échantillon pour
+un ω particulier. Il y a autant de
+mondes parallèles que d’éléments
+de Ω et le monde dans lequel nous
+vivons correspond à ce ω.
+Définition II.1 Loi d’une v.a.
+Soit X est une variable aléatoire dans Rm. On appelle loi de X la mesure
+de probabilité sur (Rm, B(Rm)), définie par :
+B(Rm) −→ R
+A ↦−→ P(X ∈ A)
+que l’on peut assimiler à l’ensemble :
+{
+P(X ∈ A) : A ∈ B(Rm)
+}
+Problème stat. En utilisant l’échantillon X1, . . . , Xn, retrouver certaines pro-
+priétés de P∗. Ce problème se divise en plusieurs parties :
+1. Estimation : soit T : P −→ Rp une fonction quelconque, où P désigne
+l’ensemble des lois sur (Rm, B(Rm)). On cherche à approximer ou à estimer
+T(P∗).
+2. Ensembles de confiance : on se donne un α ∈ ]0, 1[ et on cherche un ensemble
+E = E(X1, . . . , Xn) ⊂ Rp tel que P(E ∋ T(P∗)) ≥ 1 − α.
+3. Test d’hypothèses : on se donne un sous-ensemble P0 de l’ensemble P et on
+souhaite savoir si P∗ ∈ P0 ou pas.
+II.2 Fonction de répartition empirique
+Contexte. On considère X1, . . . , Xn
+i.i.d.
+∼ P∗ à valeurs dans Rm.
+Il faut distinguer la fonction de répartition théorique 6 F∗(t) = P(X1 ≤ t),6 On note
+
+
+u1
+...
+un
+(
+(≤
+
+
+v1
+...
+vn
+(
+(
+lorsque ui ≤ vi pour tout i ∈ J1, n K.
+t ∈ Rm, de la fonction de répartition empirique :
+Définition II.2 Fonction de répartition empirique
+On appelle fonction de répartition empirique de l’échantillon X1, . . . , Xn
+la fonction aléatoire définie par :
+ˆFn(t) = 1
+n
+n∑
+i=1
+1 (Xi ≤ t)
+= 1
+n Card{i ∈ J1, n K : Xi ≤ t}
+8
+
+[Page 11]
+II Échantillonnage
+Remarque. À t fixé, ˆFn(t) est une variable aléatoire ! ˆFn est donc à considérer
+comme une fonction à deux variables :
+Rm × Ω −→ R
+(t, ω ) ↦−→ ˆFn(t, ω )
+Propriété II.3
+Soient X1, . . . , Xn
+i.i.d.
+∼ P∗ à valeurs dans Rm. Alors pour tout t ∈ Rm :
+1. n ˆFn(t) ∼ B(n, F ∗(t)) ;
+2. ˆFn(t)
+p.s.
+− − − − − →
+n→ +∞
+F∗(t) ;
+3. √n( ˆFn(t) − F∗(t))
+loi
+− − − − − →
+n→ +∞
+N(0, p (1 − p)) avec p = F∗(t).
+Preuve. 1. Posons Zi = 1 (Xi ≤ t) pour tout i.
+Les Zi sont indépendantes (car les Xi le sont) et suivent toutes la loi de
+Bernoulli de paramètre p = F∗(t).
+On a n ˆFn(t) = Z1 + · · ·+ Zn ∼ B(n, p ).
+2. On a E[|Z1|] ≤ 1 donc la LFGN s’applique :
+ˆFn(t) = 1
+n
+n∑
+i=1
+Zi
+p.s.
+− − − − − →
+n→ +∞
+E[Z1] = F∗(t)
+3. On a √n( ˆFn(t) − F∗(t)) = √n( ¯Zn − E[Z1])
+Or E[Z2
+1 ] ≤ 1 donc d’après le TCL,
+√n( ¯Zn − E[Z1])
+loi
+− − − − − →
+n→ +∞
+N(0, Var(Z1))
+Il ne reste plus qu’à remarquer que Var(Z1) = p(1 − p).
+■
+Théorème II.4 Glivenko-Cantelli
+Soient X1, . . . , Xn
+i.i.d.
+∼ P∗ à valeurs dans Rm. Alors :
+sup
+t∈Rm
+|ˆFn(t) − F∗(t)|
+p.s.
+− − − − − →
+n→ +∞
+0
+Remarque. Posons ξn = sup t∈Rm |ˆFn(t) − F∗(t)|.
+— C’est une variable aléatoire et on a ξn = ∥ˆFn − F∗∥∞ .
+— Pour presque tout ω ∈ Ω , ( ˆFn(·, ω ))n≥1 converge uniformément vers F∗(·).
+Le théorème de Glivenko-Cantelli est donc une loi forte des grands nombres
+uniforme.
+Preuve. Cas particulier. On se restreint au cas m = 1 et F∗ est continue.
+Soit k ∈ N∗. On pose x0 = −∞ , xk = + ∞ et pour tout i ∈ J1, k − 1K :
+xi ∈ (F∗)−1
+(i
+k
+{
+i.e. F∗(xi) = i
+k
+Par croissance de F∗, on a
+x0 < x1 < · · ·< xk−1 < xk
+9
+
+[Page 12]
+Statistique 1
+Soit t ∈ [xi, x i+1]. En utilisant la croissance de F∗ et celle de ˆFn(·, ω ), on a :
+ˆFn(t) − F∗(t) ≤ ˆFn(xi+1) − F∗(xi) = ˆFn(xi+1) − F∗(xi+1) + F∗(xi+1) − F∗(xi)  
+≤1/k
+≤ Fn(xi+1) − F∗(xi+1) + 1
+k
+≤ |Fn(xi+1) − F∗(xi+1)|+ 1
+k
+On prouve de même que
+F∗(t) − ˆFn(t) ≤ F∗(xi+1) − ˆFn(xi) ≤ |Fn(xi) − F∗(xi)|+ 1
+k
+donc
+|ˆFn(t) − F∗(t)| ≤max1≤i≤k−1 |ˆFn(xi) − F∗(xi)|+ 1
+k
+d’où
+sup
+t∈R
+|ˆFn(t) − F∗(t)| ≤max1≤i≤k−1 |ˆFn(xi) − F∗(xi)|  
+p.s.
+− − − − − →
+n→ +∞
+0
++ 1
+k (1)
+Considérons, pour tout k ∈ N∗,
+Ω k =
+{
+ω ∈ Ω : max 1≤i≤k−1 |ˆFn(xi, ω ) − F∗(xi)| − − − − − →
+n→ +∞
+0
+}
+On a P(Ω k) = 1 pour tout k ∈ N∗, donc l’événement A =
+
+k∈N∗ Ω k est de
+probabilité 1.
+Pour tout ω ∈ A on a, d’après (1) :
+∀k ∈ N∗, ξ n(ω) ≤ max1≤i≤k−1 |ˆFn(xi, ω ) − F∗(xi)|+ 1
+k
+donc
+∀k ∈ N∗, 0 ≤ lim sup
+n→ +∞
+ξn(ω) ≤ 0 + 1
+k
+donc
+lim sup
+n→ +∞
+ξn(ω)
+≥0
+= 0
+d’où limn→ +∞ ξn(ω) = 0 .
+Donc ξn
+p.s.
+− − − − − →
+n→ +∞
+0. ■
+II.3 Théorèmes de Kolmogorov et de Donsker
+Note : ce sont des sujets un peu plus avancés, pas forcément utiles pour ce
+semestre mais le seront en Stat 2.
+Par Glivenko-Cantelli, (ξn)n≥1 converge presque sûrement vers 0. On peut
+se demander à quelle vitesse a lieu cette convergence. Le théorème de Kolmogorov
+donne une réponse surprenante : en multipliant par √n, on obtient une suite qui
+converge en loi et sa limite en loi peut être exprimée explicitement, et en plus,
+indépendamment de F∗. Plus fort que ça : en fait même à n fixé la loi de ξn ne
+dépend pas de F∗.
+Théorème II.5 Kolmogorov
+Si X1, . . . , Xn sont i.i.d. de f.d.r. F∗, alors
+1. la loi de ξn ne dépend pas de F∗;
+10
+
+[Page 13]
+II Échantillonnage
+2. √nξn
+loi
+− − − − − →
+n→ +∞
+K, où K est une variable aléatoire dont la fonction de
+répartition est :
+FK : R −→ R
+t ↦−→
+
+}
+
+1 − 2
+∞∑
+j=1
+(−1)j−1e−2j2t2
+si t > 0
+0 si t ≤ 0
+Preuve. Prouvons le premier point avec l’hypothèse supplémentaire F∗ est une
+bijection de R dans ]0, 1[. On a
+ξn = sup
+x∈]0, 1[
+|ˆFn(t)((F∗)−1(x)) − F∗((F∗)−1(x))|
+Or
+ˆFn(t)((F∗)−1(x)) = 1
+n
+n∑
+i=1
+1 (Xi ≤ (F∗)−1(x)) = 1
+n
+n∑
+i=1
+1 (F∗(Xi) ≤ x)
+On prouve classiquement que F∗(Xi) ∼ U([0, 1]). On a ainsi
+ξn = sup
+x∈]0, 1[
+⏐⏐⏐⏐⏐
+1
+n
+n∑
+i=1
+1 (Ui ≤ x) − x
+⏐⏐⏐⏐⏐ où Ui
+i.i.d.
+∼ U([0, 1])
+ξn est une stat. libre, i.e. sa loi ne dépend pas de F∗. ■
+Remarques.
+1. Si l’on veut tester l’hypothèse F∗ = Φ , la f.d.r. de N(0, 1), on peut alors
+définir qn(α) comme le quantile d’ordre 1 − α de ξn. Comme on l’a vu dans
+la preuve précédente, ça revient à prendre le (1 − α)-quantile de la loi de :
+sup
+x∈]0, 1[
+⏐⏐⏐⏐⏐
+1
+n
+n∑
+i=1
+1 (Ui ≤ x) − x
+⏐⏐⏐⏐⏐, U i
+i.i.d.
+∼ U([0, 1])
+Ensuite, on rejette l’hypothèse F∗ = Φ si et seulement si :
+sup
+t∈R
+|ˆFn(t) − Φ( t)| ≥qn(α) (2)
+Ce test, appelé test de Kolmogorov(-Smirnov), est de niveau α ; autrement
+dit, si X1, . . . , Xn
+i.i.d.
+∼ N(0, 1), alors l’événement (2) est de probabilité α.
+2. Lorsque n est grand, on remplace qn(α) dans (2) par le quantile de la variable
+aléatoire K.
+Trigger warning : giga tunnel ci-dessous.
+Théorème II.6 Donsker
+Considérons :
+Gn : R × Ω −→ R
+(t, ω ) ↦−→ √n( ˆFn(t, ω ) − F∗(t))
+(À t ∈ R fixé, Gn(t, ·) est une variable aléatoire, tandis qu’à ω ∈ Ω fixé,
+Gn(·, ω ) est une fonction. De manière équivalente, on peut voir Gn à la
+fois comme une application de R dans RΩ ou comme une application de Ω
+dans RR. Gn est ce qu’on appelle un processus aléatoire.)
+11
+
+[Page 14]
+Statistique 1
+Alors
+Gn
+loi
+− − − − − →
+n→ +∞
+G
+où G est un « processus gaussien » de moyenne 0 et d’opérateur de cova-
+riance
+cov(G(t), G (s)) = min( F∗(t), F ∗(s)) − F∗(t)F∗(s)
+Conséquence. ∥Gn∥∞
+loi
+− − − − − →
+n→ +∞
+∥G∥∞ . Donc la variable aléatoire K défi-
+nie précédemment est égale en loi à ∥G∥∞ = sup t∈R |G(t)|.
+II.4 Méthode de substitution
+Comme précédemment, on considère les données X1, . . . , Xn de loi incon-
+nue P∗. On cherche à estimer θ∗ = T(P∗),7 avec7 Par exemple, si m = 1 et si on
+veut estimer l’espérance de la loi
+des données, T pourrait être l’ap-
+plication qui à une loi P associe le
+réel
+´
+Rm xdP(x).
+T : P −→ R
+où l’on a noté P l’ensemble des mesures de probabilité sur (Rm, B(R∗)). On sait
+qu’il existe une bijection
+Ψ : F −→ P
+où F est l’ensemble des fonctions de répartitions des v.a. à valeurs dans (Rm, B(R∗)).
+On rappelle que la fonction de répartition empirique ˆFn peut être vue :
+1. comme une fonction à deux arguments : ˆFn : Rm × Ω −→ R, (t, ω ) ↦−→
+ˆFn(t, ω ) ;
+2. comme une fonction qui prend en argument un vecteur de Rm et renvoie
+une variable aléatoire réelle : ˆFn : Rm −→ RΩ , t ↦−→ˆFn(t, ·) ;
+3. comme une variable aléatoire à valeurs dans l’espace des fonctions de répar-
+tition : ˆFn : Ω −→ F, ω ↦−→ˆFn(·, ω ).
+On adopte plutôt le troisième point de vue dans la définition qui suit.
+Définition II.7 Méthode de substitution
+La méthode de substitution consiste à estimer θ∗ = T(P∗) par
+ˆθn = T(Ψ( ˆFn))
+La loi ˆPn := Ψ( ˆFn) est appelée mesure empirique associée à X1, . . . , Xn.
+Exemple. Soient P une loi sur (Rm, B(Rm) et F la fonction de répartition asso-
+ciée. Supposons que T(P) = P([1, +∞ [) = lim ε→ 0(1−F(1−ε)) : T(P) correspond
+à la probabilité qu’une variable aléatoire de loi P appartienne à [1, +∞ [. Alors la
+méthode de substitution consiste à estimer T(P∗) par la variable aléatoire :
+ˆθn = lim
+ε→ 0
+(1 − ˆFn(1 − ε))
+Remarque. On peut prouver que
+ˆPn(A) = Card {i ∈ J1, n K : Xi ∈ A}
+n = 1
+n
+n∑
+i=1
+1 Xi∈A i.e. ˆPn = 1
+n
+n∑
+i=1
+δXi
+Donc pour toute fonction h : R −→ R mesurable,
+ˆ
+R
+h(x) ˆPn(dx) = 1
+n
+n∑
+i=1
+ˆ
+R
+hdδXi = 1
+n
+n∑
+i=1
+h(Xi)
+12
+
+[Page 15]
+II Échantillonnage
+Propriété II.8
+Si l’application T ◦Ψ est continue, alors ˆθn
+p.s.
+− − − − − →
+n→ +∞
+θ∗.
+Preuve. On sait que θ∗ = T ◦Ψ( F∗) et ˆθn = T ◦Ψ( ˆFn) d’après le théorème de
+Glivenko-Cantelli. Comme T ◦Ψ est continue, T ◦Ψ( ˆFn)
+p.s.
+− − − − − →
+n→ +∞
+T ◦Ψ( F∗). ■
+II.5 Moyenne et variance empirique
+Supposons que X1, . . . , Xn
+i.i.d.
+∼ P∗ sont tels que E[∥X1∥2] < +∞ . Posons
+µ∗ = E[X1] ∈ Rm et Σ ∗ = E[X1X⊤
+1 ] − µ∗(µ∗)⊤, qui est une matrice positive de
+taille m × m. On note aussi Σ n la matrice de covariance empirique :
+Σ n = 1
+n
+n∑
+i=1
+XiX⊤
+i − ¯Xn ¯X⊤
+n
+que l’on note plus souvent S2
+n lorsque m = 1 . Enfin, on pose :
+1 n =
+
+)
+1
+...
+1
+(
+[(∈ Rn
+Propriété II.9
+Soient X1, . . . , Xn
+i.i.d.
+∼ N(µ, σ 2), µ ∈ R et σ > 0.
+1. ¯Xn ∼ N
+(
+µ, σ2
+n
+{
+.
+2. nS2
+n
+σ2 ∼ χ2
+n−1.
+3. ¯Xn ⊥ ⊥S2
+n.
+Preuve. 1. Soit − →X =
+
+)
+X1
+...
+Xn
+(
+[(. Les Xi sont i.i.d. gaussiennes donc − →X est un
+vecteur gaussien. Plus précisément,
+− →X ∼ Nn
+
+)
+
+)
+µ1
+...
+µn
+(
+[(, σ 2In
+(
+[(
+Toute transformation affine de − →X est gaussienne. Donc ¯Xn = 1
+n 1 ⊤
+n
+− →X suit
+une loi gaussienne, avec
+E[ ¯Xn] = µ et Var( ¯Xn) = σ2
+n
+2. Posons Z = 1
+σ (− →X − µ1 n). Alors Z ∼ Nn(0, I n).
+13
+
+[Page 16]
+Statistique 1
+De plus,
+nS2
+n
+σ2 =
+n∑
+i=1
+(
+Xi − ¯Xn
+σ
+{2
+=
+n∑
+i=1
+(
+Xi − µ − ( ¯Xn − µ)
+σ
+{2
+=
+n∑
+i=1
+(Zi − ¯Zn)2
+Astuce : ici on remarque que 1
+n1 n1 ⊤
+n Z =
+
+)
+¯Zn
+...
+¯Zn
+(
+[(d’où :
+nS2
+n
+σ2 =
+Z − 1
+n1 n1 ⊤
+n Z
+
+2
+=
+
+(
+In − 1
+n1 n1 ⊤
+n
+{
+Z
+
+2
+Or Π 1 := In − 1
+n 1 n1 ⊤
+n vérifie Π ⊤
+1 = Π 1 = Π 2
+1 : c’est une matrice de
+projection orthogonale, de rang/trace n − 1.
+Donc
+nS2
+n
+σ2 = ∥Π 1Z∥2 ∼ χ2
+n−1.
+3. On a
+(
+Π 1Z
+(I − Π 1)Z
+{
+=
+(
+Π 1
+I − Π 1
+{
+  
+déterministe
+Z
+donc
+(
+Π 1Z
+(I − Π 1)Z
+{
+est un vecteur gaussien . Donc pour avoir l’indépen-
+dance de Π 1Z et (I − Π 1)Z, il suffit que leur covariance soit nulle.
+On calcule :
+cov(Π 1Z, (I − Π 1)Z) = E[(Π 1Z)((I − Π 1)Z)⊤]
+= Π 1E[ZZ⊤](I − Π 1)
+Or Z ∼ Nn(0, I n) donc E[ZZ⊤] = Var( Z) = In. Puisque Π 2
+1 = Π 1, on
+obtient :
+cov(Π 1Z, (I − Π 1)Z) = Π 1(I − Π 1) = 0
+D’où :
+Π 1Z ⊥ ⊥(I − Π 1)Z
+or S2
+n = σ2
+n ∥Π 1Z∥2 comme on l’a vu au point précédent, donc :
+S2
+n ⊥ ⊥(I − Π 1)Z = 1
+n1 n1 ⊤
+n Z =
+
+)
+¯Zn
+...
+¯Zn
+(
+[(
+d’où
+S2
+n ⊥ ⊥
+¯Xn − µ
+σ
+et finalement :
+S2
+n ⊥ ⊥¯Xn
+■
+14
+
+[Page 17]
+III Estimation des paramètres
+III Estimation des paramètres
+III.1 Modèle statistique
+Soient X1, . . . , Xn des variables aléatoires i.i.d. de loi inconnue P∗ sur
+(Rm, B(Rm)).
+Définition III.1 Modèle
+On appelle modèle statistique un triplet
+(X, A, {Pθ : θ ∈ Θ })
+où :
+. X est un espace d’états ;
+. A est une tribu sur X ;
+. chaque Pθ est une probabilité sur (X, A).
+Hypothèse P : la loi inconnue P∗ appartient à {Pθ : θ ∈ Θ }.
+Il faut voir (X, A) comme l’espace mesurable dans lequel les Xi prennent
+leurs valeurs , et chaque Pθ est une potentielle loi pour les Xi, et on cherche
+laquelle est la bonne. Dans ce cours, (X, A) = ( Rm, B(Rm)). On va donc souvent
+identifier le modèle statistique à la famille {Pθ : θ ∈ Θ }.
+Exemple. On considère les données x1, . . . , xn où xi représente la durée
+de vue d’une composante électrique. Dans ce cas, on peut considérer le modèle
+{Pθ : θ ∈ ]0, +∞ [}où Pθ = E(θ) donnée par la densité
+f(x, θ ) = 1
+θe−x/θ 1 [0, +∞ [(x)
+Définition III.2 Modèle paramétrique
+Le modèle {Pθ : θ ∈ Θ }est dit paramétrique lorsqu’il existe k ∈ N tel que
+Θ ⊂ Rk.8 8 En clair : un modèle est paramé-
+trique s’il est décrit par un nombre
+fini de paramètres réels.Exemples.
+. Le modèle {E(θ) : θ ∈ R∗
++}est paramétrique car R∗
++ ⊂ R.
+. Le modèle {N(µ, σ 2) : ( µ, σ 2) ∈ R×R+}est paramétrique car R×R+ ⊂ R2.
+. Le modèle {Pf : f ∈ Θ }où Θ est l’ensemble des densités sur (R, B(R)) qui
+sont continues sur [0, 1] et Pf est la loi associée à la densité f, n’est pas
+paramétrique.
+Dans un modèle paramétrique, sous l’hypothèse P, il existe θ∗ ∈ Θ pour
+lequel P∗ = Pθ∗. On dit que θ∗ est une vraie valeur de paramètre, car parfois
+il peut arriver qu’il y ait plusieurs valeurs du paramètre telle que la loi associée
+dans le modèle coïncide avec P∗. Néanmoins cela n’arrive pas lorsque les Pθ sont
+deux-à-deux distinctes : on identifie chaque paramètre θ à une unique loi Pθ du
+modèle, c’est ce qui amène à la définition suivante :
+Définition III.3 Modèle identifiable
+Le modèle {Pθ : θ ∈ Θ }est dit identifiable lorsque l’application θ ↦−→Pθ
+est injective.
+15
+
+[Page 18]
+Statistique 1
+Exemples.
+1. Supposons que Pθ = E(θ), Θ = ]0 , +∞ [. Alors {Pθ : θ ∈ Θ }est identifiable :
+en effet,
+Pθ = Pθ′ =⇒ Eθ[X1] = Eθ′[X1] = ⇒ θ = θ′
+où l’on note Eθ[h(X1)] l’espérance de h(X1) où X1 est n’importe quelle v.a.
+de loi Pθ.9 9La notation complète serait
+EX1∼Pθ[h(X1)] mais on lui préfère
+ici sa version abrégée. 2. Supposons que Pθ = N(0, θ 2), θ ∈ Θ = R. Alors {Pθ : θ ∈ Θ } n’est pas
+identifiable. Par exemple, P1 = P−1 pourtant 1 ̸= −1.
+Définition III.4 Rappels de théorie de la mesure
+Soit (E, E) un espace mesurable.
+— Une mesure µ sur (E, E) est dite σ-finie lorsqu’il existe une famille
+(An)n∈N d’éléments de E qui vérifient µ(An) < +∞ pour tout n ∈ N,
+tels que 
+n∈N An = E.
+— Soient µ et ν deux mesures σ-finies sur (E, E). On dit que ν est
+absolument continue par rapport à µ, et on note ν ≪ µ, lorsque tout
+ensemble mesurable µ-négligeable est aussi ν-négligeable, i.e.,
+∀A ∈ E, µ (A) = 0 = ⇒ ν(A) = 0
+Théorème III.5 Radon-Nikodym
+ν ≪ µ si et seulement si ν admet une densité par rapport à µ, i.e. il existe
+une fonction f mesurable positive telle que
+∀A ∈ E, ν (A) =
+ˆ
+A
+fdµ
+En particulier, les lois qui admettent une densité par rapport à la mesure de
+Lebesgue sont les lois absolument continues par rapport à la mesure de Lebesgue.
+Définition III.6 Modèle dominé
+Le modèle {Pθ : θ ∈ Θ }est dit dominé lorsqu’il existe une mesure σ-finie
+µ telle que pour tout θ ∈ Θ , Pθ est absolument continue par rapport à µ.
+Définition III.7 Modèle à densité, modèle discret
+Le modèle {Pθ : θ ∈ Θ }est dit à densité (ou continu) lorsqu’il est dominé
+par la mesure de Lebesgue.
+Le modèle {Pθ : θ ∈ Θ }est dit discret lorsque
+∃A ∈ B(Rm) dénombrable, ∀θ ∈ Θ , P θ(A) = 1
+Attention ! L’ordre des quantificateurs est important. On peut avoir un modèle
+{Pθ : θ ∈ Θ }qui n’est pas discret et où pourtant chaque loi Pθ est discrète. Par
+exemple, prendre Θ = [0 , 1] et Pθ = δθ, la masse de Dirac en θ. Il est clair que la
+loi Pθ est discrète 10 mais le modèle {Pθ : θ ∈ Θ }n’est pas discret ! En effet, pour10 Soit voir que c’est la loi d’une va-
+riable aléatoire constante, soit voir
+que Pθ({θ}) = 1 .
+tout A ∈ B([0, 1]) dénombrable, [0, 1] \ A ̸= ∅. Considérons θ ∈ [0, 1] \ A, alors on
+a Pθ(A) = 0 ̸= 1 .
+Remarque. Si le modèle {Pθ : θ ∈ Θ } est discret, alors il est dominé par la
+mesure de comptage d’un ensemble dénombrable.
+16
+
+[Page 19]
+III Estimation des paramètres
+En effet, s’il est discret, alors il existe A dénombrable tel que pour tout θ ∈ Θ ,
+Pθ(A) = 1 .
+Posons µ =
+∑
+a∈A δa, la mesure de comptage sur A. Autrement dit, pour tout
+B, µ(B) = Card( A \ B). Alors µ est σ-finie et Pθ =
+´
+pθdµ où pθ(a) = Pθ({a})
+pour tout a ∈ A.
+Si µ(B) = 0 , alors B\A = ∅donc Pθ(B) = Pθ(B\A)+Pθ(B\Ac) ≤ 0+P(Ac) =
+0 donc Pθ ≪ µ.
+On admet que la réciproque est vraie, autrement dit :
+Propriété III.8
+{Pθ : θ ∈ Θ } est discret si et seulement s’il est dominé par la mesure de
+comptage d’un ensemble dénombrable.
+En bref :
+Nom Signification
+Modèle (X, A, {Pθ : θ ∈ Θ })
+Paramétrique Θ ⊂ Rk, k ∈ N
+Identifiable Pθ = Pθ′ =⇒ θ = θ′
+Dominé Pθ ≪ µ, ∀θ ∈ Θ
+À densité Dominé par µ = Leb
+Discret Dominé par µ = mes. comptage d’un ens. dén.
+III.2 Estimateur
+On considère X1, . . . , Xn
+i.i.d.
+∼ Pθ∗, θ∗ ∈ Θ ⊂ Rk, k ∈ N.
+Définition III.9 Estimateur
+Toute statistique, i.e. variable aléatoire de la forme ¯θn = g(X1, . . . , Xn)
+avec g : ( Rm)n −→ Rk mesurable, est appelée estimateur de θ lorsque g ne
+dépend pas de θ.
+Un estimateur ¯θn de θ est dit : 11
+— sans biais, si
+∀θ ∈ Θ , Eθ[¯θn] = θ
+— (fortement) consistant, si
+∀θ ∈ Θ , ¯θn
+Pθ-p.s.
+− − − − − →
+n→ +∞
+θ
+— faiblement consistant, si
+∀θ ∈ Θ , ¯θn
+Pθ
+− − − − − →
+n→ +∞
+θ
+— asymptotiquement normal, s’il existe v : Θ −→ [0, +∞ [ telle que
+∀θ ∈ Θ , √n(¯θn − θ)
+loi
+− − − − − →
+n→ +∞
+N(0, v (θ))
+11 Remarquer que dans les quatre
+définitions on dit : pour tout θ, si
+les données sont de loi Pθ, alors on
+a telle égalité / convergence. C’est
+logique : on ne sait pas quel est le
+vrai paramètre θ∗, donc on veut
+que pour tous les potentiels
+paramètres θ, sous Pθ, l’estimateur
+ait telle propriété qui permet de se
+faire une idée de θ via des
+simulations (en R ou Python par
+exemple, en approximant son
+espérance, ou en simulant
+l’estimateur pour un grand n…).
+Cela garantit que quand on fait
+ces simulations avec nos vraies
+données, on va bien pouvoir se
+faire une idée de qui est θ∗.
+Exemple. Soient X1, . . . , Xn
+i.i.d.
+∼ E(θ∗), θ∗ > 0.
+1. Soit ¯θn = 1
+n
+∑n
+i=1 Xi estimateur de θ∗. Un calcul rapide montre que ¯θn
+est sans biais. De plus, par la LFGN, ¯θn est consistant. Enfin, en prenant
+17
+
+[Page 20]
+Statistique 1
+v(θ) = θ2 on constate que ¯θn est asymptotiquement normal.
+2. Soit ˆθn = Sn =
+∑
+1
+n
+∑n
+i=1 X2
+i − ( ¯Xn)2 (écart-type empirique). On peut
+vérifier que
+ˆθ2
+n
+P
+− − − − − →
+n→ +∞
+Varθ∗(X1) = ( θ∗)2
+donc ˆθn est faiblement consistant. 12 12En vrai il l’est aussi fortement.
+3. ˆθ′
+n = X1 est sans biais mais non consistant.
+4. ˆθ′′
+n = 1
+n+1
+∑n
+i=1 Xi est biaisé, mais ˆθ′′
+n = n
+n+1
+¯θn avec n
+n+1 − − − − − →
+n→ +∞
+1 donc ˆθ′′
+n
+est fortement consistant (par Slutsky, ou bien en revenant à la définition de
+la convergence presque sûre).
+III.3 Risque d’estimation
+On considère X1, . . . , Xn
+i.i.d.
+∼ Pθ∗, θ∗ ∈ Θ ⊂ Rk, k ∈ N.
+Définition III.10 Risque
+Soit ¯θn un estimateur de θ∗. On appelle risque de ¯θn la fonction
+R¯θn : Θ −→ R+
+θ ↦−→ Eθ[∥¯θn − θ∥2]
+où ∥ · ∥est la norme euclidienne.
+Lemme III.11 Décomposition biais-variance
+On a
+R¯θn (θ) = ∥Eθ[¯θn] − θ∥2 + Eθ[∥¯θn − Eθ[¯θn]∥2]
+Preuve. On pose m = Eθ[¯θn]. On a
+∥Eθ[¯θn] − θ∥2 + Eθ[∥¯θn − Eθ[¯θn]∥2] = ∥m∥2 − 2θ⊤m + ∥θ∥2
++Eθ[∥¯θn∥2] − 2 Eθ[¯θ⊤
+n m] 
+=∥m∥2
++∥m∥2
+= Eθ
+
+∥¯θn∥2 − 2θ⊤ ¯θn + ∥θ∥2
+
+= R¯θn (θ)
+■
+Remarques.
+— Par définition, R¯θn (θ) − − − − − →
+n→ +∞
+0 équivaut à ¯θn
+L2
+− − − − − →
+n→ +∞
+θ.
+Donc si R¯θn (θ) − − − − − →
+n→ +∞
+0 (pour tout θ ∈ Θ ), alors ¯θn est faiblement consis-
+tant.
+— Lorsque k = 1 , cette relation s’écrit :
+risque = biais2 + variance
+Pour que R¯θn (θ) − − − − − →
+n→ +∞
+0, il suffit donc que le biais et la variance tendent
+tous les deux vers 0.
+Comment comparer deux estimateurs ?
+18
+
+==================================================
+

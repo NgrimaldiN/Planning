@@ -1,7 +1,7 @@
 // Planning data - All blocks for 17 days
 const PLANNING_DATA = {
-    startDate: new Date(2024, 11, 20), // Dec 20, 2024
-    endDate: new Date(2025, 0, 4),     // Jan 4, 2025
+    startDate: new Date(2025, 11, 20), // Dec 20, 2024
+    endDate: new Date(2026, 0, 4),     // Jan 4, 2025
     totalHours: 120,
     
     subjects: {
@@ -13,22 +13,22 @@ const PLANNING_DATA = {
     },
     
     milestones: [
-        { date: "2024-12-20", text: "Écon Chap 4+5 lus" },
-        { date: "2024-12-23", text: "Quiz 4 Écon TERMINÉ" },
-        { date: "2024-12-25", text: "3 exams Processus faits" },
-        { date: "2024-12-26", text: "Stats intensif terminé" },
-        { date: "2024-12-27", text: "4ème exam Processus + Quiz 5 Écon" },
-        { date: "2024-12-28", text: "Macro Chap 3-6 TOUS terminés" },
-        { date: "2024-12-30", text: "Macro TDs + Micro TD5 terminés" },
-        { date: "2024-12-31", text: "Quiz 2 Écon + Micro exams terminés" },
-        { date: "2025-01-02", text: "Macro 3 exams = PRÊT" },
-        { date: "2025-01-04", text: "TOUT PRÊT ! 🚀" }
+        { date: "2025-12-20", text: "Écon Chap 4+5 lus" },
+        { date: "2025-12-23", text: "Quiz 4 Écon TERMINÉ" },
+        { date: "2025-12-25", text: "3 exams Processus faits" },
+        { date: "2025-12-26", text: "Stats intensif terminé" },
+        { date: "2025-12-27", text: "4ème exam Processus + Quiz 5 Écon" },
+        { date: "2025-12-28", text: "Macro Chap 3-6 TOUS terminés" },
+        { date: "2025-12-30", text: "Macro TDs + Micro TD5 terminés" },
+        { date: "2025-12-31", text: "Quiz 2 Écon + Micro exams terminés" },
+        { date: "2026-01-02", text: "Macro 3 exams = PRÊT" },
+        { date: "2026-01-04", text: "TOUT PRÊT ! 🚀" }
     ],
     
     days: [
         // DAY 1 - Samedi 20 Décembre (8h - stop 18h)
         {
-            date: "2024-12-20",
+            date: "2025-12-20",
             name: "Samedi 20 Décembre",
             totalHours: 8,
             blocks: [
@@ -79,7 +79,7 @@ const PLANNING_DATA = {
         
         // DAY 2 - Dimanche 21 Décembre (3h matin)
         {
-            date: "2024-12-21",
+            date: "2025-12-21",
             name: "Dimanche 21 Décembre",
             totalHours: 3,
             blocks: [
@@ -108,7 +108,7 @@ const PLANNING_DATA = {
         
         // DAY 3 - Lundi 22 Décembre (11h)
         {
-            date: "2024-12-22",
+            date: "2025-12-22",
             name: "Lundi 22 Décembre",
             totalHours: 11,
             hasCatchup: true,
@@ -168,7 +168,7 @@ const PLANNING_DATA = {
         
         // DAY 4 - Mardi 23 Décembre (11h)
         {
-            date: "2024-12-23",
+            date: "2025-12-23",
             name: "Mardi 23 Décembre",
             totalHours: 11,
             hasCatchup: true,
@@ -228,7 +228,7 @@ const PLANNING_DATA = {
         
         // DAY 5 - Mercredi 24 Décembre (9h - stop 19h)
         {
-            date: "2024-12-24",
+            date: "2025-12-24",
             name: "Mercredi 24 Décembre 🎄",
             totalHours: 9,
             blocks: [
@@ -287,7 +287,7 @@ const PLANNING_DATA = {
         
         // DAY 6 - Jeudi 25 Décembre (11h)
         {
-            date: "2024-12-25",
+            date: "2025-12-25",
             name: "Jeudi 25 Décembre",
             totalHours: 11,
             hasCatchup: true,
@@ -345,7 +345,7 @@ const PLANNING_DATA = {
         
         // DAY 7 - Vendredi 26 Décembre (11h)
         {
-            date: "2024-12-26",
+            date: "2025-12-26",
             name: "Vendredi 26 Décembre",
             totalHours: 11,
             hasCatchup: true,
@@ -406,7 +406,7 @@ const PLANNING_DATA = {
         
         // DAY 8 - Samedi 27 Décembre (11h)
         {
-            date: "2024-12-27",
+            date: "2025-12-27",
             name: "Samedi 27 Décembre",
             totalHours: 11,
             hasCatchup: true,
@@ -464,7 +464,7 @@ const PLANNING_DATA = {
         
         // DAY 9 - Dimanche 28 Décembre (11h)
         {
-            date: "2024-12-28",
+            date: "2025-12-28",
             name: "Dimanche 28 Décembre",
             totalHours: 11,
             hasCatchup: true,
@@ -524,7 +524,7 @@ const PLANNING_DATA = {
         
         // DAY 10 - Lundi 29 Décembre (11h)
         {
-            date: "2024-12-29",
+            date: "2025-12-29",
             name: "Lundi 29 Décembre",
             totalHours: 11,
             hasCatchup: true,
@@ -584,7 +584,7 @@ const PLANNING_DATA = {
         
         // DAY 11 - Mardi 30 Décembre (11h)
         {
-            date: "2024-12-30",
+            date: "2025-12-30",
             name: "Mardi 30 Décembre",
             totalHours: 11,
             hasCatchup: true,
@@ -643,7 +643,7 @@ const PLANNING_DATA = {
         
         // DAY 12 - Mercredi 31 Décembre (9h - stop 19h)
         {
-            date: "2024-12-31",
+            date: "2025-12-31",
             name: "Mercredi 31 Décembre 🎆",
             totalHours: 9,
             blocks: [
@@ -700,7 +700,7 @@ const PLANNING_DATA = {
         
         // DAY 13 - Jeudi 1er Janvier (2h)
         {
-            date: "2025-01-01",
+            date: "2026-01-01",
             name: "Jeudi 1er Janvier 🎉",
             totalHours: 2,
             blocks: [
@@ -719,7 +719,7 @@ const PLANNING_DATA = {
         
         // DAY 14 - Vendredi 2 Janvier (11h)
         {
-            date: "2025-01-02",
+            date: "2026-01-02",
             name: "Vendredi 2 Janvier",
             totalHours: 11,
             hasCatchup: true,
@@ -777,7 +777,7 @@ const PLANNING_DATA = {
         
         // DAY 15 - Samedi 3 Janvier (11h)
         {
-            date: "2025-01-03",
+            date: "2026-01-03",
             name: "Samedi 3 Janvier",
             totalHours: 11,
             hasCatchup: true,
@@ -835,7 +835,7 @@ const PLANNING_DATA = {
         
         // DAY 16 - Dimanche 4 Janvier (11h) - DERNIER JOUR
         {
-            date: "2025-01-04",
+            date: "2026-01-04",
             name: "Dimanche 4 Janvier - DERNIER JOUR",
             totalHours: 11,
             hasCatchup: true,

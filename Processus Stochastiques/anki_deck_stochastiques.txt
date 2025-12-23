@@ -1,0 +1,31 @@
+#separator:tab
+#html:true
+#tags:Stochastiques
+
+Définir un processus stochastique $(X_t)_{t \in T}$ et une filtration $(\mathcal{F}_t)_{t \in T}$.	Une famille $(X_t)_{t \in T}$ de variables aléatoires à valeurs dans $E$, mesurables de $(\Omega, \mathcal{F})$ dans $(E, \mathcal{E})$.<br>Une filtration est une suite de sous-tribu croissante : $s \le t \implies \mathcal{F}_s \subset \mathcal{F}_t \subset \mathcal{F}$.
+Qu'est-ce qu'un processus adapté ?	Un processus $(X_t)$ est adapté à $(\mathcal{F}_t)$ si pour tout $t$, $X_t$ est $\mathcal{F}_t$-mesurable.
+Propriété fondamentale de l'espérance conditionnelle $E[X|\mathcal{A}]$ (caractérisation).	C'est l'unique v.a. $Z$, $\mathcal{A}$-mesurable telle que pour toute v.a. $U$ bornée et $\mathcal{A}$-mesurable, $E[ZU] = E[XU]$.
+Définition d'une chaîne de Markov homogène.	Un processus $(X_n)$ tel que $P(X_{n+1} \in A | \mathcal{F}_n) = P(X_{n+1} \in A | X_n)$ et cette probabilité ne dépend pas de $n$.
+Matrice de transition $P$ : propriétés des lignes.	$\sum_{y \in E} P(x, y) = 1$ pour tout $x$.
+Formule de Chapman-Kolmogorov (simple).	$P(X_{n+m} = y | X_n = x) = P^m(x, y)$.
+Expression de $E[f(X_t) | X_0 = x]$ en fonction de $P$.	$E[f(X_t) | X_0 = x] = P^t f(x)$ (vecteur colonne).
+Définition d'une loi invariante $\pi$.	Une mesure $\pi$ telle que $\pi P = \pi$.
+Propriété de Markov forte.	$E[\phi((X_{\tau+n})_{n \ge 0}) | \mathcal{F}_{\tau}] = E_{X_\tau}[\phi((X_t)_{t \ge 0})]$ sur $\{\tau < \infty\}$ pour $\tau$ un temps d'arrêt.
+Définition "mène à" ($i \leadsto j$) et "communique avec" ($i \leftrightsquigarrow j$).	$i \leadsto j$ s'il existe $n$ tel que $P^n(i, j) > 0$.<br>$i \leftrightsquigarrow j$ si $i \leadsto j$ et $j \leadsto i$.
+État récurrent vs Transient (via Potentiel et proba de retour).	Récurrent : $U(x, x) = \infty \iff P_x(\sigma_x < \infty) = 1$.<br>Transient : $U(x, x) < \infty \iff P_x(\sigma_x < \infty) < 1$.
+Chaîne irréductible.	Une chaîne où tous les états communiquent entre eux (une seule classe).
+Chaîne récurrente positive.	Irréductible, récurrente, et $E_x[\sigma_x] < \infty$. Admet une probabilité invariante unique.
+Chaîne récurrente nulle.	Irréductible, récurrente, mais $E_x[\sigma_x] = \infty$. Admet une mesure invariante infinie, pas de probabilité invariante.
+Théorème ergodique (LGN) pour chaîne récurrente positive.	$\frac{1}{n} \sum_{i=1}^n f(X_i) \xrightarrow{p.s.} \int f d\pi = E_\pi[f(X)]$.
+Définition de la période $d(x)$.	$d(x) = PGCD \{ n \ge 1 : P^n(x, x) > 0 \}$.
+Théorème de convergence en loi (conditions).	Si $(X_n)$ est irréductible, récurrente positive ET **apériodique**, alors $P_\mu(X_n = x) \to \pi(x)$.
+Définition Martingale (temps discret).	Processus adapté $(X_n)$ intégrable tel que $E[X_{n+1} | \mathcal{F}_n] = X_n$.
+Définition Sous-martingale / Sur-martingale.	Sous : $E[X_{n+1} | \mathcal{F}_n] \ge X_n$.<br>Sur : $E[X_{n+1} | \mathcal{F}_n] \le X_n$.
+Définition Temps d'arrêt.	Variable aléatoire $\tau$ à valeurs dans $\mathbb{N} \cup \{\infty\}$ telle que $\{ \tau \le n \} \in \mathcal{F}_n$ pour tout $n$.
+Théorème d'arrêt de Doob (Cas borné).	Si $\tau$ est un temps d'arrêt borné ($ \tau \le N$ p.s.), alors par une martingale $X$, $E[X_\tau] = E[X_0]$.
+Décomposition de Doob (formule).	$X_n = M_n + A_n$ où $M_n$ est une martingale et $A_n$ est un processus prévisible ($A_{n+1} \in \mathcal{F}_n$).
+Inégalité maximale de Doob (énoncé).	$\lambda P(\max_{0 \le k \le n} |X_k| \ge \lambda) \le E[|X_n|]$ (pour sous-martingale positive ou martingale).
+Théorème de convergence des martingales $L^2$ (ou bornées $L^2$).	Si $(M_n)$ est une martingale bornée dans $L^2$ ($\sup E[M_n^2] < \infty$), alors elle converge p.s. et dans $L^2$ vers une v.a. $M_\infty \in L^2$.
+Définition Processus de Poisson (intensité $\lambda$).	Processus de comptage $(N_t)$ tel que $N_0=0$, à accroissements indépendants et stationnaires, et $N_t - N_s \sim \mathcal{P}(\lambda(t-s))$.
+Définition Mouvement Brownien standard.	Processus $(B_t)$ continu, $B_0=0$, accroissements indépendants gaussiens $B_t - B_s \sim \mathcal{N}(0, t-s)$.
+Covariance du Mouvement Brownien.	$E[B_t B_s] = \min(t, s)$.
