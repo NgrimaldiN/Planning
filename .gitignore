@@ -1,0 +1,10 @@
+# User files
+*.pdf
+*.pptx
+*.docx
+
+# System files
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc

@@ -23,6 +23,14 @@
 
 **Calcul :** Résoudre **πP = π** avec **Σπ(x) = 1**
 
+### Comportement Asymptotique
+- **Théorème :** Toute loi asymptotique est une loi invariante.
+  *(Si $P(X_n = x) \to \pi(x)$, alors $\pi$ est invariante)*
+
+### Réversibilité
+- Si Markov réversible ⟹ toute fonction d'inversion est proportionnelle à la probabilité invariante $\pi$.
+  *(Astuce : Pour montrer qu'un processus est inversible, penser à vérifier la réversibilité avec $\pi$)*
+
 ---
 
 ## 🟢 Macroéconomie (Ma)
