@@ -71,14 +71,33 @@ function setTodayAsCurrentDay() {
 
 // === Navigation ===
 function initNavigation() {
-    document.querySelectorAll('.nav-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const navButtons = document.querySelectorAll('.nav-tab');
+    const views = document.querySelectorAll('.view');
 
-            tab.classList.add('active');
-            const viewId = tab.dataset.view + '-view';
-            document.getElementById(viewId).classList.add('active');
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all buttons and views
+            navButtons.forEach(b => b.classList.remove('active'));
+            views.forEach(v => v.classList.remove('active'));
+
+            // Add active class to clicked button
+            btn.classList.add('active');
+
+            // Show corresponding view
+            const viewId = `${btn.dataset.view}-view`;
+            const view = document.getElementById(viewId);
+            if (view) {
+                view.classList.add('active');
+
+                // Initialize component if needed
+                if (btn.dataset.view === 'revision' && window.RevisionUI) {
+                    window.RevisionUI.init();
+                } else if (btn.dataset.view === 'calendar') {
+                    renderCalendar();
+                } else if (btn.dataset.view === 'stats') {
+                    renderStats();
+                }
+            }
         });
     });
 }
